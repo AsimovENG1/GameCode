@@ -36,7 +36,7 @@ public class MainMenuScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("", "Clicked");
+                game.setScreen(new GameScreen(game));
             }
         });
 
