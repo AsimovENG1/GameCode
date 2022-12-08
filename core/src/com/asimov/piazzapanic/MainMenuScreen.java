@@ -53,7 +53,6 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
-
         stage.addActor(gameButton);
         stage.addActor(settingsButton);
         stage.addActor(instructionsButton);
@@ -61,8 +60,6 @@ public class MainMenuScreen extends ScreenAdapter {
         gameButton.setPosition(500, 700);
         settingsButton.setPosition(500, 100);
         instructionsButton.setPosition(500, 400);
-
-        //gameButton.getLabel().setFontScale(5, 5);
 
         Gdx.gl.glClearColor(0.49f, 0.96f, 0.94f, 1);
         Gdx.input.setInputProcessor(stage);

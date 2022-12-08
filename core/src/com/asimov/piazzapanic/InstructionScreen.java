@@ -3,13 +3,17 @@ package com.asimov.piazzapanic;
 
         import com.badlogic.gdx.Gdx;
         import com.badlogic.gdx.ScreenAdapter;
+        import com.badlogic.gdx.graphics.Color;
         import com.badlogic.gdx.graphics.GL20;
         import com.badlogic.gdx.graphics.OrthographicCamera;
+        import com.badlogic.gdx.graphics.g2d.BitmapFont;
         import com.badlogic.gdx.scenes.scene2d.InputEvent;
         import com.badlogic.gdx.scenes.scene2d.Stage;
+        import com.badlogic.gdx.scenes.scene2d.ui.Label;
         import com.badlogic.gdx.scenes.scene2d.ui.Skin;
         import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
         import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+        import com.badlogic.gdx.utils.Align;
         import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class InstructionScreen extends ScreenAdapter {
@@ -25,9 +29,6 @@ public class InstructionScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport(), game.batch);
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = game.font;
 
         TextButton backButton = new TextButton("Back", mySkin);
 
@@ -51,6 +52,17 @@ public class InstructionScreen extends ScreenAdapter {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
+
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = game.font;
+        style.fontColor = Color.BLUE;
+
+        Label label1 = new Label("Instructions", style);
+        label1.setSize(Gdx.graphics.getWidth(),200);
+        label1.setFontScale(3);
+        label1.setPosition(100,800);
+        label1.setAlignment(Align.center);
+        stage.addActor(label1);
     }
 
     @Override
