@@ -48,7 +48,7 @@ public class SettingsScreen extends ScreenAdapter{
 
         backButton.setPosition(100, 100);
 
-        Gdx.gl.glClearColor(0.49f, 0.96f, 0.94f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
 
         camera = new OrthographicCamera();

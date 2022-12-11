@@ -25,6 +25,7 @@ public class MainMenuScreen extends ScreenAdapter {
         TextButton gameButton = new TextButton("Start Game", mySkin);
         TextButton settingsButton = new TextButton("Settings", mySkin);
         TextButton instructionsButton = new TextButton("Instructions", mySkin);
+        TextButton quitButton =  new TextButton("Quit", mySkin);
 
         gameButton.setWidth(1000);
         gameButton.setHeight(200);
@@ -32,7 +33,8 @@ public class MainMenuScreen extends ScreenAdapter {
         settingsButton.setHeight(200);
         instructionsButton.setWidth(1000);
         instructionsButton.setHeight(200);
-
+        quitButton.setWidth(200);
+        quitButton.setHeight(100);
 
         gameButton.addListener(new ClickListener() {
             @Override
@@ -53,15 +55,24 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
+        quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+
         stage.addActor(gameButton);
         stage.addActor(settingsButton);
         stage.addActor(instructionsButton);
+        stage.addActor(quitButton);
 
         gameButton.setPosition(500, 700);
         settingsButton.setPosition(500, 100);
         instructionsButton.setPosition(500, 400);
+        quitButton.setPosition(100,100);
 
-        Gdx.gl.glClearColor(0.49f, 0.96f, 0.94f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
     }
 
