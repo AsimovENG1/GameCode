@@ -3,15 +3,19 @@ package com.asimov.piazzapanic;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 
 public class PiazzaPanic extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
-	
+	ShapeRenderer shapeRenderer;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		font = new BitmapFont(); // TODO: default font, can be changed
+		font = new BitmapFont(); // TODO: default font, can be change
+		shapeRenderer = new ShapeRenderer();
 		this.setScreen(new MainMenuScreen(this));
 	}
 
@@ -25,4 +29,5 @@ public class PiazzaPanic extends Game {
 		batch.dispose();
 		font.dispose();
 	}
+
 }
