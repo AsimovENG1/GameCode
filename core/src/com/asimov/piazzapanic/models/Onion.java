@@ -1,4 +1,5 @@
 package com.asimov.piazzapanic.models;
 
-public class Onion implements Ingredient {
+public class Onion extends BaseChoppable {
+
 }

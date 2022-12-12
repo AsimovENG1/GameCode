@@ -1,4 +1,5 @@
 package com.asimov.piazzapanic.models;
 
-public class Tomato implements Ingredient {
+public class Tomato extends BaseChoppable {
+
 }
