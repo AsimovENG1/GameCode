@@ -1,4 +1,4 @@
 package com.asimov.piazzapanic.models;
 
-public class Lettuce implements Ingredient {
+public class Lettuce extends BaseChoppable {
 }
