@@ -4,14 +4,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 
 public class PiazzaPanic extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
 	ShapeRenderer shapeRenderer;
-
 
 	@Override
 	public void create () {
