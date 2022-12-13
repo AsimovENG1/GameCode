@@ -3,6 +3,7 @@ package com.asimov.piazzapanic;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -27,7 +28,7 @@ public class SettingsScreen extends ScreenAdapter{
         stage = new Stage(new ScreenViewport(), game.batch);
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-
+        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = game.font;
 
@@ -40,6 +41,7 @@ public class SettingsScreen extends ScreenAdapter{
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound2.play(1.0f);
                 game.setScreen(new MainMenuScreen(game));
             }
         });

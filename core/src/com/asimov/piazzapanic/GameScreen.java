@@ -2,6 +2,7 @@ package com.asimov.piazzapanic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,7 +23,8 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
-
+        final Sound sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
+        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
         stage = new Stage(new ScreenViewport(), game.batch);
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
@@ -37,12 +39,14 @@ public class GameScreen extends ScreenAdapter {
         scenarioMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               game.setScreen(new ScenarioMode(game));
+                sound.play(1.0f);
+                game.setScreen(new ScenarioMode(game));
             }
         });
         endlessMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play(1.0f);
                 game.setScreen(new EndlessMode(game));
             }
         });
@@ -56,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound2.play(1.0f);
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -66,9 +71,6 @@ public class GameScreen extends ScreenAdapter {
 
         stage.addActor(scenarioMode);
         stage.addActor(endlessMode);
-
-        //scenarioMode.setPosition(Gdx.graphics.getWidth() * 0.15f, Gdx.graphics.getHeight() * 0.3f);
-        //endlessMode.setPosition(Gdx.graphics.getWidth() * 0.75f, Gdx.graphics.getHeight() * 0.3f);
 
         scenarioMode.setPosition(150, 300);
         endlessMode.setPosition(1150, 300);
