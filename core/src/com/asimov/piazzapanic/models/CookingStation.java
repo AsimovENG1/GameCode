@@ -5,7 +5,7 @@ public abstract class CookingStation<T extends Ingredient> {
 
     public CookingStatus status;
 
-    public void startCooking(T ingredient) throws Exception {
+    public void place(T ingredient) throws Exception {
         if (status != CookingStatus.available) {
             throw new Exception("Cooking station is not available.");
         }
@@ -14,7 +14,7 @@ public abstract class CookingStation<T extends Ingredient> {
         status = CookingStatus.cooking;
     }
 
-    public Ingredient stopCooking() throws Exception {
+    public Ingredient grab() throws Exception {
         if (status != CookingStatus.complete) {
             throw new Exception("Cooking is not complete.");
         }
