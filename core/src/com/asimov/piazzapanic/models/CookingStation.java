@@ -5,25 +5,29 @@ public abstract class CookingStation<T extends Ingredient> {
 
     public CookingStatus status;
 
-    public void place(T ingredient) throws Exception {
+    public void place(Chef chef) throws Exception {
         if (status != CookingStatus.available) {
             throw new Exception("Cooking station is not available.");
         }
 
-        this.ingredient = ingredient;
+        if (chef.stack.size() <= 0) {
+            throw new Exception("The chef's stack is empty.");
+        }
+
+        this.ingredient = (T)chef.stack.place();
+
         status = CookingStatus.cooking;
     }
 
-    public Ingredient grab() throws Exception {
+    public void grab(Chef chef) throws Exception {
         if (status != CookingStatus.complete) {
             throw new Exception("Cooking is not complete.");
         }
 
-        T ingredient = this.ingredient;
-        this.ingredient = null;
+        chef.stack.grab(ingredient);
+
+        ingredient = null;
 
         status = CookingStatus.available;
-
-        return ingredient;
     }
 }

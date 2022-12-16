@@ -7,7 +7,7 @@ public class IngredientStation<T extends Ingredient> {
         this.ingredient = ingredient;
     }
 
-    public T takeIngredient() {
-        return ingredient.create();
+    public void grab(Chef chef) {
+        chef.stack.grab(ingredient.create());
     }
 }
