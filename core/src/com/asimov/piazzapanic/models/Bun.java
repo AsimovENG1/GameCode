@@ -1,4 +1,4 @@
 package com.asimov.piazzapanic.models;
 
-public class Bun implements Ingredient {
+public class Bun extends BaseBakeable {
 }
