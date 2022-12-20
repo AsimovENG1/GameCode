@@ -1,4 +1,5 @@
 package com.asimov.piazzapanic.models;
 
-public class Salad implements Dish {
+public class Burger implements Dish {
+
 }

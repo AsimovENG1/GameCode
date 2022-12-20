@@ -2,7 +2,6 @@ package com.asimov.piazzapanic.models;
 
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 public class IngredientStack implements Iterable<Ingredient> {
@@ -23,6 +22,10 @@ public class IngredientStack implements Iterable<Ingredient> {
 
     public Ingredient peek() {
         return items.peek();
+    }
+
+    public void clear() {
+        items.clear();
     }
 
     public int size() {
