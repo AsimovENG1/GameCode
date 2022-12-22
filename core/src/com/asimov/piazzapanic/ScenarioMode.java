@@ -6,7 +6,11 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,6 +26,9 @@ public class ScenarioMode extends ScreenAdapter{
 
     OrthographicCamera camera;
 
+    OrthogonalTiledMapRenderer renderer;
+    Chef chef;
+
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
 
@@ -36,7 +43,6 @@ public class ScenarioMode extends ScreenAdapter{
 
         backButton.setWidth(200);
         backButton.setHeight(100);
-
 
         backButton.addListener(new ClickListener() {
             @Override
