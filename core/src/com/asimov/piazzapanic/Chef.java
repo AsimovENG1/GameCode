@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class Chef extends InputAdapter implements Screen {
     Stage stage;
     SpriteBatch batch;
+    Texture background;
     Texture chef1Right;
     Texture chef1Left;
     Texture chef2Left;
@@ -27,14 +28,14 @@ public class Chef extends InputAdapter implements Screen {
     Texture chef3Left;
 
     float Speed = 100.0f;
-    float chef1x = 200;
-    float chef1y = 200;
+    float chef1x = 750;
+    float chef1y = 500;
 
-    float chef2x = 250;
-    float chef2y = 250;
+    float chef2x = 1000;
+    float chef2y = 500;
 
-    float chef3x = 300;
-    float chef3y = 300;
+    float chef3x = 1250;
+    float chef3y = 500;
 
     float chefnumber = 1;
 
@@ -55,9 +56,143 @@ public class Chef extends InputAdapter implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
+
     }
+
+    public void drawBackground() {
+        stage.getBatch().begin();
+        stage.getBatch().draw(background,0,0);
+        stage.getBatch().end();
+    }
+
+    public void changeChef() {
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)){
+            chefnumber = 1;
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
+            chefnumber = 2;
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
+            chefnumber = 3;
+        }
+    }
+
+    public void drawChefs(){
+        if (direction1 == "Right") { batch.draw(chef1Right, chef1x, chef1y);}
+        else if (direction1 == "Left") {batch.draw(chef1Left, chef1x, chef1y);}
+
+        if (direction2 == "Right") { batch.draw(chef2Right, chef2x, chef2y);}
+        else if (direction2 == "Left") {batch.draw(chef2Left, chef2x, chef2y);}
+
+        if (direction3 == "Right") { batch.draw(chef3Right, chef3x, chef3y);}
+        else if (direction3 == "Left") {batch.draw(chef3Left, chef3x, chef3y);}
+    }
+    public void controlChef() {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)){
+            if (chefnumber == 1) {
+                if ((chef1y + Gdx.graphics.getDeltaTime()*Speed) < 868) {
+                    chef1y += Gdx.graphics.getDeltaTime()*Speed;
+                }
+            }
+            else if (chefnumber == 2) {
+                if ((chef2y + Gdx.graphics.getDeltaTime()*Speed) < 868) {
+                    chef2y += Gdx.graphics.getDeltaTime() * Speed;
+                }
+            }
+            else if (chefnumber == 3) {
+                if ((chef3y + Gdx.graphics.getDeltaTime()*Speed) < 868) {
+                    chef3y += Gdx.graphics.getDeltaTime()*Speed;
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.S)){
+            if (chefnumber == 1) {
+                if ((chef1y - Gdx.graphics.getDeltaTime()*Speed) > 0) {
+                    chef1y -= Gdx.graphics.getDeltaTime()*Speed;
+                }
+            }
+            else if (chefnumber == 2) {
+                if ((chef2y - Gdx.graphics.getDeltaTime()*Speed) > 0) {
+                    chef2y -= Gdx.graphics.getDeltaTime()*Speed;
+                }
+            }
+            else if (chefnumber == 3) {
+                if ((chef3y - Gdx.graphics.getDeltaTime()*Speed) > 0) {
+                    chef3y -= Gdx.graphics.getDeltaTime()*Speed;
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (chefnumber == 1) {
+                if ((chef1x - Gdx.graphics.getDeltaTime()*Speed) > 550) {
+                    chef1x -= Gdx.graphics.getDeltaTime() * Speed;
+                    direction1 = "Left";
+                }
+            } else if (chefnumber == 2) {
+                if ((chef2x - Gdx.graphics.getDeltaTime()*Speed) > 550) {
+                    chef2x -= Gdx.graphics.getDeltaTime() * Speed;
+                    direction2 = "Left";
+                }
+            } else if (chefnumber == 3) {
+                if ((chef3x - Gdx.graphics.getDeltaTime()*Speed) > 550) {
+                    chef3x -= Gdx.graphics.getDeltaTime() * Speed;
+                    direction3 = "Left";
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D)){
+            if (chefnumber == 1) {
+                if ((chef1x + Gdx.graphics.getDeltaTime()*Speed) < 1924) {
+                    chef1x += Gdx.graphics.getDeltaTime() * Speed;
+                    direction1 = "Right";
+                }
+            } else if (chefnumber == 2) {
+                if ((chef2x + Gdx.graphics.getDeltaTime()*Speed) < 1924) {
+                    chef2x += Gdx.graphics.getDeltaTime() * Speed;
+                    direction2 = "Right";
+                }
+            } else if (chefnumber == 3) {
+                if ((chef3x + Gdx.graphics.getDeltaTime()*Speed) < 1924) {
+                    chef3x += Gdx.graphics.getDeltaTime() * Speed;
+                    direction3 = "Right";
+                }
+            }
+        }
+    }
+
+    public void drawBackButton(){
+        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = game.font;
+
+        TextButton backButton = new TextButton("Back", mySkin,"small");
+
+        backButton.setWidth(100);
+        backButton.setHeight(50);
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sound2.play(1.0f);
+                game.setScreen(new GameScreen(game));
+            }
+        });
+
+        stage.addActor(backButton);
+
+        backButton.setPosition((float) ((Gdx.graphics.getWidth() * 0.05) -50), (float) ((Gdx.graphics.getHeight() * 0.9) - 25));
+        batch.end();
+    }
+
     @Override
     public void show() {
+        //Temporary Background
+        background = new Texture("newBackground.png");
         //Blue Chef 1
         chef1Right = new Texture("Chef1.png");
         chef1Left = new Texture("Chef1 Left.png");
@@ -80,89 +215,12 @@ public class Chef extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0,0,0,0);
         ScreenUtils.clear(0,0,0,0);
         batch.begin();
+        drawBackground();
         stage.draw();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)){
-            chefnumber = 1;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
-            chefnumber = 2;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
-            chefnumber = 3;
-        }
-
-        if (direction1 == "Right") { batch.draw(chef1Right, chef1x, chef1y);}
-        else if (direction1 == "Left") {batch.draw(chef1Left, chef1x, chef1y);}
-
-        if (direction2 == "Right") { batch.draw(chef2Right, chef2x, chef2y);}
-        else if (direction2 == "Left") {batch.draw(chef2Left, chef2x, chef2y);}
-
-        if (direction3 == "Right") { batch.draw(chef3Right, chef3x, chef3y);}
-        else if (direction3 == "Left") {batch.draw(chef3Left, chef3x, chef3y);}
-
-        if (Gdx.input.isKeyPressed(Input.Keys.W)){
-            if (chefnumber == 1) {chef1y += Gdx.graphics.getDeltaTime()*Speed;}
-            else if (chefnumber == 2) {chef2y += Gdx.graphics.getDeltaTime()*Speed;}
-            else if (chefnumber == 3) {chef3y += Gdx.graphics.getDeltaTime()*Speed;}
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.S)){
-            if (chefnumber == 1) {chef1y -= Gdx.graphics.getDeltaTime()*Speed;}
-            else if (chefnumber == 2) {chef2y -= Gdx.graphics.getDeltaTime()*Speed;}
-            else if (chefnumber == 3) {chef3y -= Gdx.graphics.getDeltaTime()*Speed;}
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if (chefnumber == 1) {
-                chef1x -= Gdx.graphics.getDeltaTime() * Speed;
-                direction1 = "Left";
-            } else if (chefnumber == 2) {
-                chef2x -= Gdx.graphics.getDeltaTime() * Speed;
-                direction2 = "Left";
-            } else if (chefnumber == 3) {
-                chef3x -= Gdx.graphics.getDeltaTime() * Speed;
-                direction3 = "Left";
-            }
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.D)){
-            if (chefnumber == 1) {
-                chef1x += Gdx.graphics.getDeltaTime() * Speed;
-                direction1 = "Right";
-            } else if (chefnumber == 2) {
-                chef2x += Gdx.graphics.getDeltaTime() * Speed;
-                direction2 = "Right";
-            } else if (chefnumber == 3) {
-                chef3x += Gdx.graphics.getDeltaTime() * Speed;
-                direction3 = "Right";
-            }
-        }
-
-        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = game.font;
-
-        TextButton backButton = new TextButton("Back", mySkin);
-
-        backButton.setWidth(200);
-        backButton.setHeight(100);
-
-        backButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sound2.play(1.0f);
-                game.setScreen(new GameScreen(game));
-            }
-        });
-
-        stage.addActor(backButton);
-
-        backButton.setPosition(100, 100);
-
-        batch.end();
+        changeChef();
+        drawChefs();
+        controlChef();
+        drawBackButton();
     }
 
     @Override
