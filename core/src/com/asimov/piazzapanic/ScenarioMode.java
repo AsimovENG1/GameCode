@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class ScenarioMode extends ScreenAdapter{
@@ -54,7 +55,7 @@ public class ScenarioMode extends ScreenAdapter{
 
         stage.addActor(backButton);
 
-        backButton.setPosition(100, 100);
+        backButton.setPosition(0.05f, 0.1f);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
@@ -73,6 +74,7 @@ public class ScenarioMode extends ScreenAdapter{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        ScreenUtils.clear(0,0,0,0);
     }
 
     @Override

@@ -5,24 +5,32 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen extends ScreenAdapter {
     final PiazzaPanic game;
 
     private Stage stage;
-
+    SpriteBatch batch;
     OrthographicCamera camera;
+
+    FitViewport viewport;
+    TextButton scenarioMode;
+    TextButton endlessMode;
 
     public GameScreen(final PiazzaPanic game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
+        stage = new Stage(new ScreenViewport(), game.batch);
         final Sound sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
         final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
         stage = new Stage(new ScreenViewport(), game.batch);
@@ -56,7 +64,6 @@ public class GameScreen extends ScreenAdapter {
         backButton.setWidth(200);
         backButton.setHeight(100);
 
-
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -67,13 +74,13 @@ public class GameScreen extends ScreenAdapter {
 
         stage.addActor(backButton);
 
-        backButton.setPosition(100, 100);
+        backButton.setPosition((float) ((Gdx.graphics.getWidth() * 0.1) - 100), (float) ((Gdx.graphics.getHeight() * 0.1) - 50));
 
         stage.addActor(scenarioMode);
         stage.addActor(endlessMode);
 
-        scenarioMode.setPosition(150, 300);
-        endlessMode.setPosition(1150, 300);
+        scenarioMode.setPosition((Gdx.graphics.getWidth() * 0.25f) - 350, (Gdx.graphics.getHeight() * 0.5f) - 250);
+        endlessMode.setPosition((Gdx.graphics.getWidth() * 0.75f) - 350, (Gdx.graphics.getHeight() * 0.5f) - 250);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
@@ -81,6 +88,8 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
+        camera.setToOrtho(false, width, height);
+        Gdx.graphics.setWindowedMode(width,height);
         stage.getViewport().update(width, height, true);
     }
 
