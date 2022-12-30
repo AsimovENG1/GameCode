@@ -16,6 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Chef extends InputAdapter implements Screen {
     Stage stage;
     SpriteBatch batch;
@@ -45,8 +49,41 @@ public class Chef extends InputAdapter implements Screen {
     final PiazzaPanic game;
     OrthographicCamera camera;
 
+    Texture customer1Left;
+    Texture customer1Right;
+
+    Texture customer1Burger;
+
+    Texture customer1Salad;
+
+    Texture customer2Left;
+
+    Texture customer2Right;
+
+    Texture customer2Salad;
+
+    Texture customer2Burger;
+
+    private String[] burgerCustomers = new String[] {"Customer1Burger.png", "Customer2Burger.png"};
+    private String[] saladCustomers = new String[] {"Customer1Salad.png", "Customer2Salad.png"};
+    private String[] rightCustomers = new String[] {"Customer1.png", "Customer2.png"};
+    private String[] leftCustomers = new String[] {"Customer1Left.png", "Customer2Left.png"};
+    private List<String> choices = new ArrayList<>();
+
+    float customerx = 0;
+    float customery = 500;
+
+    boolean end = true;
+    boolean atCounter = false;
+    boolean givenOrder = false;
+    String order = null;
+
+
     public Chef(final PiazzaPanic game) {
         this.game = game;
+
+        choices.add("Burger");
+        choices.add("Salad");
 
         stage = new Stage(new ScreenViewport(), game.batch);
 
@@ -87,6 +124,7 @@ public class Chef extends InputAdapter implements Screen {
         if (direction3 == "Right") { batch.draw(chef3Right, chef3x, chef3y);}
         else if (direction3 == "Left") {batch.draw(chef3Left, chef3x, chef3y);}
     }
+
     public void controlChef() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)){
             if (chefnumber == 1) {
@@ -202,12 +240,60 @@ public class Chef extends InputAdapter implements Screen {
         //Green Chef 3
         chef3Right = new Texture("Chef3.png");
         chef3Left = new Texture("Chef3 Left.png");
-        
+        //Customer 1
+        customer1Right = new Texture("Customer1.png");
+        customer1Left = new Texture("Customer1Left.png");
+        //Customer 1 Burger
+        customer1Burger = new Texture("Customer1Burger.png");
+        //Customer 1 Salad
+        customer1Salad = new Texture("Customer1Salad.png");
+        //Customer 2
+        customer2Right = new Texture("Customer2.png");
+        customer2Left = new Texture("Customer2Left.png");
+        //Customer 2 Burger
+        customer2Burger = new Texture("Customer2Burger.png");
+        //Customer 2 Salad
+        customer2Salad = new Texture("Customer2Salad.png");
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         batch = new SpriteBatch();
     }
 
+    public void drawCustomerEntering(){
+        batch.draw(customer1Right, customerx, customery);
+    }
+    public void drawCustomerLeaving(){
+        batch.draw(customer1Left, customerx, customery);
+    }
+
+    public void drawBurgerCustomer(){
+        { batch.draw(customer1Burger, customerx, customery);}
+    }
+
+    public void drawSaladCustomer(){
+        { batch.draw(customer1Salad, customerx, customery);}
+    }
+    public void moveCustomersIn() {
+        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 500) {
+            customerx += Gdx.graphics.getDeltaTime() * Speed;
+        } else {atCounter = true;}
+        if (atCounter == true) {
+            order = makeOrder();
+        }
+    }
+
+    public void moveCustomersOut() {
+        if ((customerx - Gdx.graphics.getDeltaTime() * Speed) > 0) {
+            customerx -= Gdx.graphics.getDeltaTime() * Speed;
+        } else {givenOrder = false;}
+    }
+
+    public String makeOrder(){
+        Random randomizer = new Random();
+        String random = choices.get(randomizer.nextInt(choices.size()));
+        return random;
+    }
 
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
@@ -220,7 +306,28 @@ public class Chef extends InputAdapter implements Screen {
         changeChef();
         drawChefs();
         controlChef();
+        if (atCounter == false && givenOrder == false) {
+            drawCustomerEntering();
+            moveCustomersIn();
+        }
+        if (atCounter== true) {
+            if (order == "Burger") {
+                drawBurgerCustomer();
+            }
+            else if (order == "Salad") {
+                drawSaladCustomer();
+            }
+            givenOrder = true;
+            atCounter = false;
+        }
+        if (givenOrder == true && atCounter == false){
+            drawCustomerLeaving();
+            moveCustomersOut();
+        }
         drawBackButton();
+        if (end == false) {
+            game.setScreen(new EndingScreen(game));
+        }
     }
 
     @Override

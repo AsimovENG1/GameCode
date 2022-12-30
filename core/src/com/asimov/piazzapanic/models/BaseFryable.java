@@ -1,7 +1,5 @@
 package com.asimov.piazzapanic.models;
 
-import com.badlogic.gdx.utils.Array;
-
 public abstract class BaseFryable implements Fryable {
     private boolean[] sides = new boolean[] {false, false};
 
