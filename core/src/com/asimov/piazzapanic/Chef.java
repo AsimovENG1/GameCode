@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.Thread.sleep;
+
 public class Chef extends InputAdapter implements Screen {
     Stage stage;
     SpriteBatch batch;
@@ -69,21 +71,29 @@ public class Chef extends InputAdapter implements Screen {
     private String[] rightCustomers = new String[] {"Customer1.png", "Customer2.png"};
     private String[] leftCustomers = new String[] {"Customer1Left.png", "Customer2Left.png"};
     private List<String> choices = new ArrayList<>();
+    private List<Integer> customerNumbers = new ArrayList<>();
 
     float customerx = 0;
     float customery = 500;
 
-    boolean end = true;
+    boolean end = false;
     boolean atCounter = false;
     boolean givenOrder = false;
+    boolean entering = true;
     String order = null;
-
+    Integer customers = 5;
+    Integer customerNo;
+    boolean begin = true;
 
     public Chef(final PiazzaPanic game) {
         this.game = game;
 
         choices.add("Burger");
         choices.add("Salad");
+
+        customerNumbers.add(1);
+        customerNumbers.add(2);
+
 
         stage = new Stage(new ScreenViewport(), game.batch);
 
@@ -260,19 +270,32 @@ public class Chef extends InputAdapter implements Screen {
         batch = new SpriteBatch();
     }
 
+    public Integer randomCustomer() {
+        Random randomizer = new Random();
+        Integer random = customerNumbers.get(randomizer.nextInt(choices.size()));
+        begin = false;
+        return random;
+    }
+
     public void drawCustomerEntering(){
-        batch.draw(customer1Right, customerx, customery);
+        if (customerNo == 1) {
+            batch.draw(customer1Right, customerx, customery);
+        } else {batch.draw(customer2Right, customerx, customery);}
     }
     public void drawCustomerLeaving(){
-        batch.draw(customer1Left, customerx, customery);
+        if (customerNo == 1) {
+            batch.draw(customer1Left, customerx, customery);
+        } else {batch.draw(customer2Left, customerx, customery);}
     }
-
     public void drawBurgerCustomer(){
-        { batch.draw(customer1Burger, customerx, customery);}
+        if (customerNo == 1) {
+            batch.draw(customer1Burger, customerx, customery);
+        } else {batch.draw(customer2Burger, customerx, customery);}
     }
-
     public void drawSaladCustomer(){
-        { batch.draw(customer1Salad, customerx, customery);}
+        if (customerNo == 1) {
+            batch.draw(customer1Salad, customerx, customery);
+        } else {batch.draw(customer2Salad, customerx, customery);}
     }
     public void moveCustomersIn() {
         if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 500) {
@@ -283,10 +306,17 @@ public class Chef extends InputAdapter implements Screen {
         }
     }
 
-    public void moveCustomersOut() {
+    public void moveCustomersOut(){
         if ((customerx - Gdx.graphics.getDeltaTime() * Speed) > 0) {
             customerx -= Gdx.graphics.getDeltaTime() * Speed;
-        } else {givenOrder = false;}
+        } else {
+            givenOrder = false;
+            entering = true;
+            begin = true;
+            customerx = 0;
+            customery = 500;
+            customers -= 1;
+        }
     }
 
     public String makeOrder(){
@@ -295,18 +325,8 @@ public class Chef extends InputAdapter implements Screen {
         return random;
     }
 
-    // 1, 2 and 3 controls each chef (change between chefs)
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,0);
-        ScreenUtils.clear(0,0,0,0);
-        batch.begin();
-        drawBackground();
-        stage.draw();
-        changeChef();
-        drawChefs();
-        controlChef();
-        if (atCounter == false && givenOrder == false) {
+    public void controlCustomer() {
+        if (atCounter == false && givenOrder == false && entering == true) {
             drawCustomerEntering();
             moveCustomersIn();
         }
@@ -319,13 +339,34 @@ public class Chef extends InputAdapter implements Screen {
             }
             givenOrder = true;
             atCounter = false;
+            entering = false;
         }
-        if (givenOrder == true && atCounter == false){
+        if (givenOrder == true && atCounter == false && entering == false){
             drawCustomerLeaving();
             moveCustomersOut();
         }
+    }
+
+    // 1, 2 and 3 controls each chef (change between chefs)
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0,0,0,0);
+        ScreenUtils.clear(0,0,0,0);
+        batch.begin();
+        drawBackground();
+        stage.draw();
+        if (begin == true) {
+            customerNo = randomCustomer();
+        }
+        changeChef();
+        drawChefs();
+        controlChef();
+        controlCustomer();
         drawBackButton();
-        if (end == false) {
+        if (customers == 0) {
+            end = true;
+        }
+        if (end == true) {
             game.setScreen(new EndingScreen(game));
         }
     }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -29,6 +30,12 @@ public class EndingScreen extends ScreenAdapter {
 
         TextButton menuButton = new TextButton("Main Menu", mySkin);
 
+        Label label = new Label("Well Done! You Won!", mySkin);
+
+        label.setWidth(1000);
+        label.setHeight(200);
+        label.setFontScale(4f, 4f);
+
         menuButton.setWidth(1000);
         menuButton.setHeight(200);
 
@@ -41,8 +48,10 @@ public class EndingScreen extends ScreenAdapter {
         });
 
         stage.addActor(menuButton);
+        stage.addActor(label);
 
-        menuButton.setPosition(500, 700);
+        label.setPosition(650, 700);
+        menuButton.setPosition(500, 300);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
