@@ -140,17 +140,17 @@ public class Chef extends InputAdapter implements Screen {
     public void controlChef() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)){
             if (chefnumber == 1) {
-                if ((chef1y + Gdx.graphics.getDeltaTime()*Speed) < 868) {
+                if ((chef1y + Gdx.graphics.getDeltaTime()*Speed) < 825) {
                     chef1y += Gdx.graphics.getDeltaTime()*Speed;
                 }
             }
             else if (chefnumber == 2) {
-                if ((chef2y + Gdx.graphics.getDeltaTime()*Speed) < 868) {
+                if ((chef2y + Gdx.graphics.getDeltaTime()*Speed) < 825) {
                     chef2y += Gdx.graphics.getDeltaTime() * Speed;
                 }
             }
             else if (chefnumber == 3) {
-                if ((chef3y + Gdx.graphics.getDeltaTime()*Speed) < 868) {
+                if ((chef3y + Gdx.graphics.getDeltaTime()*Speed) < 825) {
                     chef3y += Gdx.graphics.getDeltaTime()*Speed;
                 }
             }
@@ -195,17 +195,17 @@ public class Chef extends InputAdapter implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)){
             if (chefnumber == 1) {
-                if ((chef1x + Gdx.graphics.getDeltaTime()*Speed) < 1924) {
+                if ((chef1x + Gdx.graphics.getDeltaTime()*Speed) < 1900) {
                     chef1x += Gdx.graphics.getDeltaTime() * Speed;
                     direction1 = "Right";
                 }
             } else if (chefnumber == 2) {
-                if ((chef2x + Gdx.graphics.getDeltaTime()*Speed) < 1924) {
+                if ((chef2x + Gdx.graphics.getDeltaTime()*Speed) < 1900) {
                     chef2x += Gdx.graphics.getDeltaTime() * Speed;
                     direction2 = "Right";
                 }
             } else if (chefnumber == 3) {
-                if ((chef3x + Gdx.graphics.getDeltaTime()*Speed) < 1924) {
+                if ((chef3x + Gdx.graphics.getDeltaTime()*Speed) < 1900) {
                     chef3x += Gdx.graphics.getDeltaTime() * Speed;
                     direction3 = "Right";
                 }
@@ -244,28 +244,28 @@ public class Chef extends InputAdapter implements Screen {
         //Temporary Background
         background = new Texture("newBackground.png");
         //Blue Chef 1
-        chef1Right = new Texture("characters/Chef1.png");
-        chef1Left = new Texture("characters/Chef1 Left.png");
+        chef1Right = new Texture("characters/chef1px3.png");
+        chef1Left = new Texture("characters/chef1px3 left.png");
         //Orange Chef 2
-        chef2Right = new Texture("characters/Chef2.png");
-        chef2Left = new Texture("characters/Chef2 Left.png");
+        chef2Right = new Texture("characters/chef2px3.png");
+        chef2Left = new Texture("characters/chef2px3 left.png");
         //Green Chef 3
-        chef3Right = new Texture("characters/Chef3.png");
-        chef3Left = new Texture("characters/Chef3 Left.png");
+        chef3Right = new Texture("characters/chef3px3.png");
+        chef3Left = new Texture("characters/chef3px3 left.png");
         //Customer 1
-        customer1Right = new Texture("characters/Customer1.png");
-        customer1Left = new Texture("characters/Customer1Left.png");
+        customer1Right = new Texture("characters/customer1px3.png");
+        customer1Left = new Texture("characters/customer1px3 left.png");
         //Customer 1 Burger
-        customer1Burger = new Texture("characters/Customer1Burger.png");
+        customer1Burger = new Texture("characters/customer1px3Burger.png");
         //Customer 1 Salad
-        customer1Salad = new Texture("characters/Customer1Salad.png");
+        customer1Salad = new Texture("characters/customer1px3Salad.png");
         //Customer 2
-        customer2Right = new Texture("characters/Customer2.png");
-        customer2Left = new Texture("characters/Customer2Left.png");
+        customer2Right = new Texture("characters/customer2px3.png");
+        customer2Left = new Texture("characters/customer2px3 left.png");
         //Customer 2 Burger
-        customer2Burger = new Texture("characters/Customer2Burger.png");
+        customer2Burger = new Texture("characters/customer2px3Burger.png");
         //Customer 2 Salad
-        customer2Salad = new Texture("characters/Customer2Salad.png");
+        customer2Salad = new Texture("characters/customer2px3Salad.png");
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -300,7 +300,7 @@ public class Chef extends InputAdapter implements Screen {
         } else {batch.draw(customer2Salad, customerx, customery);}
     }
     public void moveCustomersIn() {
-        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 500) {
+        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 470) {
             customerx += Gdx.graphics.getDeltaTime() * Speed;
         } else {atCounter = true;}
         if (atCounter == true) {
