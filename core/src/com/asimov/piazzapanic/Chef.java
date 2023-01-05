@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static java.lang.Thread.sleep;
 
 public class Chef extends InputAdapter implements Screen {
     Stage stage;
@@ -45,11 +52,53 @@ public class Chef extends InputAdapter implements Screen {
     final PiazzaPanic game;
     OrthographicCamera camera;
 
+    Texture customer1Left;
+    Texture customer1Right;
+
+    Texture customer1Burger;
+
+    Texture customer1Salad;
+
+    Texture customer2Left;
+
+    Texture customer2Right;
+
+    Texture customer2Salad;
+
+    Texture customer2Burger;
+
+    private String[] burgerCustomers = new String[] {"Customer1Burger.png", "Customer2Burger.png"};
+    private String[] saladCustomers = new String[] {"Customer1Salad.png", "Customer2Salad.png"};
+    private String[] rightCustomers = new String[] {"Customer1.png", "Customer2.png"};
+    private String[] leftCustomers = new String[] {"Customer1Left.png", "Customer2Left.png"};
+    private List<String> choices = new ArrayList<>();
+    private List<Integer> customerNumbers = new ArrayList<>();
+
+    float customerx = 0;
+    float customery = 500;
+
+    boolean end = false;
+    boolean atCounter = false;
+    boolean givenOrder = false;
+    boolean entering = true;
+    String order = null;
+    Integer customers = 5;
+    Integer customerNo;
+    boolean begin = true;
+    private Sound bell;
+    private Sound win;
+
     public Chef(final PiazzaPanic game) {
         this.game = game;
 
-        stage = new Stage(new ScreenViewport(), game.batch);
+        choices.add("Burger");
+        choices.add("Salad");
+        bell = Gdx.audio.newSound(Gdx.files.internal("audio/bell-123742.mp3"));
+        win = Gdx.audio.newSound(Gdx.files.internal("audio/level-win-6416.mp3"));
+        customerNumbers.add(1);
+        customerNumbers.add(2);
 
+        stage = new Stage(new ScreenViewport(), game.batch);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
@@ -87,6 +136,7 @@ public class Chef extends InputAdapter implements Screen {
         if (direction3 == "Right") { batch.draw(chef3Right, chef3x, chef3y);}
         else if (direction3 == "Left") {batch.draw(chef3Left, chef3x, chef3y);}
     }
+
     public void controlChef() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)){
             if (chefnumber == 1) {
@@ -194,20 +244,110 @@ public class Chef extends InputAdapter implements Screen {
         //Temporary Background
         background = new Texture("newBackground.png");
         //Blue Chef 1
-        chef1Right = new Texture("Chef1.png");
-        chef1Left = new Texture("Chef1 Left.png");
+        chef1Right = new Texture("characters/Chef1.png");
+        chef1Left = new Texture("characters/Chef1 Left.png");
         //Orange Chef 2
-        chef2Right = new Texture("Chef2.png");
-        chef2Left = new Texture("Chef2 Left.png");
+        chef2Right = new Texture("characters/Chef2.png");
+        chef2Left = new Texture("characters/Chef2 Left.png");
         //Green Chef 3
-        chef3Right = new Texture("Chef3.png");
-        chef3Left = new Texture("Chef3 Left.png");
-        
+        chef3Right = new Texture("characters/Chef3.png");
+        chef3Left = new Texture("characters/Chef3 Left.png");
+        //Customer 1
+        customer1Right = new Texture("characters/Customer1.png");
+        customer1Left = new Texture("characters/Customer1Left.png");
+        //Customer 1 Burger
+        customer1Burger = new Texture("characters/Customer1Burger.png");
+        //Customer 1 Salad
+        customer1Salad = new Texture("characters/Customer1Salad.png");
+        //Customer 2
+        customer2Right = new Texture("characters/Customer2.png");
+        customer2Left = new Texture("characters/Customer2Left.png");
+        //Customer 2 Burger
+        customer2Burger = new Texture("characters/Customer2Burger.png");
+        //Customer 2 Salad
+        customer2Salad = new Texture("characters/Customer2Salad.png");
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         batch = new SpriteBatch();
     }
 
+    public Integer randomCustomer() {
+        Random randomizer = new Random();
+        Integer random = customerNumbers.get(randomizer.nextInt(choices.size()));
+        begin = false;
+        return random;
+    }
+
+    public void drawCustomerEntering(){
+        if (customerNo == 1) {
+            batch.draw(customer1Right, customerx, customery);
+        } else {batch.draw(customer2Right, customerx, customery);}
+    }
+    public void drawCustomerLeaving(){
+        if (customerNo == 1) {
+            batch.draw(customer1Left, customerx, customery);
+        } else {batch.draw(customer2Left, customerx, customery);}
+    }
+    public void drawBurgerCustomer(){
+        if (customerNo == 1) {
+            batch.draw(customer1Burger, customerx, customery);
+        } else {batch.draw(customer2Burger, customerx, customery);}
+    }
+    public void drawSaladCustomer(){
+        if (customerNo == 1) {
+            batch.draw(customer1Salad, customerx, customery);
+        } else {batch.draw(customer2Salad, customerx, customery);}
+    }
+    public void moveCustomersIn() {
+        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 500) {
+            customerx += Gdx.graphics.getDeltaTime() * Speed;
+        } else {atCounter = true;}
+        if (atCounter == true) {
+            order = makeOrder();
+        }
+    }
+
+    public void moveCustomersOut(){
+        if ((customerx - Gdx.graphics.getDeltaTime() * Speed) > 0) {
+            customerx -= Gdx.graphics.getDeltaTime() * Speed;
+        } else {
+            givenOrder = false;
+            entering = true;
+            begin = true;
+            customerx = 0;
+            customery = 500;
+            customers -= 1;
+        }
+    }
+
+    public String makeOrder(){
+        Random randomizer = new Random();
+        String random = choices.get(randomizer.nextInt(choices.size()));
+        return random;
+    }
+
+    public void controlCustomer() {
+        if (atCounter == false && givenOrder == false && entering == true) {
+            drawCustomerEntering();
+            moveCustomersIn();
+        }
+        if (atCounter== true) {
+            if (order == "Burger") {
+                drawBurgerCustomer();
+            }
+            else if (order == "Salad") {
+                drawSaladCustomer();
+            }
+            givenOrder = true;
+            atCounter = false;
+            entering = false;
+        }
+        if (givenOrder == true && atCounter == false && entering == false){
+            drawCustomerLeaving();
+            moveCustomersOut();
+        }
+    }
 
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
@@ -217,10 +357,22 @@ public class Chef extends InputAdapter implements Screen {
         batch.begin();
         drawBackground();
         stage.draw();
+        if (begin == true) {
+            bell.play(1.0f);
+            customerNo = randomCustomer();
+        }
         changeChef();
         drawChefs();
         controlChef();
+        controlCustomer();
         drawBackButton();
+        if (customers == 0) {
+            end = true;
+        }
+        if (end == true) {
+            win.play(1.0f);
+            game.setScreen(new EndingScreen(game));
+        }
     }
 
     @Override
