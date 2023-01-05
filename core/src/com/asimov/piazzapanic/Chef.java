@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -84,19 +85,20 @@ public class Chef extends InputAdapter implements Screen {
     Integer customers = 5;
     Integer customerNo;
     boolean begin = true;
+    private Sound bell;
+    private Sound win;
 
     public Chef(final PiazzaPanic game) {
         this.game = game;
 
         choices.add("Burger");
         choices.add("Salad");
-
+        bell = Gdx.audio.newSound(Gdx.files.internal("audio/bell-123742.mp3"));
+        win = Gdx.audio.newSound(Gdx.files.internal("audio/level-win-6416.mp3"));
         customerNumbers.add(1);
         customerNumbers.add(2);
 
-
         stage = new Stage(new ScreenViewport(), game.batch);
-
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
@@ -242,28 +244,28 @@ public class Chef extends InputAdapter implements Screen {
         //Temporary Background
         background = new Texture("newBackground.png");
         //Blue Chef 1
-        chef1Right = new Texture("Chef1.png");
-        chef1Left = new Texture("Chef1 Left.png");
+        chef1Right = new Texture("characters/Chef1.png");
+        chef1Left = new Texture("characters/Chef1 Left.png");
         //Orange Chef 2
-        chef2Right = new Texture("Chef2.png");
-        chef2Left = new Texture("Chef2 Left.png");
+        chef2Right = new Texture("characters/Chef2.png");
+        chef2Left = new Texture("characters/Chef2 Left.png");
         //Green Chef 3
-        chef3Right = new Texture("Chef3.png");
-        chef3Left = new Texture("Chef3 Left.png");
+        chef3Right = new Texture("characters/Chef3.png");
+        chef3Left = new Texture("characters/Chef3 Left.png");
         //Customer 1
-        customer1Right = new Texture("Customer1.png");
-        customer1Left = new Texture("Customer1Left.png");
+        customer1Right = new Texture("characters/Customer1.png");
+        customer1Left = new Texture("characters/Customer1Left.png");
         //Customer 1 Burger
-        customer1Burger = new Texture("Customer1Burger.png");
+        customer1Burger = new Texture("characters/Customer1Burger.png");
         //Customer 1 Salad
-        customer1Salad = new Texture("Customer1Salad.png");
+        customer1Salad = new Texture("characters/Customer1Salad.png");
         //Customer 2
-        customer2Right = new Texture("Customer2.png");
-        customer2Left = new Texture("Customer2Left.png");
+        customer2Right = new Texture("characters/Customer2.png");
+        customer2Left = new Texture("characters/Customer2Left.png");
         //Customer 2 Burger
-        customer2Burger = new Texture("Customer2Burger.png");
+        customer2Burger = new Texture("characters/Customer2Burger.png");
         //Customer 2 Salad
-        customer2Salad = new Texture("Customer2Salad.png");
+        customer2Salad = new Texture("characters/Customer2Salad.png");
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -356,6 +358,7 @@ public class Chef extends InputAdapter implements Screen {
         drawBackground();
         stage.draw();
         if (begin == true) {
+            bell.play(1.0f);
             customerNo = randomCustomer();
         }
         changeChef();
@@ -367,6 +370,7 @@ public class Chef extends InputAdapter implements Screen {
             end = true;
         }
         if (end == true) {
+            win.play(1.0f);
             game.setScreen(new EndingScreen(game));
         }
     }

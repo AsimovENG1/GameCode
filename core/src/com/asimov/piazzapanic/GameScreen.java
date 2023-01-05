@@ -33,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport(), game.batch);
         final Sound sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
         final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
-        stage = new Stage(new ScreenViewport(), game.batch);
+        //final Sound bell = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-phone-ring-bell-593.wav"));
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         TextButton scenarioMode = new TextButton("Scenario Mode", mySkin);
