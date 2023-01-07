@@ -1,7 +1,12 @@
 package com.asimov.piazzapanic.models;
 
-public class BakingStation extends CookingStation<Bakeable> {
+public class BakingStation extends CookingStation {
     public void bake() {
-        ingredient.bake();
+        ((Bakeable)getIngredient()).bake();
+    }
+
+    @Override
+    protected boolean canPlace(Ingredient ingredient) {
+        return ingredient instanceof Bakeable;
     }
 }

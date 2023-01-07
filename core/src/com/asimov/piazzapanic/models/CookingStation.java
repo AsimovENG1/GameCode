@@ -1,27 +1,52 @@
 package com.asimov.piazzapanic.models;
 
-public abstract class CookingStation<T extends Ingredient> {
-    public T ingredient = null;
+public abstract class CookingStation {
+    private Ingredient ingredient = null;
 
-    public CookingStatus status;
+    protected CookingStatus status;
 
-    public void place(Chef chef) throws Exception {
+    public CookingStatus getStatus() {
+        return status;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    protected abstract boolean canPlace(Ingredient ingredient);
+    public boolean canPlace(Chef chef) {
         if (status != CookingStatus.available) {
-            throw new Exception("Cooking station is not available.");
+            return false;
         }
 
         if (chef.stack.size() <= 0) {
-            throw new Exception("The chef's stack is empty.");
+            return false;
         }
 
-        this.ingredient = (T)chef.stack.place();
+        return canPlace(chef.stack.peek());
+    }
+
+    public void place(Chef chef) throws Exception {
+        if (!canPlace(chef)) {
+            throw new Exception("Cannot place here.");
+        }
+
+        ingredient = chef.stack.place();
 
         status = CookingStatus.cooking;
     }
 
-    public void grab(Chef chef) throws Exception {
+    public boolean canGrab() {
         if (status != CookingStatus.complete) {
-            throw new Exception("Cooking is not complete.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public void grab(Chef chef) throws Exception {
+        if (!canGrab()) {
+            throw new Exception("Cannot grab here.");
         }
 
         chef.stack.grab(ingredient);

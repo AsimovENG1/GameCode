@@ -29,12 +29,12 @@ public class Recipe {
 
         for (Ingredient i : ingredients) {
             if (i instanceof Onion) {
-                onion = ((Onion) i).isChopped;
+                onion = ((Onion) i).isChopped();
                 continue;
             }
 
             if (i instanceof Lettuce) {
-                lettuce = ((Lettuce) i).isChopped;
+                lettuce = ((Lettuce) i).isChopped();
                 continue;
             }
 
@@ -55,7 +55,7 @@ public class Recipe {
             }
 
             if (i instanceof Bun) {
-                bun = ((Bun) i).isBaked;
+                bun = ((Bun) i).isBaked();
                 continue;
             }
 
