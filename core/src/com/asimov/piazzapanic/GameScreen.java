@@ -48,7 +48,7 @@ public class GameScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sound.play(1.0f);
-                game.setScreen(new Chef(game));
+                game.setScreen(new ScenarioMode(game));
             }
         });
         endlessMode.addListener(new ClickListener() {
