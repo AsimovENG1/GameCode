@@ -100,12 +100,15 @@ public class Chef extends InputAdapter implements Screen {
 
         stage = new Stage(new ScreenViewport(), game.batch);
 
+        ChoppingStationActor choppingStation = new ChoppingStationActor();
+        stage.addActor(choppingStation);
+        choppingStation.setPosition(0, 0);
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
-
     }
 
     public void drawBackground() {
