@@ -18,6 +18,10 @@ public abstract class CookingStationActor<T extends CookingStation> extends Acto
 
     protected T model;
 
+    public CookingStationActor(T model) {
+        this.model = model;
+    }
+
     protected void setTexture(TextureRegion texture) {
         this.texture = texture;
 

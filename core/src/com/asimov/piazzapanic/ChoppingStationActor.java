@@ -11,6 +11,7 @@ public class ChoppingStationActor extends CookingStationActor<ChoppingStation> {
     private final Texture completeTexture = new Texture("badlogic.jpg"); // ingredient has been chopped
 
     public ChoppingStationActor() {
+        super(new ChoppingStation());
         setTexture(new TextureRegion(availableTexture));
     }
 
