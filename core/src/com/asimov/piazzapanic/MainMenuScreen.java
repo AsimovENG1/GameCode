@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenuScreen extends ScreenAdapter {
     final PiazzaPanic game;
-
     private Stage stage;
 
     public Sound sound;
