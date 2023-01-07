@@ -55,7 +55,7 @@ public class Recipe {
             }
 
             if (i instanceof Bun) {
-                bun = ((Bun) i).isBaked();
+                bun = ((Bun) i).isFried();
                 continue;
             }
 
