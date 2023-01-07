@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -61,9 +62,13 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
         stage = new Stage(new ScreenViewport(), game.batch);
 
+        batch = new SpriteBatch();
+
         ChoppingStationActor choppingStation = new ChoppingStationActor();
         stage.addActor(choppingStation);
         choppingStation.setPosition(0, 0);
+
+        drawBackButton();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
@@ -73,13 +78,10 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
         chef = new Chef(game);
         customer = new Customer(game);
-
     }
 
     public void drawBackground() {
-        stage.getBatch().begin();
-        stage.getBatch().draw(background,0,0);
-        stage.getBatch().end();
+        batch.draw(background,0,0);
     }
 
     public void drawBackButton(){
@@ -111,30 +113,29 @@ public class ScenarioMode extends InputAdapter implements Screen {
     public void show() {
         //Temporary Background
         background = new Texture("newBackground.png");
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-        batch = new SpriteBatch();
     }
 
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,0);
-        ScreenUtils.clear(0,0,0,0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
+
         drawBackground();
-        stage.draw();
-        if (begin == true) {
+
+        if (begin) {
             bell.play(1.0f);
             chef.show();
             customer.show();
             customerNo = customer.randomCustomer();
             begin = false;
         }
+
         chef.drawChefs(batch);
+
         chef.controlChef();
         chef.changeChef();
-        drawBackButton();
 
         String left = customer.controlCustomer(atCounter, givenOrder, entering, customerNo, batch);
         if (left == "left") {
@@ -159,11 +160,16 @@ public class ScenarioMode extends InputAdapter implements Screen {
             atCounter = true;
             givenOrder = false;
         }
+
         batch.end();
+
+        stage.act(delta);
+        stage.draw();
+
         if (customers == 0) {
             end = true;
         }
-        if (end == true) {
+        if (end) {
            win.play(1.0f);
            game.setScreen(new EndingScreen(game));
         }
@@ -171,7 +177,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -191,6 +197,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        batch.dispose();
     }
 }
