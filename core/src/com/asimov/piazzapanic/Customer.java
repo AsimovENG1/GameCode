@@ -138,9 +138,6 @@ public class Customer {
             else if (order == "Salad") {
                 drawSaladCustomer(customerNo, batch);
             }
-            givenOrder = true;
-            atCounter = false;
-            entering = false;
             return "leaving";
         }
         if (givenOrder == true && atCounter == false && entering == false) {
