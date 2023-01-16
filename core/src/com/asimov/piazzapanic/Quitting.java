@@ -12,25 +12,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class EndingScreen extends ScreenAdapter {
+public class Quitting extends ScreenAdapter {
     final PiazzaPanic game;
 
     private Stage stage;
 
     private Sound sound;
 
-    public EndingScreen(PiazzaPanic game) {
+    public Quitting(PiazzaPanic game) {
         this.game = game;
 
         stage = new Stage(new ScreenViewport(), game.batch);
 
-        sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
-
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+
+        sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
 
         TextButton menuButton = new TextButton("Main Menu", mySkin);
 
-        Label label = new Label("Well Done! You Won!", mySkin);
+        Label label = new Label("You Quit! Return to main menu", mySkin);
 
         label.setWidth(1000);
         label.setHeight(200);
@@ -50,7 +50,7 @@ public class EndingScreen extends ScreenAdapter {
         stage.addActor(menuButton);
         stage.addActor(label);
 
-        label.setPosition(650, 700);
+        label.setPosition(500, 700);
         menuButton.setPosition(500, 300);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);

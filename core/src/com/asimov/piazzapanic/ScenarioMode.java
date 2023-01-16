@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -85,13 +86,13 @@ public class ScenarioMode extends InputAdapter implements Screen {
     }
 
     public void drawBackButton(){
-        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+        Sound sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = game.font;
 
-        TextButton backButton = new TextButton("Back", mySkin,"small");
+        TextButton backButton  = new TextButton("Quit", mySkin,"small");
 
         backButton.setWidth(100);
         backButton.setHeight(50);
@@ -99,14 +100,15 @@ public class ScenarioMode extends InputAdapter implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound2.play(1.0f);
-                game.setScreen(new GameScreen(game));
+                sound3.play(1.0f);
+                game.setScreen(new Quitting(game));
             }
         });
 
         stage.addActor(backButton);
 
         backButton.setPosition((float) ((Gdx.graphics.getWidth() * 0.05) -50), (float) ((Gdx.graphics.getHeight() * 0.9) - 25));
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -123,6 +125,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
         batch.begin();
 
         drawBackground();
+        drawBackButton();
 
         if (begin) {
             bell.play(1.0f);

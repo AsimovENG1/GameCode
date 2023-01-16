@@ -140,8 +140,6 @@ public class Chef {
         }
     }
     public void show() {
-        //Temporary Background
-        background = new Texture("newBackground.png");
         //Blue Chef 1
         chef1Right = new Texture("characters/chef1px3.png");
         chef1Left = new Texture("characters/chef1px3 left.png");
