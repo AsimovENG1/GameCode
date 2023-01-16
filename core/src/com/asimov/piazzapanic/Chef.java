@@ -10,8 +10,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.Objects;
 
-public class Chef{
-    Stage stage;
+public class Chef {
     Texture background;
     Texture chef1Right;
     Texture chef1Left;
@@ -40,18 +39,6 @@ public class Chef{
 
     public Chef(final PiazzaPanic game) {
         this.game = game;
-
-        stage = new Stage(new ScreenViewport(), game.batch);
-
-        ChoppingStationActor choppingStation = new ChoppingStationActor();
-        stage.addActor(choppingStation);
-        choppingStation.setPosition(0, 0);
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.input.setInputProcessor(stage);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
     }
 
     public void changeChef() {
@@ -164,7 +151,5 @@ public class Chef{
         //Green Chef 3
         chef3Right = new Texture("characters/chef3px3.png");
         chef3Left = new Texture("characters/chef3px3 left.png");
-
-        Gdx.input.setInputProcessor(stage);
     }
 }
