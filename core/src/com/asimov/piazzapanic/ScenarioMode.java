@@ -19,11 +19,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class ScenarioMode extends InputAdapter implements Screen {
@@ -52,6 +53,47 @@ public class ScenarioMode extends InputAdapter implements Screen {
     Customer customer;
     Chef chef;
     ShapeRenderer shape;
+
+    Integer chef1slot1x = 1625;
+    Integer chef1slot1y = 0;
+    Integer chef1slot2x = 1625;
+    Integer chef1slot2y = 100;
+    Integer chef1slot3x = 1625;
+    Integer chef1slot3y = 200;
+    Integer chef2slot1x = 1825;
+    Integer chef2slot1y = 0;
+    Integer chef2slot2x = 1825;
+    Integer chef2slot2y = 100;
+    Integer chef2slot3x = 1825;
+    Integer chef2slot3y = 200;
+
+    Texture burger;
+    Texture salad;
+    Texture rawPatty;
+    Texture formedPatty;
+    Texture cookedPatty;
+    Texture rawBuns;
+    Texture friedBuns;
+    Texture onions;
+    Texture choppedOnions;
+    Texture tomato;
+    Texture choppedTomato;
+    Texture lettuce;
+    Texture choppedLettuce;
+
+    // Add to the list when grabbing items etc ensure this is not at length 3 before add
+    // Other classes can reference this due to it being public so access it from another class
+    public ArrayList<String> chef1stack = new ArrayList<>();
+    public ArrayList<String> chef2stack = new ArrayList<>();
+
+
+    private Boolean chef1hasBurger;
+    private Boolean chef2hasBurger;
+    private Boolean chef1hasSalad;
+    private Boolean chef2hasSalad;
+
+    private Map<String, String> itemCorresponding;
+
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
 
@@ -81,6 +123,8 @@ public class ScenarioMode extends InputAdapter implements Screen {
         chef = new Chef(game);
         customer = new Customer(game);
         shape = new ShapeRenderer();
+
+        itemCorresponding = new HashMap<String, String>();
     }
 
     public void drawBackground() {
@@ -146,11 +190,117 @@ public class ScenarioMode extends InputAdapter implements Screen {
         shape.end();
     }
 
+    public void checkRecipeDone() {
+        chef1hasBurger = chef.checkBurgerItems(chef1stack);
+        chef2hasBurger = chef.checkBurgerItems(chef2stack);
+        chef1hasSalad = chef.checkSaladItems(chef1stack);
+        chef2hasSalad = chef.checkSaladItems(chef2stack);
+
+        if (chef1hasBurger == true) {
+            chef1stack.remove("Fried Buns");
+            chef1stack.remove("Cooked Patty");
+            chef1stack.add("Burger");
+            chef1hasBurger = false;
+        }
+
+        if (chef2hasBurger == true) {
+            chef2stack.remove("Fried Buns");
+            chef2stack.remove("Cooked Patty");
+            chef2stack.add("Burger");
+            chef2hasBurger = false;
+        }
+
+        if (chef1hasSalad == true) {
+            chef1stack.remove("Chopped Tomatoes");
+            chef1stack.remove("Chopped Lettuce");
+            chef1stack.remove("Chopped Onions");
+            chef1stack.add("Salad");
+            chef1hasSalad = false;
+        }
+
+        if (chef2hasSalad == true) {
+            chef2stack.remove("Chopped Tomatoes");
+            chef2stack.remove("Chopped Lettuce");
+            chef2stack.remove("Chopped Onions");
+            chef2stack.add("Salad");
+            chef2hasSalad = false;
+        }
+    }
+
+    public void drawFoodStack1(){
+        Integer count = 0;
+        for (String item : chef1stack) {
+            count += 1;
+            if (count == 1) {
+                Texture toDraw = new Texture(itemCorresponding.get(item));
+                batch.draw(toDraw, chef1slot1x, chef1slot1y);
+            }
+            else if (count == 2) {
+                Texture toDraw = new Texture(itemCorresponding.get(item));
+                batch.draw(toDraw, chef1slot2x, chef1slot2y);
+            }
+            else if (count == 3) {
+                Texture toDraw = new Texture(itemCorresponding.get(item));
+                batch.draw(toDraw, chef1slot3x, chef1slot3y);
+            }
+        }
+    }
+
+    public void drawFoodStack2(){
+        Integer count = 0;
+        for (String item : chef2stack) {
+            count += 1;
+            if (count == 1) {
+                Texture toDraw = new Texture(itemCorresponding.get(item));
+                batch.draw(toDraw, chef2slot1x, chef2slot1y);
+            }
+            else if (count == 2) {
+                Texture toDraw = new Texture(itemCorresponding.get(item));
+                batch.draw(toDraw, chef2slot2x, chef2slot2y);
+            }
+            else if (count == 3) {
+                Texture toDraw = new Texture(itemCorresponding.get(item));
+                batch.draw(toDraw, chef2slot3x, chef2slot3y);
+            }
+        }
+    }
+
     @Override
     public void show() {
         //Temporary Background
         background = new Texture("newBackground.png");
+        // Food pictures for chef stack
+        //burger = new Texture("Food/Burger.png");
+        //salad = new Texture("Food/Salad.png");
+        //tomato = new Texture("Food/Tomato.png");
+        //choppedTomato = new Texture("Food/ChoppedTomato.png");
+        //lettuce = new Texture("Food/Lettuce.png");
+        //choppedLettuce = new Texture("Food/ChoppedLettuce.png");
+        //onions = new Texture("Food/Onion.png");
+        //choppedOnions = new Texture("Food/ChoppedOnion.png");
+        //rawBuns = new Texture("Food/RawBun.png");
+        //friedBuns = new Texture("Food/FriedBun.png");
+        //rawPatty = new Texture("Food/RawPatty.png");
+        //formedPatty = new Texture("Food/FormedPatty.png");
+        //cookedPatty = new Texture("Food/CookedPatty.png");
+        addItemToMap();
     }
+    public void addItemToMap() {
+        itemCorresponding.put("Burger", "Food/Burger.png");
+        itemCorresponding.put("Chopped Lettuce", "Food/ChoppedLettuce.png");
+        itemCorresponding.put("Chopped Onions", "Food/ChoppedOnion.png");
+        itemCorresponding.put("Chopped Tomatoes", "Food/ChoppedTomato.png");
+        itemCorresponding.put("Cooked Patty", "Food/CookedPatty.png");
+        itemCorresponding.put("Formed Patty", "Food/FormedPatty.png");
+        itemCorresponding.put("Fried Bun","Food/FriedBun.png");
+        itemCorresponding.put("Lettuce", "Food/Lettuce.png");
+        itemCorresponding.put("Onion", "Food/Onion.png");
+        itemCorresponding.put("Raw Bun", "Food/RawBun.png");
+        itemCorresponding.put("Raw Patty", "Food/RawPatty.png");
+        itemCorresponding.put("Salad", "Food/Salad.png");
+        itemCorresponding.put("Tomato", "Food/Tomato.png");
+    }
+
 
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
@@ -202,6 +352,11 @@ public class ScenarioMode extends InputAdapter implements Screen {
         batch.end();
 
         drawChefStack();
+        checkRecipeDone();
+        batch.begin();
+        drawFoodStack1();
+        drawFoodStack2();
+        batch.end();
 
         stage.act(delta);
         stage.draw();
