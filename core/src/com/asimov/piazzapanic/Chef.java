@@ -8,10 +8,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
+import static java.lang.System.in;
+
 public class Chef {
-    Texture background;
     Texture chef1Right;
     Texture chef1Left;
     Texture chef2Left;
@@ -29,12 +33,13 @@ public class Chef {
     float chef3x = 1250;
     float chef3y = 500;
 
-     float chefnumber = 1;
+    float chefnumber = 1;
 
     String direction1 = "Right"; //Starting direction of chef1
     String direction2 = "Right"; //Starting direction of chef2
     String direction3 = "Right"; //Starting direction of chef3
     final PiazzaPanic game;
+
     OrthographicCamera camera;
 
     public Chef(final PiazzaPanic game) {
@@ -149,5 +154,26 @@ public class Chef {
         //Green Chef 3
         chef3Right = new Texture("characters/chef3px3.png");
         chef3Left = new Texture("characters/chef3px3 left.png");
+    }
+
+    public Boolean checkBurgerItems(ArrayList<String> chefstack) {
+        if (chefstack.contains("Cooked Patty") &&
+                chefstack.contains("Fried Buns")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public Boolean checkSaladItems(ArrayList<String> chefstack) {
+        if (chefstack.contains("Chopped Tomatoes") &&
+                chefstack.contains("Chopped Lettuce")&&
+                chefstack.contains("Chopped Onions")) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
