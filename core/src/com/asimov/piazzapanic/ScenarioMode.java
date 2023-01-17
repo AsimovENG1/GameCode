@@ -6,24 +6,25 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import static java.lang.Thread.sleep;
 
 public class ScenarioMode extends InputAdapter implements Screen {
     Stage stage;
@@ -50,7 +51,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
     private Sound win;
     Customer customer;
     Chef chef;
-
+    ShapeRenderer shape;
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
 
@@ -79,6 +80,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
         chef = new Chef(game);
         customer = new Customer(game);
+        shape = new ShapeRenderer();
     }
 
     public void drawBackground() {
@@ -109,6 +111,39 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
         backButton.setPosition((float) ((Gdx.graphics.getWidth() * 0.05) -50), (float) ((Gdx.graphics.getHeight() * 0.9) - 25));
         Gdx.input.setInputProcessor(stage);
+    }
+
+    public void drawChefStack(){
+
+        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        Label label = new Label("Chef 1", mySkin);
+        label.setWidth(50);
+        label.setHeight(10);
+        label.setFontScale(2f, 2f);
+        Label label2 = new Label("Chef 2", mySkin);
+        label2.setWidth(50);
+        label2.setHeight(10);
+        label2.setFontScale(2f, 2f);
+        stage.addActor(label);
+        stage.addActor(label2);
+        label.setPosition(1625, 320);
+        label2.setPosition(1820, 320);
+
+        shape.begin(ShapeRenderer.ShapeType.Filled);
+        shape.setColor(Color.WHITE);
+        shape.rect(1600,0,150,300);
+        shape.rect(1800,0,150,300);
+        shape.end();
+        shape.begin(ShapeRenderer.ShapeType.Line);
+        shape.setColor(Color.BLUE);
+        shape.rect(1600,0,150,300);
+        shape.line(1600,100, 1750,100);
+        shape.line(1600,200, 1750,200);
+        shape.setColor(Color.ORANGE);
+        shape.rect(1800,0,150,300);
+        shape.line(1800,100, 1950,100);
+        shape.line(1800,200, 1950,200);
+        shape.end();
     }
 
     @Override
@@ -165,6 +200,8 @@ public class ScenarioMode extends InputAdapter implements Screen {
         }
 
         batch.end();
+
+        drawChefStack();
 
         stage.act(delta);
         stage.draw();
