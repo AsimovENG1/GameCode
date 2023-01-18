@@ -99,7 +99,7 @@ public class Customer {
         } else {batch.draw(customer2Salad, customerx, customery);}
     }
     public boolean moveCustomersIn(float Speed, boolean atCounter) {
-        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 470) {
+        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 425) {
             customerx += Gdx.graphics.getDeltaTime() * Speed;
         } else {atCounter = true;}
         if (atCounter == true) {
@@ -138,7 +138,7 @@ public class Customer {
             else if (order == "Salad") {
                 drawSaladCustomer(customerNo, batch);
             }
-            return "leaving";
+            return "at counter";
         }
         if (givenOrder == true && atCounter == false && entering == false) {
            drawCustomerLeaving(customerNo, batch);

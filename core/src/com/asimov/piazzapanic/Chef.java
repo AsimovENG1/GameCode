@@ -87,12 +87,12 @@ public class Chef {
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             if (chefnumber == 1) {
-                if ((chef1x - Gdx.graphics.getDeltaTime()*Speed) > 550) {
+                if ((chef1x - Gdx.graphics.getDeltaTime()*Speed) > 700) {
                     chef1x -= Gdx.graphics.getDeltaTime() * Speed;
                     direction1 = "Left";
                 }
             } else if (chefnumber == 2) {
-                if ((chef2x - Gdx.graphics.getDeltaTime()*Speed) > 550) {
+                if ((chef2x - Gdx.graphics.getDeltaTime()*Speed) > 700) {
                     chef2x -= Gdx.graphics.getDeltaTime() * Speed;
                     direction2 = "Left";
                 }

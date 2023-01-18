@@ -31,6 +31,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
     Stage stage;
     SpriteBatch batch;
     Texture background;
+    Texture counter;
     final PiazzaPanic game;
     OrthographicCamera camera;
 
@@ -67,20 +68,6 @@ public class ScenarioMode extends InputAdapter implements Screen {
     Integer chef2slot3x = 1825;
     Integer chef2slot3y = 200;
 
-    Texture burger;
-    Texture salad;
-    Texture rawPatty;
-    Texture formedPatty;
-    Texture cookedPatty;
-    Texture rawBuns;
-    Texture friedBuns;
-    Texture onions;
-    Texture choppedOnions;
-    Texture tomato;
-    Texture choppedTomato;
-    Texture lettuce;
-    Texture choppedLettuce;
-
     // Add to the list when grabbing items etc ensure this is not at length 3 before add
     // Other classes can reference this due to it being public so access it from another class
     public ArrayList<String> chef1stack = new ArrayList<>();
@@ -93,6 +80,8 @@ public class ScenarioMode extends InputAdapter implements Screen {
     private Boolean chef2hasSalad;
 
     private Map<String, String> itemCorresponding;
+
+    private String left;
 
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
@@ -107,6 +96,9 @@ public class ScenarioMode extends InputAdapter implements Screen {
         stage = new Stage(new ScreenViewport(), game.batch);
 
         batch = new SpriteBatch();
+
+        chef1stack.add("Burger");
+        chef2stack.add("Salad");
 
         ChoppingStationActor choppingStation = new ChoppingStationActor();
         stage.addActor(choppingStation);
@@ -128,7 +120,9 @@ public class ScenarioMode extends InputAdapter implements Screen {
     }
 
     public void drawBackground() {
+
         batch.draw(background,0,0);
+        batch.draw(counter, 500, 0);
     }
 
     public void drawBackButton(){
@@ -269,6 +263,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
     public void show() {
         //Temporary Background
         background = new Texture("newBackground.png");
+        counter = new Texture("Counter.png");
         addItemToMap();
     }
     public void addItemToMap() {
@@ -285,6 +280,28 @@ public class ScenarioMode extends InputAdapter implements Screen {
         itemCorresponding.put("Raw Patty", "Food/RawPatty.png");
         itemCorresponding.put("Salad", "Food/Salad.png");
         itemCorresponding.put("Tomato", "Food/Tomato.png");
+    }
+
+    public String chef1GiveFood() {
+        if (chef.chef1x < 710 &&
+                chef.chef1y > 475 &&
+                chef.chef1y < 525 &&
+                chef1stack.contains(customer.order)) {
+            chef1stack.remove(customer.order);
+            left = "leaving";
+        }
+        return left;
+    }
+
+    public String chef2GiveFood() {
+        if (chef.chef2x < 710 &&
+                chef.chef2y > 475 &&
+                chef.chef2y < 525 &&
+                chef2stack.contains(customer.order)) {
+            chef2stack.remove(customer.order);
+            left = "leaving";
+        }
+        return left;
     }
 
 
@@ -311,7 +328,15 @@ public class ScenarioMode extends InputAdapter implements Screen {
         chef.controlChef();
         chef.changeChef();
 
-        String left = customer.controlCustomer(atCounter, givenOrder, entering, customerNo, batch);
+        left = customer.controlCustomer(atCounter, givenOrder, entering, customerNo, batch);
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            if (chef.chefnumber == 1) {
+                left = chef1GiveFood();
+            }
+            else {
+                left = chef2GiveFood();
+            }
+        }
         if (left == "left") {
             givenOrder = false;
             entering = true;
@@ -346,6 +371,7 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
         stage.act(delta);
         stage.draw();
+
 
         if (customers == 0) {
             end = true;
