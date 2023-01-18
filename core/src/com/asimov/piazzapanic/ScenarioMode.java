@@ -269,20 +269,6 @@ public class ScenarioMode extends InputAdapter implements Screen {
     public void show() {
         //Temporary Background
         background = new Texture("newBackground.png");
-        // Food pictures for chef stack
-        //burger = new Texture("Food/Burger.png");
-        //salad = new Texture("Food/Salad.png");
-        //tomato = new Texture("Food/Tomato.png");
-        //choppedTomato = new Texture("Food/ChoppedTomato.png");
-        //lettuce = new Texture("Food/Lettuce.png");
-        //choppedLettuce = new Texture("Food/ChoppedLettuce.png");
-        //onions = new Texture("Food/Onion.png");
-        //choppedOnions = new Texture("Food/ChoppedOnion.png");
-        //rawBuns = new Texture("Food/RawBun.png");
-        //friedBuns = new Texture("Food/FriedBun.png");
-        //rawPatty = new Texture("Food/RawPatty.png");
-        //formedPatty = new Texture("Food/FormedPatty.png");
-        //cookedPatty = new Texture("Food/CookedPatty.png");
         addItemToMap();
     }
     public void addItemToMap() {
