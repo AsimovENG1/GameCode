@@ -19,6 +19,11 @@ public class EndingScreen extends ScreenAdapter {
 
     private Sound sound;
 
+    private Label label;
+    private Label label2;
+
+    private String winningTime;
+
     public EndingScreen(PiazzaPanic game) {
         this.game = game;
 
@@ -30,11 +35,17 @@ public class EndingScreen extends ScreenAdapter {
 
         TextButton menuButton = new TextButton("Main Menu", mySkin);
 
-        Label label = new Label("Well Done! You Won!", mySkin);
+        label = new Label("Well Done! You Won!", mySkin);
+        winningTime = String.format("Your time was %f seconds", ScenarioMode.time);
+        label2 = new Label(winningTime, mySkin);
 
         label.setWidth(1000);
         label.setHeight(200);
         label.setFontScale(4f, 4f);
+
+        label2.setWidth(1000);
+        label2.setHeight(200);
+        label2.setFontScale(4f, 4f);
 
         menuButton.setWidth(1000);
         menuButton.setHeight(200);
@@ -49,9 +60,11 @@ public class EndingScreen extends ScreenAdapter {
 
         stage.addActor(menuButton);
         stage.addActor(label);
+        stage.addActor(label2);
 
-        label.setPosition(650, 700);
-        menuButton.setPosition(500, 300);
+        label.setPosition(650, 800);
+        label2.setPosition(500, 600);
+        menuButton.setPosition(500, 200);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
