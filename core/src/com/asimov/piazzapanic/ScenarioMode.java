@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ScenarioMode extends InputAdapter implements Screen {
     Stage stage;
@@ -83,6 +84,8 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
     private String left;
 
+    public static float time;
+
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
 
@@ -98,6 +101,10 @@ public class ScenarioMode extends InputAdapter implements Screen {
         batch = new SpriteBatch();
 
         chef1stack.add("Burger");
+        chef1stack.add("Burger");
+        chef1stack.add("Burger");
+        chef2stack.add("Salad");
+        chef2stack.add("Salad");
         chef2stack.add("Salad");
 
         ChoppingStationActor choppingStation = new ChoppingStationActor();
@@ -283,23 +290,37 @@ public class ScenarioMode extends InputAdapter implements Screen {
     }
 
     public String chef1GiveFood() {
+        System.out.println(chef1stack);
         if (chef.chef1x < 710 &&
                 chef.chef1y > 475 &&
                 chef.chef1y < 525 &&
                 chef1stack.contains(customer.order)) {
             chef1stack.remove(customer.order);
+            System.out.println(chef1stack);
             left = "leaving";
+        }
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return left;
     }
 
     public String chef2GiveFood() {
+        System.out.println(chef2stack);
         if (chef.chef2x < 710 &&
                 chef.chef2y > 475 &&
                 chef.chef2y < 525 &&
                 chef2stack.contains(customer.order)) {
             chef2stack.remove(customer.order);
+            System.out.println(chef2stack);
             left = "leaving";
+        }
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return left;
     }
@@ -309,6 +330,8 @@ public class ScenarioMode extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        time += Gdx.graphics.getDeltaTime();
 
         batch.begin();
 
