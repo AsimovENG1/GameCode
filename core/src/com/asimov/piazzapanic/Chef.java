@@ -20,8 +20,6 @@ public class Chef {
     Texture chef1Left;
     Texture chef2Left;
     Texture chef2Right;
-    Texture chef3Right;
-    Texture chef3Left;
 
     float Speed = 100.0f;
     float chef1x = 750;
@@ -29,9 +27,6 @@ public class Chef {
 
     float chef2x = 1000;
     float chef2y = 500;
-
-    float chef3x = 1250;
-    float chef3y = 500;
 
     float chefnumber = 1;
 
@@ -53,9 +48,6 @@ public class Chef {
         else if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
             chefnumber = 2;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
-            chefnumber = 3;
-        }
     }
 
     public void drawChefs(SpriteBatch batch){
@@ -64,9 +56,6 @@ public class Chef {
 
         if (Objects.equals(direction2, "Right")) { batch.draw(chef2Right, chef2x, chef2y);}
         else if (Objects.equals(direction2, "Left")) {batch.draw(chef2Left, chef2x, chef2y);}
-
-        if (Objects.equals(direction3, "Right")) { batch.draw(chef3Right, chef3x, chef3y);}
-        else if (Objects.equals(direction3, "Left")) {batch.draw(chef3Left, chef3x, chef3y);}
     }
 
     public void controlChef() {
@@ -79,11 +68,6 @@ public class Chef {
             else if (chefnumber == 2) {
                 if ((chef2y + Gdx.graphics.getDeltaTime()*Speed) < 825) {
                     chef2y += Gdx.graphics.getDeltaTime() * Speed;
-                }
-            }
-            else if (chefnumber == 3) {
-                if ((chef3y + Gdx.graphics.getDeltaTime()*Speed) < 825) {
-                    chef3y += Gdx.graphics.getDeltaTime()*Speed;
                 }
             }
         }
@@ -99,11 +83,6 @@ public class Chef {
                     chef2y -= Gdx.graphics.getDeltaTime()*Speed;
                 }
             }
-            else if (chefnumber == 3) {
-                if ((chef3y - Gdx.graphics.getDeltaTime()*Speed) > 0) {
-                    chef3y -= Gdx.graphics.getDeltaTime()*Speed;
-                }
-            }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -116,11 +95,6 @@ public class Chef {
                 if ((chef2x - Gdx.graphics.getDeltaTime()*Speed) > 550) {
                     chef2x -= Gdx.graphics.getDeltaTime() * Speed;
                     direction2 = "Left";
-                }
-            } else if (chefnumber == 3) {
-                if ((chef3x - Gdx.graphics.getDeltaTime()*Speed) > 550) {
-                    chef3x -= Gdx.graphics.getDeltaTime() * Speed;
-                    direction3 = "Left";
                 }
             }
         }
@@ -136,11 +110,6 @@ public class Chef {
                     chef2x += Gdx.graphics.getDeltaTime() * Speed;
                     direction2 = "Right";
                 }
-            } else if (chefnumber == 3) {
-                if ((chef3x + Gdx.graphics.getDeltaTime()*Speed) < 1900) {
-                    chef3x += Gdx.graphics.getDeltaTime() * Speed;
-                    direction3 = "Right";
-                }
             }
         }
     }
@@ -151,9 +120,6 @@ public class Chef {
         //Orange Chef 2
         chef2Right = new Texture("characters/chef2px3.png");
         chef2Left = new Texture("characters/chef2px3 left.png");
-        //Green Chef 3
-        chef3Right = new Texture("characters/chef3px3.png");
-        chef3Left = new Texture("characters/chef3px3 left.png");
     }
 
     public Boolean checkBurgerItems(ArrayList<String> chefstack) {
