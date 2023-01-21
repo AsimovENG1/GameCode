@@ -109,12 +109,16 @@ public class ScenarioMode extends InputAdapter implements Screen {
 
         ChoppingStationActor choppingStation = new ChoppingStationActor();
         stage.addActor(choppingStation);
-        choppingStation.setPosition(0, 0);
+        choppingStation.setPosition(800, 650);
 
         GrillStationActor grillStation = new GrillStationActor();
         stage.addActor(grillStation);
         grillStation.setPosition(700,650);
 
+        BinStationActor binStation = new BinStationActor();
+        stage.addActor(binStation);
+        binStation.setPosition(700,0);
+        
         drawBackButton();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
