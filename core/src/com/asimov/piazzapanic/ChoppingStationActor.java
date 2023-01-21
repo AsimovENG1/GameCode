@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ChoppingStationActor extends CookingStationActor<ChoppingStation> {
     // TODO: custom images
-    private final Texture availableTexture = new Texture("badlogic.jpg"); // station is empty
-    private final Texture cookingTexture = new Texture("badlogic.jpg"); // ingredient placed on station
-    private final Texture completeTexture = new Texture("badlogic.jpg"); // ingredient has been chopped
+    private final Texture availableTexture = new Texture("EmptyCuttingBoard.png"); // station is empty
+    private final Texture cookingTexture = new Texture("CuttingBoardInUse.png"); // ingredient placed on station
+    private final Texture completeTexture = new Texture("ChoppingBoardCut.png"); // ingredient has been chopped
 
     public ChoppingStationActor() {
         super(new ChoppingStation());
