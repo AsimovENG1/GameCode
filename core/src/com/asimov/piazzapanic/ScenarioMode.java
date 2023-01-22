@@ -164,7 +164,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         ChoppingStationActor choppingStation = new ChoppingStationActor();
         stage.addActor(choppingStation);
-        choppingStation.setPosition(0, 0);
+        choppingStation.setPosition(640, 640);
 
         chef = new Chef(game);
         customer = new Customer(game);
