@@ -1,5 +1,9 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.models.Burger;
+import com.asimov.piazzapanic.models.Dish;
+import com.asimov.piazzapanic.models.Ingredient;
+import com.asimov.piazzapanic.models.Salad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,7 +33,7 @@ public class Customer {
 
     float customerx = 0;
     float customery = 500;
-    String order = null;
+    Order order = null;
     boolean left = false;
 
     int i = 0;
@@ -45,12 +49,7 @@ public class Customer {
 
         stage = new Stage(new ScreenViewport(), game.batch);
 
-        ChoppingStationActor choppingStation = new ChoppingStationActor();
-        stage.addActor(choppingStation);
-        choppingStation.setPosition(0, 0);
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.input.setInputProcessor(stage);
 
         camera = new OrthographicCamera();
     }
@@ -70,7 +69,6 @@ public class Customer {
         customer2Burger = new Texture("characters/customer2px3Burger.png");
         //Customer 2 Salad
         customer2Salad = new Texture("characters/customer2px3Salad.png");
-        Gdx.input.setInputProcessor(stage);
     }
     public Integer randomCustomer() {
         Random randomizer = new Random();
@@ -99,7 +97,7 @@ public class Customer {
         } else {batch.draw(customer2Salad, customerx, customery);}
     }
     public boolean moveCustomersIn(float Speed, boolean atCounter) {
-        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 470) {
+        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 160) {
             customerx += Gdx.graphics.getDeltaTime() * Speed;
         } else {atCounter = true;}
         if (atCounter == true) {
@@ -117,9 +115,9 @@ public class Customer {
         return false;
     }
 
-    public String makeOrder(){
+    public Order makeOrder(){
         Random randomizer = new Random();
-        String random = choices.get(randomizer.nextInt(choices.size()));
+        Order random = Order.values()[randomizer.nextInt(Order.values().length)];
         return random;
     }
 
@@ -132,13 +130,13 @@ public class Customer {
             return "entering";
         }
         if (atCounter == true && givenOrder == false) {
-            if (order == "Burger") {
+            if (order == Order.burger) {
                drawBurgerCustomer(customerNo, batch);
             }
-            else if (order == "Salad") {
+            else if (order == Order.salad) {
                 drawSaladCustomer(customerNo, batch);
             }
-            return "leaving";
+            return "at counter";
         }
         if (givenOrder == true && atCounter == false && entering == false) {
            drawCustomerLeaving(customerNo, batch);
@@ -150,4 +148,19 @@ public class Customer {
         return null;
     }
 
+    public boolean checkOrder(Ingredient dish) {
+        switch (order) {
+            case burger:
+                return dish instanceof Burger;
+            case salad:
+                return dish instanceof Salad;
+        }
+
+        return false;
+    }
+
+    public enum Order {
+        burger,
+        salad
+    }
 }

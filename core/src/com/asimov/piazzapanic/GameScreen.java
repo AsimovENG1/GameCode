@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -19,35 +20,32 @@ public class GameScreen extends ScreenAdapter {
     final PiazzaPanic game;
 
     private Stage stage;
-
+    
+    private Table table;
+    
     public static Sound gamebackb;
     public static Sound gamestart;
 
-    SpriteBatch batch;
-    OrthographicCamera camera;
-
-    FitViewport viewport;
-    TextButton scenarioMode;
-    TextButton endlessMode;
-
     public GameScreen(final PiazzaPanic game) {
         this.game = game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
+
         stage = new Stage(new ScreenViewport(), game.batch);
+        Gdx.input.setInputProcessor(stage);
+
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.setDebug(game.debug);
+        
         gamestart = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
         gamebackb = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
         //final Sound bell = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-phone-ring-bell-593.wav"));
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-        TextButton scenarioMode = new TextButton("Scenario Mode", mySkin);
-        TextButton endlessMode = new TextButton("Endless Mode", mySkin);
+        Table modeTable = new Table();
+        table.add(modeTable).expandY();
 
-        scenarioMode.setWidth(700);
-        scenarioMode.setHeight(500);
-        endlessMode.setWidth(700);
-        endlessMode.setHeight(500);
-
+        TextButton scenarioMode = new TextButton("Scenario Mode", game.skin);
         scenarioMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -55,6 +53,9 @@ public class GameScreen extends ScreenAdapter {
                 game.setScreen(new ScenarioMode(game));
             }
         });
+        modeTable.add(scenarioMode).expandX().fill().padRight(5);
+
+        TextButton endlessMode = new TextButton("Endless Mode", game.skin);
         endlessMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -62,12 +63,11 @@ public class GameScreen extends ScreenAdapter {
                 game.setScreen(new EndlessMode(game));
             }
         });
+        modeTable.add(endlessMode).expandX().fill().padLeft(5);
 
-        TextButton backButton = new TextButton("Back", mySkin);
+        table.row().bottom().left().expandX();
 
-        backButton.setWidth(200);
-        backButton.setHeight(100);
-
+        TextButton backButton = new TextButton("Back", game.skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,25 +75,13 @@ public class GameScreen extends ScreenAdapter {
                 game.setScreen(new MainMenuScreen(game));
             }
         });
+        table.add(backButton).left().bottom().padTop(10);
 
-        stage.addActor(backButton);
-
-        backButton.setPosition((float) ((Gdx.graphics.getWidth() * 0.1) - 100), (float) ((Gdx.graphics.getHeight() * 0.1) - 50));
-
-        stage.addActor(scenarioMode);
-        stage.addActor(endlessMode);
-
-        scenarioMode.setPosition((Gdx.graphics.getWidth() * 0.25f) - 350, (Gdx.graphics.getHeight() * 0.5f) - 250);
-        endlessMode.setPosition((Gdx.graphics.getWidth() * 0.75f) - 350, (Gdx.graphics.getHeight() * 0.5f) - 250);
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.input.setInputProcessor(stage);
+        table.pad(10);
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, width, height);
-        Gdx.graphics.setWindowedMode(width,height);
         stage.getViewport().update(width, height, true);
     }
 
