@@ -1,4 +1,5 @@
 package com.asimov.piazzapanic.models;
+import java.util.concurrent.TimeUnit;
 
 public class BinStation extends CookingStation{
     private Ingredient ingredients = null;
@@ -10,8 +11,13 @@ public class BinStation extends CookingStation{
     }
     @Override
     public void place(IngredientStack stack) {
-        ingredients = stack.place();
-        status = CookingStatus.available;
+        try {
+            ingredients = stack.place();
+            TimeUnit.SECONDS.sleep(1);
+            status = CookingStatus.available;}
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override

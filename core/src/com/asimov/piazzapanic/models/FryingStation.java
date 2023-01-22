@@ -1,4 +1,5 @@
 package com.asimov.piazzapanic.models;
+import java.util.concurrent.TimeUnit;
 
 public class FryingStation extends CookingStation {
 
@@ -6,7 +7,7 @@ public class FryingStation extends CookingStation {
         try {
             ((Fryable)getIngredient()).ReadySwap();
             ((Fryable)getIngredient()).stageIncrease();
-            Thread.sleep(5000);
+            TimeUnit.SECONDS.sleep(5);
             ((Fryable)getIngredient()).ReadySwap();
             }
         catch (Exception e) {
@@ -19,7 +20,7 @@ public class FryingStation extends CookingStation {
                 try {
                     ((Fryable)getIngredient()).ReadySwap();
                     ((Fryable)getIngredient()).stageIncrease();
-                    Thread.sleep(5000);
+                    TimeUnit.SECONDS.sleep(5);
                     ((Fryable)getIngredient()).ReadySwap();
                     ((Fryable)getIngredient()).makeFried();
                     status = CookingStatus.complete;
@@ -33,5 +34,12 @@ public class FryingStation extends CookingStation {
     @Override
     protected boolean canPlace(Ingredient ingredient) {
         return ingredient instanceof Fryable;
+    }
+    public boolean canFlip() {
+        if ((((Fryable)getIngredient()).ready() == true) &&
+            (((Fryable)getIngredient()).state() == 1)){
+                return true;
+            }
+        return false;
     }
 }

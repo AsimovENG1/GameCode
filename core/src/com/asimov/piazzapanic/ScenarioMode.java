@@ -165,9 +165,9 @@ public class ScenarioMode extends ScreenAdapter {
         customerNumbers.add(1);
         customerNumbers.add(2);
 
+        chef1.stack.grab(new Patty());
         chef1.stack.grab(new Burger());
-        chef1.stack.grab(new Burger());
-        chef1.stack.grab(new Burger());
+        chef1.stack.grab(new Patty());
         chef2.stack.grab(new Tomato());
         chef2.stack.grab(new Lettuce());
         chef2.stack.grab(new Onion());
@@ -261,6 +261,11 @@ public class ScenarioMode extends ScreenAdapter {
                 Gdx.input.isKeyPressed(Input.Keys.C)) {
 
             ((ChoppingStationSprite) cookingStation).chop();
+        }
+        if (cookingStation instanceof GrillStationSprite &&
+                Gdx.input.isKeyPressed(Input.Keys.F)) {
+
+            ((GrillStationSprite) cookingStation).flip();
         }
     }
 
