@@ -13,9 +13,9 @@ public class ChoppingStation extends CookingStation {
         return true;
     }
 
-    public void chop() throws Exception {
+    public void chop()  {
         if (!canChop()) {
-            throw new Exception("Cannot chop here.");
+            return;
         }
 
         ((Choppable)getIngredient()).chop();

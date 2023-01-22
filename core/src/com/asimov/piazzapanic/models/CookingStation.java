@@ -3,7 +3,7 @@ package com.asimov.piazzapanic.models;
 public abstract class CookingStation {
     private Ingredient ingredient = null;
 
-    protected CookingStatus status;
+    protected CookingStatus status = CookingStatus.available;
 
     public CookingStatus getStatus() {
         return status;
@@ -14,24 +14,24 @@ public abstract class CookingStation {
     }
 
     protected abstract boolean canPlace(Ingredient ingredient);
-    public boolean canPlace(Chef chef) {
+    public boolean canPlace(IngredientStack stack) {
         if (status != CookingStatus.available) {
             return false;
         }
 
-        if (chef.stack.size() <= 0) {
+        if (stack.size() <= 0) {
             return false;
         }
 
-        return canPlace(chef.stack.peek());
+        return canPlace(stack.peek());
     }
 
-    public void place(Chef chef) throws Exception {
-        if (!canPlace(chef)) {
-            throw new Exception("Cannot place here.");
+    public void place(IngredientStack stack) {
+        if (!canPlace(stack)) {
+            return;
         }
 
-        ingredient = chef.stack.place();
+        ingredient = stack.place();
 
         status = CookingStatus.cooking;
     }
@@ -44,12 +44,12 @@ public abstract class CookingStation {
         return true;
     }
 
-    public void grab(Chef chef) throws Exception {
+    public void grab(IngredientStack stack) {
         if (!canGrab()) {
-            throw new Exception("Cannot grab here.");
+            return;
         }
 
-        chef.stack.grab(ingredient);
+        stack.grab(ingredient);
 
         ingredient = null;
 
