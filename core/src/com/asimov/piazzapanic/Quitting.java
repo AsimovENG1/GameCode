@@ -17,7 +17,7 @@ public class Quitting extends ScreenAdapter {
 
     private Stage stage;
 
-    private Sound sound;
+    public static Sound buclick;
 
     public Quitting(PiazzaPanic game) {
         this.game = game;
@@ -26,7 +26,7 @@ public class Quitting extends ScreenAdapter {
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
-        sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
+        buclick = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
 
         TextButton menuButton = new TextButton("Main Menu", mySkin);
 
@@ -42,7 +42,7 @@ public class Quitting extends ScreenAdapter {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound.play(1.0f);
+                SoundEffectControl.buttonclicking();
                 game.setScreen(new MainMenuScreen(game));
             }
         });

@@ -20,6 +20,7 @@ public class InstructionScreen extends ScreenAdapter {
     final PiazzaPanic game;
 
     private Stage stage;
+    public static Sound instclick;
 
     OrthographicCamera camera;
 
@@ -29,7 +30,7 @@ public class InstructionScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport(), game.batch);
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+        instclick = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
 
         TextButton backButton = new TextButton("Back", mySkin);
 
@@ -40,7 +41,7 @@ public class InstructionScreen extends ScreenAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound2.play(1.0f);
+                SoundEffectControl.instructionbuttoncl();
                 game.setScreen(new MainMenuScreen(game));
             }
         });

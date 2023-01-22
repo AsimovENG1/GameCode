@@ -19,6 +19,10 @@ public class GameScreen extends ScreenAdapter {
     final PiazzaPanic game;
 
     private Stage stage;
+
+    public static Sound gamebackb;
+    public static Sound gamestart;
+
     SpriteBatch batch;
     OrthographicCamera camera;
 
@@ -31,8 +35,8 @@ public class GameScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
         stage = new Stage(new ScreenViewport(), game.batch);
-        final Sound sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
-        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+        gamestart = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
+        gamebackb = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
         //final Sound bell = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-phone-ring-bell-593.wav"));
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
@@ -47,14 +51,14 @@ public class GameScreen extends ScreenAdapter {
         scenarioMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound.play(1.0f);
+                SoundEffectControl.scenariobutton();
                 game.setScreen(new ScenarioMode(game));
             }
         });
         endlessMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound.play(1.0f);
+                SoundEffectControl.scenariobutton();
                 game.setScreen(new EndlessMode(game));
             }
         });
@@ -67,7 +71,7 @@ public class GameScreen extends ScreenAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound2.play(1.0f);
+                SoundEffectControl.scenarioback();
                 game.setScreen(new MainMenuScreen(game));
             }
         });

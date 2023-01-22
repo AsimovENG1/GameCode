@@ -48,8 +48,13 @@ public class ScenarioMode extends InputAdapter implements Screen {
     Integer customerNo;
     boolean begin = true;
 
-    private Sound bell;
-    private Sound win;
+    public static Sound bell;
+    public static Sound guitar;
+    SoundEffectControl soundEffectControl = new SoundEffectControl();
+    MusicControl musicControl = new MusicControl();
+    public static Sound win;
+    public static Sound losing;
+
     Customer customer;
     Chef chef;
     ShapeRenderer shape;
@@ -101,6 +106,8 @@ public class ScenarioMode extends InputAdapter implements Screen {
         choices.add("Salad");
         bell = Gdx.audio.newSound(Gdx.files.internal("audio/bell-123742.mp3"));
         win = Gdx.audio.newSound(Gdx.files.internal("audio/level-win-6416.mp3"));
+        guitar = Gdx.audio.newSound(Gdx.files.internal("audio/rattatouie.MP3"));
+        losing = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
         customerNumbers.add(1);
         customerNumbers.add(2);
 
@@ -125,14 +132,19 @@ public class ScenarioMode extends InputAdapter implements Screen {
         shape = new ShapeRenderer();
 
         itemCorresponding = new HashMap<String, String>();
+
+        MusicControl.setguitar();
+        MusicControl.playguitar();
+        MusicControl.loopguitar();
     }
+
 
     public void drawBackground() {
         batch.draw(background,0,0);
     }
 
     public void drawBackButton(){
-        Sound sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
+
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
@@ -146,8 +158,9 @@ public class ScenarioMode extends InputAdapter implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound3.play(1.0f);
+                SoundEffectControl.lose();
                 game.setScreen(new Quitting(game));
+                musicControl.stopguitar();
             }
         });
 
@@ -312,8 +325,11 @@ public class ScenarioMode extends InputAdapter implements Screen {
         drawBackground();
         drawBackButton();
 
+
         if (begin) {
-            bell.play(1.0f);
+            SoundEffectControl.playBell();
+            System.out.print("NEW VOL " + soundEffectControl.volume);
+
             chef.show();
             customer.show();
             customerNo = customer.randomCustomer();
@@ -365,7 +381,8 @@ public class ScenarioMode extends InputAdapter implements Screen {
             end = true;
         }
         if (end) {
-           win.play(1.0f);
+           SoundEffectControl.playWin();
+           //might have to add end music
            game.setScreen(new EndingScreen(game));
         }
     }

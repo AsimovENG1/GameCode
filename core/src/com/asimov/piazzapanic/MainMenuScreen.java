@@ -15,16 +15,16 @@ public class MainMenuScreen extends ScreenAdapter {
     final PiazzaPanic game;
     private Stage stage;
 
-    public Sound sound;
-    public Sound sound2;
+    public static Sound buclick1;
+    public static Sound backquit;
 
     public MainMenuScreen(final PiazzaPanic game) {
         this.game = game;
 
         stage = new Stage(new ScreenViewport(), game.batch);
 
-        final Sound sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
-        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+        buclick1 = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
+        backquit = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
@@ -45,21 +45,21 @@ public class MainMenuScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound.play(1.0f);
+                SoundEffectControl.buttonclicking1();
                 game.setScreen(new GameScreen(game));
             }
         });
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound.play(1.0f);
+                SoundEffectControl.buttonclicking1();
                 game.setScreen(new SettingsScreen(game));
             }
         });
         instructionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound.play(1.0f);
+                SoundEffectControl.buttonclicking1();
                 game.setScreen(new InstructionScreen(game));
             }
         });
@@ -67,7 +67,7 @@ public class MainMenuScreen extends ScreenAdapter {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound2.play(1.0f);
+                SoundEffectControl.buttonquit();
                 Gdx.app.exit();
             }
         });
