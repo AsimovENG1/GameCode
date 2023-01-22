@@ -34,6 +34,8 @@ public class ScenarioMode extends ScreenAdapter {
 
     private Array<Sprite> walls = new Array<>();
 
+    private Array<CookingStationSprite> cookingStations = new Array<>();
+
     private List<String> choices = new ArrayList<>();
     private List<Integer> customerNumbers = new ArrayList<>();
 
@@ -149,6 +151,16 @@ public class ScenarioMode extends ScreenAdapter {
                 .withEnd(0, -1, 0, 1)
                 .build());
 
+        // Cooking Stations
+
+        ChoppingStationSprite choppingStation = new ChoppingStationSprite();
+        choppingStation.setPosition(640, 620);
+        cookingStations.add(choppingStation);
+
+        GrillStationSprite grillStation = new GrillStationSprite();
+        grillStation.setPosition(720, 620);
+        cookingStations.add(grillStation);
+
         choices.add("Burger");
         choices.add("Salad");
         bell = Gdx.audio.newSound(Gdx.files.internal("audio/bell-123742.mp3"));
@@ -162,18 +174,6 @@ public class ScenarioMode extends ScreenAdapter {
         chef2stack.add("Salad");
         chef2stack.add("Salad");
         chef2stack.add("Salad");
-
-        ChoppingStationActor choppingStation = new ChoppingStationActor();
-        stage.addActor(choppingStation);
-        choppingStation.setPosition(800, 650);
-
-        GrillStationActor grillStation = new GrillStationActor();
-        stage.addActor(grillStation);
-        grillStation.setPosition(700,650);
-
-        BinStationActor binStation = new BinStationActor();
-        stage.addActor(binStation);
-        binStation.setPosition(700,0);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
@@ -345,6 +345,12 @@ public class ScenarioMode extends ScreenAdapter {
 
         for (Sprite wall : walls) {
             wall.draw(batch);
+        }
+
+        // Cooking Stations
+
+        for (Sprite cookingStation : cookingStations) {
+            cookingStation.draw(batch);
         }
 
         if (begin) {
