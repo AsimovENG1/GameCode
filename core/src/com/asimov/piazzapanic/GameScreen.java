@@ -32,7 +32,7 @@ public class GameScreen extends ScreenAdapter {
         table.setFillParent(true);
         stage.addActor(table);
 
-        table.setDebug(true);
+        table.setDebug(game.debug);
 
         Table modeTable = new Table();
         table.add(modeTable).expandY();

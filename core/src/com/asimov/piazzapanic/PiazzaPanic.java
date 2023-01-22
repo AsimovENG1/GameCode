@@ -19,6 +19,8 @@ public class PiazzaPanic extends Game {
 	public Sound backSound;
 	ShapeRenderer shapeRenderer;
 
+	public boolean debug = false;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

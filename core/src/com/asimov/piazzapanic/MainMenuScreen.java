@@ -27,7 +27,7 @@ public class MainMenuScreen extends ScreenAdapter {
         table.setFillParent(true);
         stage.addActor(table);
 
-        table.setDebug(true);
+        table.setDebug(game.debug);
 
         TextButton gameButton = new TextButton("Start Game", game.skin);
         gameButton.addListener(new ClickListener() {

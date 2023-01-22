@@ -176,7 +176,7 @@ public class ScenarioMode extends ScreenAdapter {
         table.setFillParent(true);
         stage.addActor(table);
 
-        table.setDebug(true);
+        table.setDebug(game.debug);
 
         Sound sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
         TextButton quitButton = new TextButton("Quit", game.skin, "small");
