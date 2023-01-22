@@ -1,11 +1,13 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.models.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,7 +21,7 @@ public class Chef extends Sprite {
 
     private boolean isActive = false;
 
-    private Direction direction;
+    public IngredientStack stack = new IngredientStack();
 
     public Chef(Texture rightTexture, Texture leftTexture) {
         super(rightTexture);
@@ -65,24 +67,48 @@ public class Chef extends Sprite {
         setY(Math.max(0, Math.min(maxHeight - getHeight(), y)));
     }
 
-    public Boolean checkBurgerItems(ArrayList<String> chefstack) {
-        if (chefstack.contains("Cooked Patty") &&
-                chefstack.contains("Fried Buns")) {
-            return true;
+    public void checkBurgerItems() {
+        Patty patty = null;
+        Bun bun = null;
+
+        for (Ingredient ingredient : stack) {
+            if (patty == null && ingredient instanceof Patty && ((Patty) ingredient).isFried()) {
+                patty = (Patty) ingredient;
+            }
+
+            if (bun == null && ingredient instanceof Bun && ((Bun) ingredient).isFried()) {
+                bun = (Bun) ingredient;
+            }
         }
-        else {
-            return false;
+
+        if (patty != null && bun != null) {
+            stack.items.removeAll(new Array<>(new Ingredient[] { patty, bun}), true);
+            stack.grab(new Burger());
         }
     }
 
-    public Boolean checkSaladItems(ArrayList<String> chefstack) {
-        if (chefstack.contains("Chopped Tomatoes") &&
-                chefstack.contains("Chopped Lettuce")&&
-                chefstack.contains("Chopped Onions")) {
-            return true;
+    public void checkSaladItems() {
+        Tomato tomato = null;
+        Lettuce lettuce = null;
+        Onion onion = null;
+
+        for (Ingredient ingredient : stack) {
+            if (tomato == null && ingredient instanceof Tomato && ((Tomato) ingredient).isChopped()) {
+                tomato = (Tomato) ingredient;
+            }
+
+            if (lettuce == null && ingredient instanceof Lettuce && ((Lettuce) ingredient).isChopped()) {
+                lettuce = (Lettuce) ingredient;
+            }
+
+            if (onion == null && ingredient instanceof Onion && ((Onion) ingredient).isChopped()) {
+                onion = (Onion) ingredient;
+            }
         }
-        else {
-            return false;
+
+        if (tomato != null && lettuce != null && onion != null) {
+            stack.items.removeAll(new Array<>(new Ingredient[] { tomato, lettuce, onion }), true);
+            stack.grab(new Salad());
         }
     }
 
@@ -91,10 +117,5 @@ public class Chef extends Sprite {
     }
     public boolean getActive() {
         return isActive;
-    }
-
-    public enum Direction {
-        right,
-        left
     }
 }

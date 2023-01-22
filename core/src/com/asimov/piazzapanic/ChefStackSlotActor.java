@@ -1,5 +1,6 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.models.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,26 +12,10 @@ import java.util.Map;
 public class ChefStackSlotActor extends Actor {
     private Texture backgroundTexture;
 
-    private Map<String, Texture> itemCorresponding = new HashMap<>();
-
-    private String ingredient;
+    private Ingredient ingredient;
 
     public ChefStackSlotActor() {
         backgroundTexture = new Texture("StackItem.png");
-
-        itemCorresponding.put("Burger", new Texture("Food/Burger.png"));
-        itemCorresponding.put("Chopped Lettuce", new Texture("Food/ChoppedLettuce.png"));
-        itemCorresponding.put("Chopped Onions", new Texture("Food/ChoppedOnion.png"));
-        itemCorresponding.put("Chopped Tomatoes", new Texture("Food/ChoppedTomato.png"));
-        itemCorresponding.put("Cooked Patty", new Texture("Food/CookedPatty.png"));
-        itemCorresponding.put("Formed Patty", new Texture("Food/FormedPatty.png"));
-        itemCorresponding.put("Fried Bun", new Texture("Food/FriedBun.png"));
-        itemCorresponding.put("Lettuce", new Texture("Food/Lettuce.png"));
-        itemCorresponding.put("Onion", new Texture("Food/Onion.png"));
-        itemCorresponding.put("Raw Bun", new Texture("Food/RawBun.png"));
-        itemCorresponding.put("Raw Patty", new Texture("Food/RawPatty.png"));
-        itemCorresponding.put("Salad", new Texture("Food/Salad.png"));
-        itemCorresponding.put("Tomato", new Texture("Food/Tomato.png"));
 
         setBounds(getX(), getY(), 80, 65);
     }
@@ -43,14 +28,50 @@ public class ChefStackSlotActor extends Actor {
 
         batch.draw(backgroundTexture, getX(), getY(), getWidth(), getHeight());
 
-        batch.draw(getIngredientTexture(), getX(), getY(), getWidth(), getHeight());
+        batch.draw(new Texture(getIngredientTexture()), getX(), getY(), getWidth(), getHeight());
     }
 
-    public void setIngredient(String ingredient) {
+    public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
     }
 
-    private Texture getIngredientTexture() {
-        return itemCorresponding.get(ingredient);
+    private String getIngredientTexture() {
+
+        String basePath = "Food/";
+
+        if (ingredient instanceof Lettuce) {
+            return basePath + (((Lettuce) ingredient).isChopped() ? "ChoppedLettuce.png" : "Lettuce.png");
+        }
+
+        if (ingredient instanceof Onion) {
+            return basePath + (((Onion) ingredient).isChopped() ? "ChoppedOnion.png" : "Onion.png");
+        }
+
+        if (ingredient instanceof Tomato) {
+            return basePath + (((Tomato) ingredient).isChopped() ? "ChoppedTomato.png" : "Tomato.png");
+        }
+
+        if (ingredient instanceof Patty) {
+            return basePath + ((((Patty) ingredient).isFried()) ? "CookedPatty.png" : "FormedPatty.png");
+        }
+
+        if (ingredient instanceof Meat) {
+            return basePath + "RawPatty.png";
+        }
+
+        if (ingredient instanceof Bun) {
+            return basePath + (((Bun) ingredient).isFried() ?  "FriedBun.png" : "RawBun.png");
+        }
+
+
+        if (ingredient instanceof Burger) {
+            return basePath + "Burger.png";
+        }
+
+        if (ingredient instanceof Salad) {
+            return basePath + "Salad.png";
+        }
+
+        return null;
     }
 }

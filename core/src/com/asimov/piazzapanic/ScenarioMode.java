@@ -1,5 +1,8 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.models.Burger;
+import com.asimov.piazzapanic.models.Ingredient;
+import com.asimov.piazzapanic.models.Salad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -19,9 +22,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class ScenarioMode extends ScreenAdapter {
@@ -69,18 +70,11 @@ public class ScenarioMode extends ScreenAdapter {
     Integer chef2slot3x = 1825;
     Integer chef2slot3y = 200;
 
-    // Add to the list when grabbing items etc ensure this is not at length 3 before add
-    // Other classes can reference this due to it being public so access it from another class
-    public ArrayList<String> chef1stack = new ArrayList<>();
-    public ArrayList<String> chef2stack = new ArrayList<>();
-
 
     private Boolean chef1hasBurger;
     private Boolean chef2hasBurger;
     private Boolean chef1hasSalad;
     private Boolean chef2hasSalad;
-
-    private Map<String, String> itemCorresponding;
 
     private String left;
 
@@ -113,45 +107,12 @@ public class ScenarioMode extends ScreenAdapter {
         return result;
     }
 
+    private boolean isChefAtCounter() {
+        return getActiveChef().getBoundingRectangle().overlaps(counter.getBoundingRectangle());
+    }
+
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
-
-        // Scene2d for ui
-
-        stage = new Stage(new FitViewport(1280, 720), game.batch);
-        Gdx.input.setInputProcessor(stage);
-
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        table.setDebug(true);
-
-        Sound sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
-        TextButton quitButton = new TextButton("Quit", game.skin, "small");
-        quitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sound3.play(1.0f);
-                game.setScreen(new Quitting(game));
-            }
-        });
-        table.add(quitButton).left().top().pad(10, 10, 0, 0).maxSize(100, 50).expandX();
-
-        table.row().expand();
-
-        Table stackTable = new Table();
-
-        table.add(stackTable).right().bottom().pad(0, 0, 10, 10);
-
-        ChefStackActor chef1Stack = new ChefStackActor("Chef 1", game.skin, chef1stack);
-        ChefStackActor chef2Stack = new ChefStackActor("Chef 2", game.skin, chef2stack);
-
-        stackTable.add(chef1Stack).padRight(10);
-        stackTable.add(chef2Stack);
-
-        // end of scene2d
-
 
         // Walls
 
@@ -199,158 +160,80 @@ public class ScenarioMode extends ScreenAdapter {
         customerNumbers.add(1);
         customerNumbers.add(2);
 
-        chef1stack.add("Burger");
-        chef1stack.add("Burger");
-        chef1stack.add("Burger");
-        chef2stack.add("Salad");
-        chef2stack.add("Salad");
-        chef2stack.add("Salad");
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.input.setInputProcessor(stage);
+        chef1.stack.grab(new Burger());
+        chef1.stack.grab(new Burger());
+        chef1.stack.grab(new Burger());
+        chef2.stack.grab(new Salad());
+        chef2.stack.grab(new Salad());
+        chef2.stack.grab(new Salad());
 
         customer = new Customer(game);
 
-        itemCorresponding = new HashMap<>();
-    }
+        // Scene2d for ui
 
-    public void drawBackground() {
+        stage = new Stage(new FitViewport(1280, 720), game.batch);
+        Gdx.input.setInputProcessor(stage);
 
-        game.batch.draw(background,0,0);
-        game.batch.draw(counter, 500, 0);
-    }
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
-    public void checkRecipeDone() {
-        chef1hasBurger = false; //chef.checkBurgerItems(chef1stack);
-        chef2hasBurger = false; //chef.checkBurgerItems(chef2stack);
-        chef1hasSalad = false; //chef.checkSaladItems(chef1stack);
-        chef2hasSalad = false; //chef.checkSaladItems(chef2stack);
+        table.setDebug(true);
 
-        if (chef1hasBurger == true) {
-            chef1stack.remove("Fried Buns");
-            chef1stack.remove("Cooked Patty");
-            chef1stack.add("Burger");
-            chef1hasBurger = false;
-        }
-
-        if (chef2hasBurger == true) {
-            chef2stack.remove("Fried Buns");
-            chef2stack.remove("Cooked Patty");
-            chef2stack.add("Burger");
-            chef2hasBurger = false;
-        }
-
-        if (chef1hasSalad == true) {
-            chef1stack.remove("Chopped Tomatoes");
-            chef1stack.remove("Chopped Lettuce");
-            chef1stack.remove("Chopped Onions");
-            chef1stack.add("Salad");
-            chef1hasSalad = false;
-        }
-
-        if (chef2hasSalad == true) {
-            chef2stack.remove("Chopped Tomatoes");
-            chef2stack.remove("Chopped Lettuce");
-            chef2stack.remove("Chopped Onions");
-            chef2stack.add("Salad");
-            chef2hasSalad = false;
-        }
-    }
-
-    public void drawFoodStack1(){
-        Integer count = 0;
-        for (String item : chef1stack) {
-            count += 1;
-            if (count == 1) {
-                Texture toDraw = new Texture(itemCorresponding.get(item));
-                game.batch.draw(toDraw, chef1slot1x, chef1slot1y);
+        Sound sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
+        TextButton quitButton = new TextButton("Quit", game.skin, "small");
+        quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sound3.play(1.0f);
+                game.setScreen(new Quitting(game));
             }
-            else if (count == 2) {
-                Texture toDraw = new Texture(itemCorresponding.get(item));
-                game.batch.draw(toDraw, chef1slot2x, chef1slot2y);
-            }
-            else if (count == 3) {
-                Texture toDraw = new Texture(itemCorresponding.get(item));
-                game.batch.draw(toDraw, chef1slot3x, chef1slot3y);
-            }
-        }
-    }
+        });
+        table.add(quitButton).left().top().pad(10, 10, 0, 0).maxSize(100, 50).expandX();
 
-    public void drawFoodStack2(){
-        Integer count = 0;
-        for (String item : chef2stack) {
-            count += 1;
-            if (count == 1) {
-                Texture toDraw = new Texture(itemCorresponding.get(item));
-                game.batch.draw(toDraw, chef2slot1x, chef2slot1y);
-            }
-            else if (count == 2) {
-                Texture toDraw = new Texture(itemCorresponding.get(item));
-                game.batch.draw(toDraw, chef2slot2x, chef2slot2y);
-            }
-            else if (count == 3) {
-                Texture toDraw = new Texture(itemCorresponding.get(item));
-                game.batch.draw(toDraw, chef2slot3x, chef2slot3y);
-            }
-        }
+        table.row().expand();
+
+        Table stackTable = new Table();
+
+        table.add(stackTable).right().bottom().pad(0, 0, 10, 10);
+
+        ChefStackActor chef1Stack = new ChefStackActor("Chef 1", game.skin, chef1.stack);
+        ChefStackActor chef2Stack = new ChefStackActor("Chef 2", game.skin, chef2.stack);
+
+        stackTable.add(chef1Stack).padRight(10);
+        stackTable.add(chef2Stack);
+
+        // end of scene2d
     }
 
     @Override
     public void show() {
-        addItemToMap();
+
     }
 
-    public void addItemToMap() {
-        itemCorresponding.put("Burger", "Food/Burger.png");
-        itemCorresponding.put("Chopped Lettuce", "Food/ChoppedLettuce.png");
-        itemCorresponding.put("Chopped Onions", "Food/ChoppedOnion.png");
-        itemCorresponding.put("Chopped Tomatoes", "Food/ChoppedTomato.png");
-        itemCorresponding.put("Cooked Patty", "Food/CookedPatty.png");
-        itemCorresponding.put("Formed Patty", "Food/FormedPatty.png");
-        itemCorresponding.put("Fried Bun","Food/FriedBun.png");
-        itemCorresponding.put("Lettuce", "Food/Lettuce.png");
-        itemCorresponding.put("Onion", "Food/Onion.png");
-        itemCorresponding.put("Raw Bun", "Food/RawBun.png");
-        itemCorresponding.put("Raw Patty", "Food/RawPatty.png");
-        itemCorresponding.put("Salad", "Food/Salad.png");
-        itemCorresponding.put("Tomato", "Food/Tomato.png");
-    }
+    public String giveFood() {
+        Chef chef = getActiveChef();
 
-//    public String chef1GiveFood() {
-//        System.out.println(chef1stack);
-//        if (chef.chef1x < 710 &&
-//                chef.chef1y > 475 &&
-//                chef.chef1y < 525 &&
-//                chef1stack.contains(customer.order)) {
-//            chef1stack.remove(customer.order);
-//            System.out.println(chef1stack);
-//            left = "leaving";
-//        }
-//        try {
-//            TimeUnit.MILLISECONDS.sleep(500);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return left;
-//    }
-//
-//    public String chef2GiveFood() {
-//        System.out.println(chef2stack);
-//        if (chef.chef2x < 710 &&
-//                chef.chef2y > 475 &&
-//                chef.chef2y < 525 &&
-//                chef2stack.contains(customer.order)) {
-//            chef2stack.remove(customer.order);
-//            System.out.println(chef2stack);
-//            left = "leaving";
-//        }
-//        try {
-//            TimeUnit.MILLISECONDS.sleep(500);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return left;
-//    }
+        System.out.println(chef.stack);
+
+        Ingredient ingredient = chef.stack.peek();
+
+        if (isChefAtCounter() && customer.checkOrder(ingredient)) {
+            chef.stack.place();
+
+            System.out.println(chef.stack);
+
+            left = "leaving";
+        }
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return left;
+    }
 
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
@@ -398,6 +281,8 @@ public class ScenarioMode extends ScreenAdapter {
 
         for (Chef chef : chefs) {
             chef.controlChef(delta, camera.viewportWidth, camera.viewportHeight);
+            chef.checkBurgerItems();
+            chef.checkSaladItems();
             chef.draw(batch);
         }
 
@@ -410,14 +295,10 @@ public class ScenarioMode extends ScreenAdapter {
 
         left = customer.controlCustomer(atCounter, givenOrder, entering, customerNo, game.batch);
 
-//        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-//            if (chef.chefnumber == 1) {
-//                left = chef1GiveFood();
-//            }
-//            else {
-//                left = chef2GiveFood();
-//            }
-//        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            giveFood();
+        }
+
         if (left == "left") {
             givenOrder = false;
             entering = true;

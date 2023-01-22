@@ -1,19 +1,18 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.models.IngredientStack;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.ArrayList;
-
 public class ChefStackActor extends Table {
-    private final ArrayList<String> stack;
+    private final IngredientStack stack;
 
     private final Array<ChefStackSlotActor> slots = new Array<>();
 
-    public ChefStackActor(String text, Skin skin, ArrayList<String> stack) {
+    public ChefStackActor(String text, Skin skin, IngredientStack stack) {
         super();
 
         this.stack = stack;
@@ -43,7 +42,7 @@ public class ChefStackActor extends Table {
 
     private void updateSlots() {
         for (int i = 0; i < 3; i++) {
-            slots.get(i).setIngredient(stack.get(i));
+            slots.get(i).setIngredient(stack.items.get(i));
         }
     }
 }
