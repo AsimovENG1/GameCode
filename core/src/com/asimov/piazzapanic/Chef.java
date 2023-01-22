@@ -89,6 +89,9 @@ public class Chef extends Sprite {
     public void setActive(boolean active) {
         isActive = active;
     }
+    public boolean getActive() {
+        return isActive;
+    }
 
     public enum Direction {
         right,

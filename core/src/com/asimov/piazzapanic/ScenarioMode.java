@@ -94,6 +94,25 @@ public class ScenarioMode extends ScreenAdapter {
         return stage.getCamera();
     }
 
+    private Chef getActiveChef() {
+        return chefs.select(x -> x.getActive()).iterator().next();
+    }
+
+    // gets the nearest overlapped cooking station to the active chef
+    private CookingStationSprite getActiveCookingStation() {
+        Chef chef = getActiveChef();
+        CookingStationSprite result = null;
+        float distance = 1280;
+
+        for (CookingStationSprite cookingStation : cookingStations.select(x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle()))) {
+            if (Math.sqrt(Math.pow(chef.getX() - cookingStation.getX(), 2) + Math.pow(chef.getY() - cookingStation.getY(), 2)) < distance) {
+                result = cookingStation;
+            }
+        }
+
+        return result;
+    }
+
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
 
@@ -367,11 +386,6 @@ public class ScenarioMode extends ScreenAdapter {
 
         // Chefs
 
-        for (Chef chef : chefs) {
-            chef.controlChef(delta, camera.viewportWidth, camera.viewportHeight);
-            chef.draw(batch);
-        }
-
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
             chefs.get(0).setActive(true);
             chefs.get(1).setActive(false);
@@ -380,6 +394,11 @@ public class ScenarioMode extends ScreenAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
             chefs.get(0).setActive(false);
             chefs.get(1).setActive(true);
+        }
+
+        for (Chef chef : chefs) {
+            chef.controlChef(delta, camera.viewportWidth, camera.viewportHeight);
+            chef.draw(batch);
         }
 
         if (begin) {
