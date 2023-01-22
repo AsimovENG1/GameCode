@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class MainMenuScreen extends ScreenAdapter {
     final PiazzaPanic game;
@@ -23,7 +25,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public MainMenuScreen(final PiazzaPanic game) {
         this.game = game;
 
-        stage = new Stage(new ScreenViewport(), game.batch);
+        stage = new Stage(new StretchViewport(1280, 720), game.batch);
         Gdx.input.setInputProcessor(stage);
   
         table = new Table();
@@ -43,7 +45,7 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new GameScreen(game));
             }
         });
-        table.add(gameButton).padBottom(10);
+        table.add(gameButton).padBottom(25).width(500);
 
         table.row();
 
@@ -55,7 +57,7 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new SettingsScreen(game));
             }
         });
-        table.add(settingsButton).padBottom(10);
+        table.add(settingsButton).padBottom(25).width(500);
 
         table.row();
 
@@ -67,7 +69,7 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new InstructionScreen(game));
             }
         });
-        table.add(instructionsButton).padBottom(10);
+        table.add(instructionsButton).padBottom(25).width(500);
 
         table.row();
 
@@ -79,7 +81,7 @@ public class MainMenuScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         });
-        table.add(quitButton).padBottom(10);
+        table.add(quitButton).padBottom(10).width(500);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
     }
