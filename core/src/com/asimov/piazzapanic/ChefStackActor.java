@@ -9,9 +9,9 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 
 public class ChefStackActor extends Table {
-    private ArrayList<String> stack;
+    private final ArrayList<String> stack;
 
-    private Array<ChefStackSlotActor> slots = new Array<>();
+    private final Array<ChefStackSlotActor> slots = new Array<>();
 
     public ChefStackActor(String text, Skin skin, ArrayList<String> stack) {
         super();
