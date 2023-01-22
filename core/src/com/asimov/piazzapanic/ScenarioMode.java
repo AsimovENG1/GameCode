@@ -174,14 +174,9 @@ public class ScenarioMode extends ScreenAdapter {
         BinStationActor binStation = new BinStationActor();
         stage.addActor(binStation);
         binStation.setPosition(700,0);
-        
-        drawBackButton();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
 
         chef = new Chef(game);
         customer = new Customer(game);
