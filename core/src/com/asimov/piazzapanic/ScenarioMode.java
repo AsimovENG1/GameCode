@@ -36,6 +36,8 @@ public class ScenarioMode extends ScreenAdapter {
 
     private Array<CookingStationSprite> cookingStations = new Array<>();
 
+    private Array<Chef> chefs = new Array<>();
+
     private List<String> choices = new ArrayList<>();
     private List<Integer> customerNumbers = new ArrayList<>();
 
@@ -53,7 +55,6 @@ public class ScenarioMode extends ScreenAdapter {
     private Sound bell;
     private Sound win;
     Customer customer;
-    Chef chef;
 
     Integer chef1slot1x = 1625;
     Integer chef1slot1y = 0;
@@ -161,6 +162,17 @@ public class ScenarioMode extends ScreenAdapter {
         grillStation.setPosition(720, 620);
         cookingStations.add(grillStation);
 
+        // Chefs
+
+        Chef chef1 = new Chef(new Texture("characters/chef1px3.png"), new Texture("characters/chef1px3 left.png"));
+        chef1.setActive(true);
+        chef1.setPosition(400, 400);
+
+        Chef chef2 = new Chef(new Texture("characters/chef2px3.png"), new Texture("characters/chef2px3 left.png"));
+        chef2.setPosition(500, 400);
+
+        chefs.add(chef1, chef2);
+
         choices.add("Burger");
         choices.add("Salad");
         bell = Gdx.audio.newSound(Gdx.files.internal("audio/bell-123742.mp3"));
@@ -178,7 +190,6 @@ public class ScenarioMode extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.input.setInputProcessor(stage);
 
-        chef = new Chef(game);
         customer = new Customer(game);
 
         itemCorresponding = new HashMap<>();
@@ -191,10 +202,10 @@ public class ScenarioMode extends ScreenAdapter {
     }
 
     public void checkRecipeDone() {
-        chef1hasBurger = chef.checkBurgerItems(chef1stack);
-        chef2hasBurger = chef.checkBurgerItems(chef2stack);
-        chef1hasSalad = chef.checkSaladItems(chef1stack);
-        chef2hasSalad = chef.checkSaladItems(chef2stack);
+        chef1hasBurger = false; //chef.checkBurgerItems(chef1stack);
+        chef2hasBurger = false; //chef.checkBurgerItems(chef2stack);
+        chef1hasSalad = false; //chef.checkSaladItems(chef1stack);
+        chef2hasSalad = false; //chef.checkSaladItems(chef2stack);
 
         if (chef1hasBurger == true) {
             chef1stack.remove("Fried Buns");
@@ -286,41 +297,41 @@ public class ScenarioMode extends ScreenAdapter {
         itemCorresponding.put("Tomato", "Food/Tomato.png");
     }
 
-    public String chef1GiveFood() {
-        System.out.println(chef1stack);
-        if (chef.chef1x < 710 &&
-                chef.chef1y > 475 &&
-                chef.chef1y < 525 &&
-                chef1stack.contains(customer.order)) {
-            chef1stack.remove(customer.order);
-            System.out.println(chef1stack);
-            left = "leaving";
-        }
-        try {
-            TimeUnit.MILLISECONDS.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return left;
-    }
-
-    public String chef2GiveFood() {
-        System.out.println(chef2stack);
-        if (chef.chef2x < 710 &&
-                chef.chef2y > 475 &&
-                chef.chef2y < 525 &&
-                chef2stack.contains(customer.order)) {
-            chef2stack.remove(customer.order);
-            System.out.println(chef2stack);
-            left = "leaving";
-        }
-        try {
-            TimeUnit.MILLISECONDS.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return left;
-    }
+//    public String chef1GiveFood() {
+//        System.out.println(chef1stack);
+//        if (chef.chef1x < 710 &&
+//                chef.chef1y > 475 &&
+//                chef.chef1y < 525 &&
+//                chef1stack.contains(customer.order)) {
+//            chef1stack.remove(customer.order);
+//            System.out.println(chef1stack);
+//            left = "leaving";
+//        }
+//        try {
+//            TimeUnit.MILLISECONDS.sleep(500);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return left;
+//    }
+//
+//    public String chef2GiveFood() {
+//        System.out.println(chef2stack);
+//        if (chef.chef2x < 710 &&
+//                chef.chef2y > 475 &&
+//                chef.chef2y < 525 &&
+//                chef2stack.contains(customer.order)) {
+//            chef2stack.remove(customer.order);
+//            System.out.println(chef2stack);
+//            left = "leaving";
+//        }
+//        try {
+//            TimeUnit.MILLISECONDS.sleep(500);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return left;
+//    }
 
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
@@ -330,8 +341,9 @@ public class ScenarioMode extends ScreenAdapter {
         time += delta;
 
         Batch batch = game.batch;
+        Camera camera = getCamera();
 
-        batch.setProjectionMatrix(getCamera().combined);
+        batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
 
@@ -353,28 +365,40 @@ public class ScenarioMode extends ScreenAdapter {
             cookingStation.draw(batch);
         }
 
+        // Chefs
+
+        for (Chef chef : chefs) {
+            chef.controlChef(delta, camera.viewportWidth, camera.viewportHeight);
+            chef.draw(batch);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+            chefs.get(0).setActive(true);
+            chefs.get(1).setActive(false);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
+            chefs.get(0).setActive(false);
+            chefs.get(1).setActive(true);
+        }
+
         if (begin) {
             bell.play(1.0f);
-            chef.show();
             customer.show();
             customerNo = customer.randomCustomer();
             begin = false;
         }
 
-        chef.drawChefs(game.batch);
-
-        chef.controlChef();
-        chef.changeChef();
-
         left = customer.controlCustomer(atCounter, givenOrder, entering, customerNo, game.batch);
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            if (chef.chefnumber == 1) {
-                left = chef1GiveFood();
-            }
-            else {
-                left = chef2GiveFood();
-            }
-        }
+
+//        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+//            if (chef.chefnumber == 1) {
+//                left = chef1GiveFood();
+//            }
+//            else {
+//                left = chef2GiveFood();
+//            }
+//        }
         if (left == "left") {
             givenOrder = false;
             entering = true;
