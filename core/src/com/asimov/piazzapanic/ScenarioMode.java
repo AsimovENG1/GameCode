@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -32,6 +33,8 @@ public class ScenarioMode extends ScreenAdapter {
 
     private Texture background = new Texture("layout/background.png");
     private CounterSprite counter = new CounterSprite(80 * 3);
+
+    private Array<Sprite> walls = new Array<>();
 
     private List<String> choices = new ArrayList<>();
     private List<Integer> customerNumbers = new ArrayList<>();
@@ -125,6 +128,25 @@ public class ScenarioMode extends ScreenAdapter {
         stackTable.add(chef2Stack);
 
         // end of scene2d
+
+
+        // Walls
+
+        walls.addAll(new WallBuilder(640, 680, 90)
+                .withEnd(0, 0, 180, 1)
+                .withSegment(1, 0, 0, 10)
+                .withEnd(1, 0, 0, 1)
+                .build());
+
+        walls.addAll(new WallBuilder(680, 0, 0)
+                .withEnd(0 , 0, 90, 1)
+                .withCorner(-1, 0, 90, 1)
+                .withSegment(0, 1, 0, 8)
+                .withCorner(0, 1, 0, 1)
+                .withSegment(1, 0, 90, 10)
+                .withCorner(1, 0, -90, 1)
+                .withEnd(0, -1, 0, 1)
+                .build());
 
         choices.add("Burger");
         choices.add("Salad");
@@ -301,9 +323,17 @@ public class ScenarioMode extends ScreenAdapter {
 
         batch.begin();
 
+        // Background
+
         batch.draw(background, 0, 0);
 
         counter.draw(batch);
+
+        // Walls
+
+        for (Sprite wall : walls) {
+            wall.draw(batch);
+        }
 
         if (begin) {
             bell.play(1.0f);
@@ -350,13 +380,13 @@ public class ScenarioMode extends ScreenAdapter {
             givenOrder = false;
         }
 
-        game.batch.end();
+        //game.batch.end();
 
-        checkRecipeDone();
-        game.batch.begin();
-        drawFoodStack1();
-        drawFoodStack2();
-        game.batch.end();
+        //checkRecipeDone();
+        //game.batch.begin();
+        //drawFoodStack1();
+        //drawFoodStack2();
+        batch.end();
 
         stage.act(delta);
         stage.draw();
