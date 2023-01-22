@@ -118,8 +118,11 @@ public class ScenarioMode extends ScreenAdapter {
         });
         table.add(quitButton).left().top().pad(10, 10, 0, 0).maxSize(100, 50).expandX();
 
+        table.row().expand();
+
         Table stackTable = new Table();
-        table.add(stackTable).right().bottom().pad(0, 0, 10, 10).expandX().expandY();
+
+        table.add(stackTable).right().bottom().pad(0, 0, 10, 10);
 
         ChefStackActor chef1Stack = new ChefStackActor("Chef 1", game.skin, chef1stack);
         ChefStackActor chef2Stack = new ChefStackActor("Chef 2", game.skin, chef2stack);

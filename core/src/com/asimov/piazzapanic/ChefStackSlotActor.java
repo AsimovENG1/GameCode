@@ -10,16 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChefStackSlotActor extends Actor {
-    private TextureRegion backgroundTexture;
+    private Texture backgroundTexture;
 
     private Map<String, Texture> itemCorresponding = new HashMap<>();
 
     private String ingredient;
 
     public ChefStackSlotActor() {
-        backgroundTexture = new TextureRegion(
-                new Texture("StackItem.png")
-        );
+        backgroundTexture = new Texture("StackItem.png");
 
         itemCorresponding.put("Burger", new Texture("Food/Burger.png"));
         itemCorresponding.put("Chopped Lettuce", new Texture("Food/ChoppedLettuce.png"));
@@ -35,8 +33,7 @@ public class ChefStackSlotActor extends Actor {
         itemCorresponding.put("Salad", new Texture("Food/Salad.png"));
         itemCorresponding.put("Tomato", new Texture("Food/Tomato.png"));
 
-        setBounds(backgroundTexture.getRegionX(), backgroundTexture.getRegionY(),
-                backgroundTexture.getRegionWidth(), backgroundTexture.getRegionHeight());
+        setBounds(getX(), getY(), 80, 65);
     }
 
     @Override
@@ -45,18 +42,16 @@ public class ChefStackSlotActor extends Actor {
 
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.draw(new TextureRegion(backgroundTexture), getX(), getY(), getOriginX(), getOriginY(),
-                getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        batch.draw(backgroundTexture, getX(), getY(), getWidth(), getHeight());
 
-        batch.draw(getIngredientTexture(), getX(), getY(), getOriginX(), getOriginY(),
-                getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        batch.draw(getIngredientTexture(), getX(), getY(), getWidth(), getHeight());
     }
 
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
 
-    private TextureRegion getIngredientTexture() {
-        return new TextureRegion(itemCorresponding.get(ingredient));
+    private Texture getIngredientTexture() {
+        return itemCorresponding.get(ingredient);
     }
 }

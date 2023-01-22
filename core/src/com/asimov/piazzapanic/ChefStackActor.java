@@ -19,6 +19,9 @@ public class ChefStackActor extends Table {
         this.stack = stack;
 
         Label label = new Label(text, skin);
+
+        label.setFontScale(2);
+
         add(label);
 
         for (int i = 0; i < 3; i++) {
