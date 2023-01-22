@@ -133,12 +133,19 @@ public class ScenarioMode extends ScreenAdapter {
         // Cooking Stations
 
         ChoppingStationSprite choppingStation = new ChoppingStationSprite();
-        choppingStation.setPosition(640, 620);
+        choppingStation.scale (2);
+        choppingStation.setPosition(640, 600);
         cookingStations.add(choppingStation);
 
         GrillStationSprite grillStation = new GrillStationSprite();
-        grillStation.setPosition(720, 620);
+        grillStation.scale(2);
+        grillStation.setPosition(800, 600);
         cookingStations.add(grillStation);
+
+        BinStationSprite binStation = new BinStationSprite();
+        binStation.setPosition(400, 0);
+        cookingStations.add(binStation);
+
 
         // Chefs
 
