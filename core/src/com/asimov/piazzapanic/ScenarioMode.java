@@ -115,6 +115,10 @@ public class ScenarioMode extends InputAdapter implements Screen {
         stage.addActor(grillStation);
         grillStation.setPosition(700,650);
 
+        TomatoStationActor tomatoStation = new TomatoStationActor(null);
+        stage.addActor(tomatoStation);
+        tomatoStation.setPosition(900,650);
+
         BinStationActor binStation = new BinStationActor();
         stage.addActor(binStation);
         binStation.setPosition(700,0);
