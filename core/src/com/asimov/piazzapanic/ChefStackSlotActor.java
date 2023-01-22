@@ -14,8 +14,8 @@ public class ChefStackSlotActor extends Actor {
 
     private Ingredient ingredient;
 
-    public ChefStackSlotActor() {
-        backgroundTexture = new Texture("StackItem.png");
+    public ChefStackSlotActor(Texture background) {
+        backgroundTexture = background;
 
         setBounds(getX(), getY(), 80, 65);
     }
