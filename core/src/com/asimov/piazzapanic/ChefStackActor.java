@@ -1,5 +1,6 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.models.Ingredient;
 import com.asimov.piazzapanic.models.IngredientStack;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -41,8 +42,17 @@ public class ChefStackActor extends Table {
     }
 
     private void updateSlots() {
-        for (int i = 0; i < 3; i++) {
-            slots.get(i).setIngredient(stack.items.get(i));
+        int i = 0;
+
+        for (ChefStackSlotActor slot : slots) {
+            if (stack.items.size <= i) {
+                slot.setIngredient(null);
+            }
+            else {
+                slot.setIngredient(stack.items.get(stack.items.size - i - 1));
+            }
+
+            i++;
         }
     }
 }

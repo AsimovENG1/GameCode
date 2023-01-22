@@ -63,7 +63,7 @@ public class Chef extends Sprite {
             setTexture(leftTexture);
         }
 
-        setX(Math.max(0, Math.min(maxWidth - getWidth(), x)));
+        setX(Math.max(280, Math.min(maxWidth - getWidth(), x)));
         setY(Math.max(0, Math.min(maxHeight - getHeight(), y)));
     }
 

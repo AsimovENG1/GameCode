@@ -28,9 +28,9 @@ public class ChoppingStationSprite extends BaseCookingStationSprite<ChoppingStat
         return model.canChop();
     }
 
-    public void chop() throws Exception {
+    public void chop() {
         if (!canChop()) {
-            throw new Exception("Cannot chop here.");
+            return;
         }
 
         // TODO: timer, stop chef from moving?

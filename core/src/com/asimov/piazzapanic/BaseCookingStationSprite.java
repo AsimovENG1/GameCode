@@ -1,9 +1,7 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.models.*;
 import com.asimov.piazzapanic.models.Chef;
-import com.asimov.piazzapanic.models.CookingStation;
-import com.asimov.piazzapanic.models.CookingStatus;
-import com.asimov.piazzapanic.models.Ingredient;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -23,12 +21,12 @@ public abstract class BaseCookingStationSprite<T extends CookingStation> extends
         return model.getIngredient();
     }
 
-    public boolean canPlace(Chef chef) {
-        return model.canPlace(chef);
+    public boolean canPlace(IngredientStack stack) {
+        return model.canPlace(stack);
     }
 
-    public void place(Chef chef) throws Exception {
-        model.place(chef);
+    public void place(IngredientStack stack) {
+        model.place(stack);
 
         placed();
     }
@@ -39,8 +37,8 @@ public abstract class BaseCookingStationSprite<T extends CookingStation> extends
         return model.canGrab();
     }
 
-    public void grab(Chef chef) throws Exception {
-        model.grab(chef);
+    public void grab(IngredientStack stack) {
+        model.grab(stack);
 
         grabbed();
     }

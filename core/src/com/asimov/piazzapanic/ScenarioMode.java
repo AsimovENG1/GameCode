@@ -1,8 +1,6 @@
 package com.asimov.piazzapanic;
 
-import com.asimov.piazzapanic.models.Burger;
-import com.asimov.piazzapanic.models.Ingredient;
-import com.asimov.piazzapanic.models.Salad;
+import com.asimov.piazzapanic.models.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -163,9 +161,9 @@ public class ScenarioMode extends ScreenAdapter {
         chef1.stack.grab(new Burger());
         chef1.stack.grab(new Burger());
         chef1.stack.grab(new Burger());
-        chef2.stack.grab(new Salad());
-        chef2.stack.grab(new Salad());
-        chef2.stack.grab(new Salad());
+        chef2.stack.grab(new Tomato());
+        chef2.stack.grab(new Lettuce());
+        chef2.stack.grab(new Onion());
 
         customer = new Customer(game);
 
@@ -235,6 +233,30 @@ public class ScenarioMode extends ScreenAdapter {
         return left;
     }
 
+    private void interactWithCookingStations() {
+        CookingStationSprite cookingStation = getActiveCookingStation();
+        Chef chef = getActiveChef();
+
+        if (cookingStation == null) {
+            return;
+        }
+
+        if (cookingStation.canPlace(chef.stack) && Gdx.input.isKeyPressed(Input.Keys.E)) {
+            cookingStation.place(chef.stack);
+        }
+
+        if (cookingStation.canGrab() && chef.stack.size() < 3 && Gdx.input.isKeyPressed(Input.Keys.R)) {
+            cookingStation.grab(chef.stack);
+        }
+
+        if (cookingStation instanceof ChoppingStationSprite &&
+                ((ChoppingStationSprite) cookingStation).canChop() &&
+                Gdx.input.isKeyPressed(Input.Keys.C)) {
+
+            ((ChoppingStationSprite) cookingStation).chop();
+        }
+    }
+
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
     public void render(float delta) {
@@ -285,6 +307,8 @@ public class ScenarioMode extends ScreenAdapter {
             chef.checkSaladItems();
             chef.draw(batch);
         }
+
+        interactWithCookingStations();
 
         if (begin) {
             bell.play(1.0f);

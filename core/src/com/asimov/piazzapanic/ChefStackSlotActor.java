@@ -28,6 +28,10 @@ public class ChefStackSlotActor extends Actor {
 
         batch.draw(backgroundTexture, getX(), getY(), getWidth(), getHeight());
 
+        if (ingredient == null) {
+            return;
+        }
+
         batch.draw(new Texture(getIngredientTexture()), getX(), getY(), getWidth(), getHeight());
     }
 
