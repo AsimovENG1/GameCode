@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Iterator;
 
 public class IngredientStack implements Iterable<Ingredient> {
-    private Array<Ingredient> items = new Array<>();
+    public Array<Ingredient> items = new Array<>();
 
     @Override
     public Iterator<Ingredient> iterator() {
