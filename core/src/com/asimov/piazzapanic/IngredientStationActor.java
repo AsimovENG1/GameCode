@@ -12,7 +12,7 @@ public abstract class IngredientStationActor<T extends IngredientStation> extend
 
     protected T model;
 
-    public IngredientStationActor(T model) {this.model = model;}
+    public IngredientStationActor() {this.model = model;}
 
     protected void setTexture(TextureRegion texture) {
         this.texture = texture;
