@@ -97,7 +97,7 @@ public class Customer {
         } else {batch.draw(customer2Salad, customerx, customery);}
     }
     public boolean moveCustomersIn(float Speed, boolean atCounter) {
-        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 425) {
+        if ((customerx + Gdx.graphics.getDeltaTime() * Speed) < 160) {
             customerx += Gdx.graphics.getDeltaTime() * Speed;
         } else {atCounter = true;}
         if (atCounter == true) {
