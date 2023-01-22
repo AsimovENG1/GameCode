@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,8 +30,8 @@ public class ScenarioMode extends ScreenAdapter {
     private Stage stage;
     private Table table;
 
-    Texture background;
-    Texture counter;
+    private Texture background = new Texture("layout/background.png");
+    private CounterSprite counter = new CounterSprite(80 * 3);
 
     private List<String> choices = new ArrayList<>();
     private List<Integer> customerNumbers = new ArrayList<>();
@@ -50,7 +51,6 @@ public class ScenarioMode extends ScreenAdapter {
     private Sound win;
     Customer customer;
     Chef chef;
-    ShapeRenderer shape;
 
     Integer chef1slot1x = 1625;
     Integer chef1slot1y = 0;
@@ -233,9 +233,6 @@ public class ScenarioMode extends ScreenAdapter {
 
     @Override
     public void show() {
-        //Temporary Background
-        background = new Texture("newBackground.png");
-        counter = new Texture("Counter.png");
         addItemToMap();
     }
 
@@ -296,13 +293,17 @@ public class ScenarioMode extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        time += Gdx.graphics.getDeltaTime();
+        time += delta;
 
-        game.batch.setProjectionMatrix(getCamera().combined);
+        Batch batch = game.batch;
 
-        game.batch.begin();
+        batch.setProjectionMatrix(getCamera().combined);
 
-        drawBackground();
+        batch.begin();
+
+        batch.draw(background, 0, 0);
+
+        counter.draw(batch);
 
         if (begin) {
             bell.play(1.0f);
