@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("Piazza Panic");
-		config.setWindowedMode(2000, 1000);
+		config.setWindowedMode(1280, 720);
 		new Lwjgl3Application(new PiazzaPanic(), config);
 	}
 }
