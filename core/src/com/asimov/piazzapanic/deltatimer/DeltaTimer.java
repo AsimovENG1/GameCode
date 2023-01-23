@@ -23,7 +23,7 @@ public class DeltaTimer {
         elapsed += delta;
 
         for (Timer timer : timers) {
-            timer.run(delta);
+            timer.run(elapsed);
         }
 
         timers.removeIf(Timer::isCompleted);

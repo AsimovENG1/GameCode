@@ -23,17 +23,19 @@ class Timer {
         return timesExecuted;
     }
 
-    public void run(float delta) {
+    public void run(float timeElapsed) {
         if (isCompleted()) {
             return;
         }
 
-        if (delta < startTime + seconds * (timesExecuted + 1)) {
+        if (timeElapsed < startTime + seconds * (timesExecuted + 1)) {
             return;
         }
 
         callback.run();
+
         timesExecuted++;
+
         completed = !repeat;
     }
 
