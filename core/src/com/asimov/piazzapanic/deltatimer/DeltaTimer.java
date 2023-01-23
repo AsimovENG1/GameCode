@@ -12,20 +12,18 @@ public class DeltaTimer {
     }
 
     public void start(float seconds, Callback callback) {
-        timers.add(new Timer(elapsed + seconds, callback));
+        start(seconds, callback, false);
+    }
+
+    public void start(float seconds, Callback callback, boolean repeat) {
+        timers.add(new Timer(elapsed, seconds, callback, repeat));
     }
 
     public void tick(float delta) {
         elapsed += delta;
 
-        for (Timer callback : timers) {
-            if (callback.isCompleted()) {
-                continue;
-            }
-
-            if (callback.getTime() >= elapsed) {
-                callback.run();
-            }
+        for (Timer timer : timers) {
+            timer.run(delta);
         }
 
         timers.removeIf(Timer::isCompleted);
