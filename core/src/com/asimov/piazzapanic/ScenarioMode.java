@@ -1,5 +1,6 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.deltatimer.DeltaTimer;
 import com.asimov.piazzapanic.models.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -25,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ScenarioMode extends ScreenAdapter {
     final PiazzaPanic game;
+    private DeltaTimer timer = new DeltaTimer();
+
     private Stage stage;
     private Table table;
 
@@ -239,7 +242,8 @@ public class ScenarioMode extends ScreenAdapter {
 
     @Override
     public void show() {
-
+        // Uncomment to test timer
+        // timer.start(1, () -> System.out.println("Timer!"), true);
     }
 
     public String giveFood() {
@@ -315,6 +319,7 @@ public class ScenarioMode extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         time += delta;
+        timer.tick(delta);
 
         Batch batch = game.batch;
         Camera camera = getCamera();
