@@ -167,12 +167,11 @@ public class ScenarioMode extends ScreenAdapter {
         // Ingredient Stations
 
         TomatoStationSprite tStation = new TomatoStationSprite();
-//        tStation.scale(2);
-        tStation.setPosition(960,600);
+        tStation.setPosition(900,300);
         ingredientStations.add(tStation);
 
         LettuceStationSprite lStation = new LettuceStationSprite();
-        lStation.setPosition(1120,0);
+        lStation.setPosition(800,300);
         ingredientStations.add(lStation);
 
 
