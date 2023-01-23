@@ -35,6 +35,8 @@ public class ScenarioMode extends ScreenAdapter {
 
     private Array<CookingStationSprite> cookingStations = new Array<>();
 
+    private  Array<IngredientStationSprite> ingredientStations = new Array<>();
+
     private Array<Chef> chefs = new Array<>();
 
     private List<String> choices = new ArrayList<>();
@@ -105,6 +107,19 @@ public class ScenarioMode extends ScreenAdapter {
         return result;
     }
 
+    private IngredientStationSprite getActiveIngredientStation(){
+        Chef chef = getActiveChef();
+        IngredientStationSprite result = null;
+        float distance = 1280;
+
+        for (IngredientStationSprite ingredientStation: ingredientStations.select((x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle())))){
+            if (Math.sqrt(Math.pow(chef.getX() - ingredientStation.getX(), 2) + Math.pow(chef.getY() - ingredientStation.getY(),2)) < distance){
+                result = ingredientStation;
+            }
+        }
+        return result;
+    }
+
     private boolean isChefAtCounter() {
         return getActiveChef().getBoundingRectangle().overlaps(counter.getBoundingRectangle());
     }
@@ -145,6 +160,17 @@ public class ScenarioMode extends ScreenAdapter {
         BinStationSprite binStation = new BinStationSprite();
         binStation.setPosition(400, 0);
         cookingStations.add(binStation);
+
+        // Ingredient Stations
+
+        TomatoStationSprite tStation = new TomatoStationSprite();
+//        tStation.scale(2);
+        tStation.setPosition(960,600);
+        ingredientStations.add(tStation);
+
+        LettuceStationSprite lStation = new LettuceStationSprite();
+        lStation.setPosition(1120,0);
+        ingredientStations.add(lStation);
 
 
         // Chefs
@@ -269,6 +295,20 @@ public class ScenarioMode extends ScreenAdapter {
         }
     }
 
+    private void interactWithIngredientStations() {
+        IngredientStationSprite iStation = getActiveIngredientStation();
+        Chef chef = getActiveChef();
+
+        if (iStation == null) {
+            return;
+        }
+
+        if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R))){
+            iStation.grab(chef.stack);
+            bell.play();
+        }
+    }
+
     // 1, 2 and 3 controls each chef (change between chefs)
     @Override
     public void render(float delta) {
@@ -301,6 +341,12 @@ public class ScenarioMode extends ScreenAdapter {
             cookingStation.draw(batch);
         }
 
+        // Ingredient Station
+
+        for (Sprite ingredientStation: ingredientStations){
+            ingredientStation.draw(batch);
+        }
+
         // Chefs
 
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
@@ -321,6 +367,8 @@ public class ScenarioMode extends ScreenAdapter {
         }
 
         interactWithCookingStations();
+
+        interactWithIngredientStations();
 
         if (begin) {
             bell.play(1.0f);

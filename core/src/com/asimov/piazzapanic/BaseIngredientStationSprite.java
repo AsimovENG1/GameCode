@@ -1,6 +1,5 @@
 package com.asimov.piazzapanic;
 
-import com.asimov.piazzapanic.models.Chef;
 import com.asimov.piazzapanic.models.IngredientStack;
 import com.asimov.piazzapanic.models.IngredientStation;
 
@@ -11,11 +10,7 @@ public abstract class BaseIngredientStationSprite<T extends IngredientStation> e
         this.model = model;
     }
 
-    public void grab(Chef chef) {
-        model.grab(chef);
-
-        grabbed();
+    public void grab(IngredientStack stack) {
+        model.grab(stack);
     }
-
-    protected void grabbed() {}
 }
