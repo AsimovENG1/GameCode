@@ -4,7 +4,6 @@ import com.asimov.piazzapanic.models.ChoppingStation;
 import com.badlogic.gdx.graphics.Texture;
 
 public class ChoppingStationSprite extends BaseCookingStationSprite<ChoppingStation> {
-    // TODO: custom images
     private final Texture availableTexture = new Texture("EmptyCuttingBoard.png"); // station is empty
     private final Texture cookingTexture = new Texture("CuttingBoardInUse.png"); // ingredient placed on station
     private final Texture completeTexture = new Texture("ChoppingBoardCut.png"); // ingredient has been chopped

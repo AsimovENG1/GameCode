@@ -27,4 +27,16 @@ public class GrillStationSprite extends BaseCookingStationSprite<FryingStation> 
         model.flip();
         setTexture(GrillDoneTexture);
     }
+    @Override
+    public void grabbed() {
+        setTexture(emptyGrillTexture);
+    }
+    public boolean canFlip(){
+        if (model.canFlip()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
