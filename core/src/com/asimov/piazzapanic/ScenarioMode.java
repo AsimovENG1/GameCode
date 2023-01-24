@@ -174,6 +174,18 @@ public class ScenarioMode extends ScreenAdapter {
         lStation.setPosition(800,300);
         ingredientStations.add(lStation);
 
+        OnionStationSprite oStation = new OnionStationSprite();
+        oStation.setPosition(700,300);
+        ingredientStations.add(oStation);
+
+        BunStationSprite bStation = new BunStationSprite();
+        bStation.setPosition(500,300);
+        ingredientStations.add(bStation);
+
+        MeatStationSprite mStation = new MeatStationSprite();
+        mStation.setPosition(400,300);
+        ingredientStations.add(mStation);
+
 
         // Chefs
 
@@ -308,7 +320,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R))){
             iStation.grab(chef.stack);
-            bell.play();
+//            bell.play();
         }
     }
 
