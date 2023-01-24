@@ -28,7 +28,7 @@ public class ScenarioMode extends ScreenAdapter {
     private Stage stage;
     private Table table;
 
-    private Texture background = new Texture("layout/background.png");
+    private Texture background = new Texture("layout/Flooring.jpg");
     private CounterSprite counter = new CounterSprite(80 * 3);
 
     private Array<Sprite> walls = new Array<>();
@@ -208,6 +208,10 @@ public class ScenarioMode extends ScreenAdapter {
 
         stackTable.add(chef1Stack).padRight(10);
         stackTable.add(chef2Stack);
+
+        MusicControl.setguitar();
+        MusicControl.playguitar();
+        MusicControl.loopguitar();
 
         // end of scene2d
     }
