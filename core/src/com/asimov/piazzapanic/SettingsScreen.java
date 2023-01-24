@@ -21,12 +21,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import sun.jvm.hotspot.debugger.cdbg.basic.LazyBlockSym;
 
 
-import javax.swing.JScrollBar;
 
-import javax.swing.*;
+
+
 
 public class SettingsScreen extends ScreenAdapter{
     final PiazzaPanic game;
