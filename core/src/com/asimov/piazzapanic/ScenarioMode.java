@@ -60,6 +60,8 @@ public class ScenarioMode extends ScreenAdapter {
 
     private Sound bell;
     private Sound win;
+
+    private Sound grab;
     Customer customer;
 
     Integer chef1slot1x = 1625;
@@ -208,6 +210,8 @@ public class ScenarioMode extends ScreenAdapter {
         MeatStationSprite mStation = new MeatStationSprite(timer);
         mStation.setPosition(400,300);
         ingredientStations.add(mStation);
+
+        grab = Gdx.audio.newSound((Gdx.files.internal(("audio/mixkit-hard-pop-click-2364.wav"))));
 
         // Chefs
 
@@ -360,7 +364,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && iStation.canGrab()){
             iStation.grab(chef.stack);
-//            bell.play();
+            grab.play();
         }
     }
 
