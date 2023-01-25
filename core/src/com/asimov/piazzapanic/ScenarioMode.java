@@ -267,6 +267,7 @@ public class ScenarioMode extends ScreenAdapter {
             ((ChoppingStationSprite) cookingStation).chop();
         }
         if (cookingStation instanceof GrillStationSprite &&
+                ((GrillStationSprite) cookingStation).canFlip() &&
                 Gdx.input.isKeyPressed(Input.Keys.F)) {
 
             ((GrillStationSprite) cookingStation).flip();

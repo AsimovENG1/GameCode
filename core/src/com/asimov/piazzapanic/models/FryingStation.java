@@ -1,43 +1,41 @@
 package com.asimov.piazzapanic.models;
-import java.util.concurrent.TimeUnit;
+import com.asimov.piazzapanic.deltatimer.DeltaTimer;
 
 public class FryingStation extends CookingStation {
 
+    private DeltaTimer timer = new DeltaTimer();
+
     public void place() {
-        try {
-            ((Fryable)getIngredient()).ReadySwap();
-            ((Fryable)getIngredient()).stageIncrease();
-            TimeUnit.SECONDS.sleep(5);
-            ((Fryable)getIngredient()).ReadySwap();
-            }
-        catch (Exception e) {
-            System.out.println(e);
+        timer.start(5, () -> readyToFlip(), false);
         }
+    public void readyToFlip() {
+        ((Fryable)getIngredient()).stageIncrease();
     }
     public void flip() {
-        if (((Fryable)getIngredient()).ready() == true){
-            if (((Fryable)getIngredient()).state() == 1){
-                try {
-                    ((Fryable)getIngredient()).ReadySwap();
-                    ((Fryable)getIngredient()).stageIncrease();
-                    TimeUnit.SECONDS.sleep(5);
-                    ((Fryable)getIngredient()).ReadySwap();
-                    ((Fryable)getIngredient()).makeFried();
-                    status = CookingStatus.complete;
-                    }
-                catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
+        if (canFlip() == true){
+            timer.start(5, () -> readyToPickUp(),false);
             }
         }
+        
+    public void readyToPickUp() {
+        ((Fryable)getIngredient()).makeFried();
+        status = CookingStatus.complete;
+    }
     @Override
     protected boolean canPlace(Ingredient ingredient) {
+        if (getIngredient() == null) {
+            return true;
+        }
+        if (status == CookingStatus.cooking) {
+            return false;}
+        if ((((Fryable)getIngredient()).state()) == 0){
+            return false;}
         return ingredient instanceof Fryable;
     }
     public boolean canFlip() {
-        if ((((Fryable)getIngredient()).ready() == true) &&
-            (((Fryable)getIngredient()).state() == 1)){
+        if (getIngredient() == null) {
+            return true;}
+        if ((((Fryable)getIngredient()).state() == 1)){
                 return true;
             }
         return false;
