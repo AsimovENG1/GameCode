@@ -12,7 +12,7 @@ public class IngredientStation<T extends Ingredient> {
     public void grab(IngredientStack stack) {
         try {
             stack.grab(ingredient.create());
-            TimeUnit.SECONDS.sleep(1);
+            //TimeUnit.SECONDS.sleep(1);
         }
         catch (Exception e) {
             System.out.println(e);

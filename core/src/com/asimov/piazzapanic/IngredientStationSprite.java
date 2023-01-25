@@ -11,4 +11,6 @@ public abstract class IngredientStationSprite extends Sprite {
     }
 
     public abstract void grab(IngredientStack stack);
+
+    public abstract boolean canGrab();
 }

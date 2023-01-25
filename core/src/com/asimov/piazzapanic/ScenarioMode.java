@@ -166,23 +166,23 @@ public class ScenarioMode extends ScreenAdapter {
 
         // Ingredient Stations
 
-        TomatoStationSprite tStation = new TomatoStationSprite();
+        TomatoStationSprite tStation = new TomatoStationSprite(timer);
         tStation.setPosition(900,300);
         ingredientStations.add(tStation);
 
-        LettuceStationSprite lStation = new LettuceStationSprite();
+        LettuceStationSprite lStation = new LettuceStationSprite(timer);
         lStation.setPosition(800,300);
         ingredientStations.add(lStation);
 
-        OnionStationSprite oStation = new OnionStationSprite();
+        OnionStationSprite oStation = new OnionStationSprite(timer);
         oStation.setPosition(700,300);
         ingredientStations.add(oStation);
 
-        BunStationSprite bStation = new BunStationSprite();
+        BunStationSprite bStation = new BunStationSprite(timer);
         bStation.setPosition(500,300);
         ingredientStations.add(bStation);
 
-        MeatStationSprite mStation = new MeatStationSprite();
+        MeatStationSprite mStation = new MeatStationSprite(timer);
         mStation.setPosition(400,300);
         ingredientStations.add(mStation);
 
@@ -319,7 +319,7 @@ public class ScenarioMode extends ScreenAdapter {
             return;
         }
 
-        if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R))){
+        if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && iStation.canGrab()){
             iStation.grab(chef.stack);
 //            bell.play();
         }
