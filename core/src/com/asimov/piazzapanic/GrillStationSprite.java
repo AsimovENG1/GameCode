@@ -19,13 +19,19 @@ public class GrillStationSprite extends BaseCookingStationSprite<FryingStation> 
     public void placed() {
         setTexture(GrillTexture);
         model.place();
-        setTexture(GrillReadyTexture);
     }
-
+    public void readyToFlip() {
+        setTexture(GrillReadyTexture);
+        model.readyToFlip();
+    }
     public void flip() {
         setTexture(GrillFlipedTexture);
         model.flip();
+    }
+    public void readyToPickUp() {
         setTexture(GrillDoneTexture);
+        model.readyToPickUp();
+
     }
     @Override
     public void grabbed() {
