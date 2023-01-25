@@ -24,7 +24,6 @@ public class GrillStationSprite extends BaseCookingStationSprite<FryingStation> 
         timer.start(5, () -> readyToFlip());
     }
     public void readyToFlip() {
-        System.out.println("Ready to flip");
         setTexture(GrillReadyTexture);
         model.readyToFlip();
     }
