@@ -1,7 +1,7 @@
 package com.asimov.piazzapanic.models;
 
 public abstract class CookingStation {
-    private Ingredient ingredient = null;
+    protected Ingredient ingredient = null;
 
     protected CookingStatus status = CookingStatus.available;
 

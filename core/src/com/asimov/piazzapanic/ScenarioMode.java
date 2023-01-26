@@ -177,7 +177,7 @@ public class ScenarioMode extends ScreenAdapter {
         grillStation.setPosition(800, 600);
         cookingStations.add(grillStation);
 
-        BinStationSprite binStation = new BinStationSprite();
+        BinStationSprite binStation = new BinStationSprite(timer);
         binStation.setPosition(400, 0);
         cookingStations.add(binStation);
 
