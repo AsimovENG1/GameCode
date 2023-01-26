@@ -183,26 +183,34 @@ public class ScenarioMode extends ScreenAdapter {
 
         // Counters
 
-        FoodCounterSprite demoCounter = new FoodCounterSprite();
-        demoCounter.setPosition(640, 300);
-        foodCounters.add(demoCounter);
+        FoodCounterSprite counter1 = new FoodCounterSprite();
+        counter1.setPosition(640, -40);
+        foodCounters.add(counter1);
+
+        FoodCounterSprite counter2 = new FoodCounterSprite();
+        counter2.setPosition(640, 60);
+        foodCounters.add(counter2);
+
+        FoodCounterSprite counter3 = new FoodCounterSprite();
+        counter3.setPosition(640, 160);
+        foodCounters.add(counter3);
         
         // Ingredient Stations
 
         TomatoStationSprite tStation = new TomatoStationSprite(timer);
-        tStation.setPosition(900,300);
+        tStation.setPosition(680,300);
         ingredientStations.add(tStation);
 
         LettuceStationSprite lStation = new LettuceStationSprite(timer);
-        lStation.setPosition(800,300);
+        lStation.setPosition(780,300);
         ingredientStations.add(lStation);
 
         OnionStationSprite oStation = new OnionStationSprite(timer);
-        oStation.setPosition(700,300);
+        oStation.setPosition(880,300);
         ingredientStations.add(oStation);
 
         BunStationSprite bStation = new BunStationSprite(timer);
-        bStation.setPosition(500,300);
+        bStation.setPosition(980,300);
         ingredientStations.add(bStation);
 
         MeatStationSprite mStation = new MeatStationSprite(timer);
