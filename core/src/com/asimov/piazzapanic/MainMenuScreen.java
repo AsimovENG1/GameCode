@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -74,6 +75,12 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
         table.add(quitButton).padBottom(10);
+
+        table.row();
+
+        Label attributionLabel = new Label("Comic UI Scene2d skin by Raymond \"Raeleus\" Buckley \n CC by 4.0.", game.skin);
+        attributionLabel.setFontScale(1);
+        table.add(attributionLabel).bottom();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
     }
