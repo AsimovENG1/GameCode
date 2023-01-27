@@ -29,7 +29,7 @@ public class PiazzaPanic extends Game {
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
 		backSound = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
 
-		skin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+		skin = new Skin(Gdx.files.internal("skin/comic/comic-ui.json"));
 
 		shapeRenderer = new ShapeRenderer();
 		this.setScreen(new MainMenuScreen(this));

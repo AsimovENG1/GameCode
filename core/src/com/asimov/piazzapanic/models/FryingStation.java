@@ -13,21 +13,17 @@ public class FryingStation extends CookingStation {
     }
     @Override
     protected boolean canPlace(Ingredient ingredient) {
-        if (getIngredient() == null) {
-            return true;
+        if (getIngredient() != null) {
+            return false;
         }
-        if (status == CookingStatus.cooking) {
-            return false;}
-        if ((((Fryable)getIngredient()).state()) == 0){
-            return false;}
+
         return ingredient instanceof Fryable;
     }
     public boolean canFlip() {
         if (getIngredient() == null) {
-            return true;}
-        if ((((Fryable)getIngredient()).state() == 1)){
-                return true;
-            }
-        return false;
+            return false;
+        }
+
+        return ((Fryable)getIngredient()).state() == 1;
     }
 }
