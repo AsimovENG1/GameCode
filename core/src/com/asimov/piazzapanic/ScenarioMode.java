@@ -31,13 +31,9 @@ public class ScenarioMode extends ScreenAdapter {
     private Stage stage;
     private Table table;
 
-<<<<<<< settingssound
     private Texture background = new Texture("layout/Flooring.jpg");
-    private CounterSprite counter = new CounterSprite(80 * 3);
-=======
-    private Texture background = new Texture("layout/background.png");
+    
     private ServingCounterSprite counter = new ServingCounterSprite(80 * 3);
->>>>>>> main
 
     private Array<Sprite> walls = new Array<>();
 
@@ -446,13 +442,10 @@ public class ScenarioMode extends ScreenAdapter {
         }
 
         interactWithCookingStations();
-
-<<<<<<< settingssound
-=======
+        
         interactWithFoodCounters();
         
         interactWithIngredientStations();
->>>>>>> main
 
         if (begin) {
             SoundEffectControl.playBell();
