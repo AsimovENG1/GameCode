@@ -8,7 +8,7 @@ public class MeatStationSprite extends BaseIngredientStationSprite<IngredientSta
     Texture meatStation = new Texture("IngredientStations/Meat_Station.png");
 
     public MeatStationSprite(DeltaTimer timer) {
-        super(new IngredientStation<>(Meat::new), timer);
+        super(new IngredientStation<>(Patty::new), timer);
         setTexture(meatStation);
     }
 }

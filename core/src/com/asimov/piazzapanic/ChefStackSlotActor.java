@@ -56,10 +56,16 @@ public class ChefStackSlotActor extends Actor {
         }
 
         if (ingredient instanceof Patty) {
-            return basePath + ((((Patty) ingredient).isFried()) ? "CookedPatty.png" : "FormedPatty.png");
-        }
+            Patty patty = (Patty) ingredient;
 
-        if (ingredient instanceof Meat) {
+            if (patty.isFried()) {
+                return basePath + "CookedPatty.png";
+            }
+
+            if (patty.isFormed()) {
+                return basePath + "FormedPatty.png";
+            }
+
             return basePath + "RawPatty.png";
         }
 
