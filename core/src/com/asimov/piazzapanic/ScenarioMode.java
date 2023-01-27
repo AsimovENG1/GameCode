@@ -248,7 +248,7 @@ public class ScenarioMode extends ScreenAdapter {
         // timer.start(1, () -> System.out.println("Timer!"), true);
     }
 
-    public String giveFood() {
+    public void giveFood() {
         Chef chef = getActiveChef();
 
         System.out.println(chef.stack);
@@ -258,18 +258,8 @@ public class ScenarioMode extends ScreenAdapter {
         if (isChefAtCounter() && customer.checkOrder(ingredient)) {
             chef.stack.place();
 
-            System.out.println(chef.stack);
-
             left = "leaving";
         }
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return left;
     }
 
     private void interactWithCookingStation(CookingStationSprite cookingStation) {
@@ -417,7 +407,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         left = customer.controlCustomer(atCounter, givenOrder, entering, customerNo, game.batch);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER) && left == "at counter") {
             giveFood();
         }
 
