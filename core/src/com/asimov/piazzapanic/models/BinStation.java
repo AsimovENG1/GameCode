@@ -1,14 +1,19 @@
 package com.asimov.piazzapanic.models;
+import java.util.concurrent.TimeUnit;
 
 public class BinStation extends CookingStation{
- 
-    public void bin() {
-
-        // needs to grab from top of ingedient station then delete item
-
-    }
     @Override
     protected boolean canPlace(Ingredient ingredient) {
-        return ingredient instanceof Ingredient;
+        return true;
+    }
+
+    @Override
+    public boolean canGrab() {
+        return false;
+    }
+
+    public void open() {
+        ingredient = null;
+        status = CookingStatus.available;
     }
 }

@@ -1,37 +1,33 @@
 package com.asimov.piazzapanic.models;
 
 public class FryingStation extends CookingStation {
-
-    public void place() {
-        try {
-            ((Fryable)getIngredient()).ReadySwap();
-            ((Fryable)getIngredient()).stageIncrease();
-            Thread.sleep(5000);
-            ((Fryable)getIngredient()).ReadySwap();
-            }
-        catch (Exception e) {
-            System.out.println(e);
-        }
+    public void readyToFlip() {
+        ((Fryable)getIngredient()).stageIncrease();
     }
     public void flip() {
-        if (((Fryable)getIngredient()).ready() == true){
-            if (((Fryable)getIngredient()).state() == 1){
-                try {
-                    ((Fryable)getIngredient()).ReadySwap();
-                    ((Fryable)getIngredient()).stageIncrease();
-                    Thread.sleep(5000);
-                    ((Fryable)getIngredient()).ReadySwap();
-                    ((Fryable)getIngredient()).makeFried();
-                    status = CookingStatus.complete;
-                    }
-                catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
-            }
-        }
+    }
+        
+    public void readyToPickUp() {
+        ((Fryable)getIngredient()).makeFried();
+        status = CookingStatus.complete;
+    }
     @Override
     protected boolean canPlace(Ingredient ingredient) {
+        if (getIngredient() == null) {
+            return true;
+        }
+        if (status == CookingStatus.cooking) {
+            return false;}
+        if ((((Fryable)getIngredient()).state()) == 0){
+            return false;}
         return ingredient instanceof Fryable;
+    }
+    public boolean canFlip() {
+        if (getIngredient() == null) {
+            return true;}
+        if ((((Fryable)getIngredient()).state() == 1)){
+                return true;
+            }
+        return false;
     }
 }

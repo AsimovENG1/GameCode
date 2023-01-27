@@ -1,5 +1,6 @@
 package com.asimov.piazzapanic;
 
+import com.asimov.piazzapanic.deltatimer.DeltaTimer;
 import com.asimov.piazzapanic.models.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -25,15 +26,26 @@ import java.util.concurrent.TimeUnit;
 
 public class ScenarioMode extends ScreenAdapter {
     final PiazzaPanic game;
+    private DeltaTimer timer = new DeltaTimer();
+
     private Stage stage;
     private Table table;
 
+<<<<<<< settingssound
     private Texture background = new Texture("layout/Flooring.jpg");
     private CounterSprite counter = new CounterSprite(80 * 3);
+=======
+    private Texture background = new Texture("layout/background.png");
+    private ServingCounterSprite counter = new ServingCounterSprite(80 * 3);
+>>>>>>> main
 
     private Array<Sprite> walls = new Array<>();
 
     private Array<CookingStationSprite> cookingStations = new Array<>();
+
+    private Array<FoodCounterSprite> foodCounters = new Array<>();
+    
+    private  Array<IngredientStationSprite> ingredientStations = new Array<>();
 
     private Array<Chef> chefs = new Array<>();
 
@@ -110,6 +122,34 @@ public class ScenarioMode extends ScreenAdapter {
         return result;
     }
 
+    private FoodCounterSprite getActiveFoodCounter() {
+        Chef chef = getActiveChef();
+        FoodCounterSprite result = null;
+        float distance = 1280;
+
+        for (FoodCounterSprite foodCounter : foodCounters.select(x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle()))) {
+            if (Math.sqrt(Math.pow(chef.getX() - foodCounter.getX(), 2) + Math.pow(chef.getY() - foodCounter.getY(), 2)) < distance) {
+                result = foodCounter;
+            }
+        }
+        
+        return result;
+    }
+    
+    private IngredientStationSprite getActiveIngredientStation(){
+        Chef chef = getActiveChef();
+        IngredientStationSprite result = null;
+        float distance = 1280;
+
+        for (IngredientStationSprite ingredientStation: ingredientStations.select((x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle())))){
+            if (Math.sqrt(Math.pow(chef.getX() - ingredientStation.getX(), 2) + Math.pow(chef.getY() - ingredientStation.getY(),2)) < distance){
+                result = ingredientStation;
+            }
+        }
+        
+        return result;
+    }
+
     private boolean isChefAtCounter() {
         return getActiveChef().getBoundingRectangle().overlaps(counter.getBoundingRectangle());
     }
@@ -138,12 +178,46 @@ public class ScenarioMode extends ScreenAdapter {
         // Cooking Stations
 
         ChoppingStationSprite choppingStation = new ChoppingStationSprite();
-        choppingStation.setPosition(640, 620);
+        choppingStation.scale (2);
+        choppingStation.setPosition(640, 600);
         cookingStations.add(choppingStation);
 
-        GrillStationSprite grillStation = new GrillStationSprite();
-        grillStation.setPosition(720, 620);
+        GrillStationSprite grillStation = new GrillStationSprite(timer);
+        grillStation.scale(2);
+        grillStation.setPosition(800, 600);
         cookingStations.add(grillStation);
+
+        BinStationSprite binStation = new BinStationSprite(timer);
+        binStation.setPosition(400, 0);
+        cookingStations.add(binStation);
+
+        // Counters
+
+        FoodCounterSprite demoCounter = new FoodCounterSprite();
+        demoCounter.setPosition(640, 300);
+        foodCounters.add(demoCounter);
+        
+        // Ingredient Stations
+
+        TomatoStationSprite tStation = new TomatoStationSprite(timer);
+        tStation.setPosition(900,300);
+        ingredientStations.add(tStation);
+
+        LettuceStationSprite lStation = new LettuceStationSprite(timer);
+        lStation.setPosition(800,300);
+        ingredientStations.add(lStation);
+
+        OnionStationSprite oStation = new OnionStationSprite(timer);
+        oStation.setPosition(700,300);
+        ingredientStations.add(oStation);
+
+        BunStationSprite bStation = new BunStationSprite(timer);
+        bStation.setPosition(500,300);
+        ingredientStations.add(bStation);
+
+        MeatStationSprite mStation = new MeatStationSprite(timer);
+        mStation.setPosition(400,300);
+        ingredientStations.add(mStation);
 
         // Chefs
 
@@ -165,9 +239,9 @@ public class ScenarioMode extends ScreenAdapter {
         customerNumbers.add(1);
         customerNumbers.add(2);
 
+        chef1.stack.grab(new Patty());
         chef1.stack.grab(new Burger());
-        chef1.stack.grab(new Burger());
-        chef1.stack.grab(new Burger());
+        chef1.stack.grab(new Patty());
         chef2.stack.grab(new Tomato());
         chef2.stack.grab(new Lettuce());
         chef2.stack.grab(new Onion());
@@ -218,7 +292,8 @@ public class ScenarioMode extends ScreenAdapter {
 
     @Override
     public void show() {
-
+        // Uncomment to test timer
+        // timer.start(1, () -> System.out.println("Timer!"), true);
     }
 
     public String giveFood() {
@@ -267,6 +342,43 @@ public class ScenarioMode extends ScreenAdapter {
 
             ((ChoppingStationSprite) cookingStation).chop();
         }
+        if (cookingStation instanceof GrillStationSprite &&
+                ((GrillStationSprite) cookingStation).canFlip() &&
+                Gdx.input.isKeyPressed(Input.Keys.F)) {
+
+            ((GrillStationSprite) cookingStation).flip();
+        }
+    }
+
+    private void interactWithFoodCounters() {
+        FoodCounterSprite counter = getActiveFoodCounter();
+        Chef chef = getActiveChef();
+
+        if (counter == null) {
+            return;
+        }
+
+        if (counter.canPlace(chef) && Gdx.input.isKeyPressed(Input.Keys.E)) {
+            counter.place(chef);
+        }
+
+        if (counter.canGrab() && Gdx.input.isKeyPressed(Input.Keys.R)) {
+            counter.grab(chef);
+        }
+    }
+        
+    private void interactWithIngredientStations() {
+        IngredientStationSprite iStation = getActiveIngredientStation();
+        Chef chef = getActiveChef();
+
+        if (iStation == null) {
+            return;
+        }
+
+        if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && iStation.canGrab()){
+            iStation.grab(chef.stack);
+//            bell.play();
+        }
     }
 
     // 1, 2 and 3 controls each chef (change between chefs)
@@ -275,6 +387,7 @@ public class ScenarioMode extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         time += delta;
+        timer.tick(delta);
 
         Batch batch = game.batch;
         Camera camera = getCamera();
@@ -301,6 +414,18 @@ public class ScenarioMode extends ScreenAdapter {
             cookingStation.draw(batch);
         }
 
+        // Counters
+
+        for (Sprite foodCounter : foodCounters) {
+            foodCounter.draw(batch);
+        }
+
+        // Ingredient Station
+
+        for (Sprite ingredientStation: ingredientStations){
+            ingredientStation.draw(batch);
+        }
+
         // Chefs
 
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
@@ -322,6 +447,12 @@ public class ScenarioMode extends ScreenAdapter {
 
         interactWithCookingStations();
 
+<<<<<<< settingssound
+=======
+        interactWithFoodCounters();
+        
+        interactWithIngredientStations();
+>>>>>>> main
 
         if (begin) {
             SoundEffectControl.playBell();
