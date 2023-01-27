@@ -146,21 +146,21 @@ public class ScenarioMode extends ScreenAdapter {
         cookingStations.add(grillStation);
 
         BinStationSprite binStation = new BinStationSprite(timer);
-        binStation.setPosition(400, 0);
+        binStation.setPosition(550, 340);
         cookingStations.add(binStation);
 
         // Counters
 
         FoodCounterSprite counter1 = new FoodCounterSprite();
-        counter1.setPosition(640, -40);
+        counter1.setPosition(512, 10);
         foodCounters.add(counter1);
 
         FoodCounterSprite counter2 = new FoodCounterSprite();
-        counter2.setPosition(640, 60);
+        counter2.setPosition(512, 100);
         foodCounters.add(counter2);
 
         FoodCounterSprite counter3 = new FoodCounterSprite();
-        counter3.setPosition(640, 160);
+        counter3.setPosition(512, 190);
         foodCounters.add(counter3);
         
         // Ingredient Stations
@@ -182,7 +182,7 @@ public class ScenarioMode extends ScreenAdapter {
         ingredientStations.add(bStation);
 
         MeatStationSprite mStation = new MeatStationSprite(timer);
-        mStation.setPosition(400,300);
+        mStation.setPosition(640,200);
         ingredientStations.add(mStation);
 
         // Chefs
