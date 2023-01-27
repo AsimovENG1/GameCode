@@ -21,12 +21,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import sun.jvm.hotspot.debugger.cdbg.basic.LazyBlockSym;
 
 
-import javax.swing.JScrollBar;
 
-import javax.swing.*;
+
+
 
 public class SettingsScreen extends ScreenAdapter{
     final PiazzaPanic game;
@@ -38,10 +37,15 @@ public class SettingsScreen extends ScreenAdapter{
     private static Integer muscore;
     private static Label mulabel;
 
+    public static Sound buclick2;
+
     private static Integer effectscore;
     private static Label effectlabel;
-
+    SoundEffectControl soundEffectControl = new SoundEffectControl();
+    MusicControl musicControl = new MusicControl();
     OrthographicCamera camera;
+
+
 
     public SettingsScreen(final PiazzaPanic game) {
         this.game = game;
@@ -52,9 +56,8 @@ public class SettingsScreen extends ScreenAdapter{
 
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
-        //TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        //style.font = game.font;
+        buclick2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+
 
         TextButton backButton = new TextButton("Back", mySkin);
 
@@ -65,7 +68,7 @@ public class SettingsScreen extends ScreenAdapter{
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound2.play(1.0f);
+                SoundEffectControl.buclicking2();
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -93,58 +96,16 @@ public class SettingsScreen extends ScreenAdapter{
         label1.setAlignment(Align.center);
         this.stage.addActor(label1);
 
-        // Style of the text of the mouse sensitivity
+        //label styles
         Label.LabelStyle style1 = new Label.LabelStyle();
         style1.font = game.font;
         style1.fontColor = Color.WHITE;
 
-        // MOUSE SENSITIVITY
-        Label label2 = new Label("Mouse Sensitivity", style1);
-        label2.setSize((float)Gdx.graphics.getWidth(), 200.0F);
-        label2.setFontScale(2.0F);
-        label2.setPosition(0 ,700.0F);
-        label2.setAlignment(Align.center);
-        this.stage.addActor(label2);
+        // FOR PERMANENT STUFF
+        muscore = 0;
+        effectscore = 0;
+        Preferences prefs = Gdx.app.getPreferences("myprefs");
 
-        // MOUSE SENSITIVITY UP
-        TextButton sensitivityButtonup = new TextButton("UP",mySkin1);
-        sensitivityButtonup.setWidth(100);
-        sensitivityButtonup.setHeight(100);
-        sensitivityButtonup.setPosition(850.0F, 650.0F);
-        this.stage.addActor(sensitivityButtonup);
-
-        sensitivityButtonup.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event,float x, float y){
-                sound2.play(1.0f);
-                senscore += 1;
-                senlabel.setText(String.format("%01d", senscore));
-            }
-        });
-
-        // MOUSE SENSITIVITY DOWN
-        TextButton sensitivityButtondown = new TextButton("Down", mySkin1);
-        sensitivityButtondown.setWidth(100);
-        sensitivityButtondown.setHeight(100);
-        sensitivityButtondown.setPosition(1080.0F, 650.0F);
-        this.stage.addActor(sensitivityButtondown);
-
-        sensitivityButtondown.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event,float x, float y){
-                sound2.play(1.0f);
-                senscore -= 1;
-                senlabel.setText(String.format("%01d", senscore));
-            }
-        });
-
-        // SENSITIVITY INTEGER
-        senscore = 0;
-        senlabel =new Label(String.format("%01d", senscore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        senlabel.setFontScale(2.0F);
-        senlabel.setPosition(1000.0F, 700.0F);
-        senlabel.setAlignment(Align.center);
-        this.stage.addActor(senlabel);
 
         // MUSIC
         Label Mlabel = new Label("Music", style1);
@@ -154,13 +115,6 @@ public class SettingsScreen extends ScreenAdapter{
         Mlabel.setAlignment(Align.center);
         this.stage.addActor(Mlabel);
 
-        // MUSIC INTEGER
-        muscore = 0;
-        mulabel =new Label(String.format("%01d", muscore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        mulabel.setFontScale(2.0F);
-        mulabel.setPosition(1000.0F, 500.0F);
-        mulabel.setAlignment(Align.center);
-        this.stage.addActor(mulabel);
 
         // VOLUME UP
         TextButton volumeup = new TextButton("UP",mySkin1);
@@ -172,9 +126,14 @@ public class SettingsScreen extends ScreenAdapter{
         volumeup.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event,float x, float y){
-                sound2.play(1.0f);
-                muscore += 1;
+                if(muscore < 5){
+                    muscore += 1;
+                    musicControl.increaseMusic();
+                    System.out.print("rat increase "+musicControl.musicvolume);
+                }
+
                 mulabel.setText(String.format("%01d", muscore));
+                prefs.putInteger("muscore", muscore);
             }
         });
 
@@ -188,11 +147,27 @@ public class SettingsScreen extends ScreenAdapter{
         volumedown.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event,float x, float y){
-                sound2.play(1.0f);
-                muscore -= 1;
+                if(muscore > 0){
+                    muscore -= 1;
+                    musicControl.decreaseMusic();
+                    System.out.print("rat decrease "+musicControl.musicvolume);
+                }
                 mulabel.setText(String.format("%01d", muscore));
+                prefs.putInteger("muscore", muscore);
             }
         });
+
+        // MUSIC INTEGER
+        muscore = prefs.getInteger("muscore");
+        mulabel =new Label(String.format("%01d", muscore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        mulabel.setFontScale(2.0F);
+        mulabel.setPosition(1000.0F, 500.0F);
+        mulabel.setAlignment(Align.center);
+        this.stage.addActor(mulabel);
+
+
+
+
 
         // SOUND EFFECTS
         Label SElabel = new Label("Sound Effects", style1);
@@ -201,6 +176,7 @@ public class SettingsScreen extends ScreenAdapter{
         SElabel.setPosition(0 ,300.0F);
         SElabel.setAlignment(Align.center);
         this.stage.addActor(SElabel);
+
 
         // SOUND EFFECT UP
         TextButton effectup = new TextButton("UP",mySkin1);
@@ -212,19 +188,17 @@ public class SettingsScreen extends ScreenAdapter{
         effectup.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event,float x, float y){
-                sound2.play(1.0f);
-                effectscore += 1;
+                if(effectscore < 5){
+                    effectscore += 1;
+                    soundEffectControl.increaseSoundeffect();
+                    System.out.print("this is the volume"+soundEffectControl.volume);
+                }
+
                 effectlabel.setText(String.format("%01d", effectscore));
+                prefs.putInteger("effectscore", effectscore);
             }
         });
 
-        // SOUND EFFECT INTEGER
-        effectscore = 0;
-        effectlabel =new Label(String.format("%01d", effectscore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        effectlabel.setFontScale(2.0F);
-        effectlabel.setPosition(1000.0F, 300.0F);
-        effectlabel.setAlignment(Align.center);
-        this.stage.addActor(effectlabel);
 
         // SOUND EFFECT DOWN
         TextButton effectdown = new TextButton("Down", mySkin1);
@@ -236,11 +210,26 @@ public class SettingsScreen extends ScreenAdapter{
         effectdown.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event,float x, float y){
-                sound2.play(1.0f);
-                effectscore -= 1;
+                if(effectscore>0){
+                    effectscore -= 1;
+                    soundEffectControl.decreaseSoundeffect();
+                    System.out.print("VOL" + soundEffectControl.volume);
+                }
+
                 effectlabel.setText(String.format("%01d", effectscore));
+                prefs.putInteger("effectscore", effectscore);
             }
         });
+
+        // SOUND EFFECT INTEGER
+        effectscore = prefs.getInteger("effectscore");
+        effectlabel =new Label(String.format("%01d", effectscore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        effectlabel.setFontScale(2.0F);
+        effectlabel.setPosition(1000.0F, 300.0F);
+        effectlabel.setAlignment(Align.center);
+        this.stage.addActor(effectlabel);
+
+
 
 
 
