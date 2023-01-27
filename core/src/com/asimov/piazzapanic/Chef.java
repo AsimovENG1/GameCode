@@ -17,7 +17,7 @@ public class Chef extends Sprite {
     private Texture rightTexture;
     private Texture leftTexture;
 
-    private float speed = 100;
+    private float speed = 400;
 
     private boolean isActive = false;
 
