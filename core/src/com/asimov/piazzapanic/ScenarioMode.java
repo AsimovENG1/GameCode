@@ -217,7 +217,7 @@ public class ScenarioMode extends ScreenAdapter {
         table.setDebug(game.debug);
 
         Sound sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
-        TextButton quitButton = new TextButton("Quit", game.skin, "small");
+        TextButton quitButton = new TextButton("Quit", game.skin);
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
