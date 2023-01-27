@@ -20,7 +20,7 @@ public abstract class BaseIngredientStationSprite<T extends IngredientStation> e
 
         canGrab = false;
         model.grab(stack);
-        timer.start(1, () -> canGrab = true);
+        timer.start(0.5f, () -> canGrab = true);
     }
 
     private boolean canGrab = true;
