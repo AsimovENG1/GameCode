@@ -1,29 +1,27 @@
 package com.asimov.piazzapanic.models;
 
-public abstract class CookingStation {
-    protected Ingredient ingredient = null;
-
-    protected CookingStatus status = CookingStatus.available;
-
-    public CookingStatus getStatus() {
-        return status;
-    }
+public class FoodCounter {
+    private Ingredient ingredient = null;
 
     public Ingredient getIngredient() {
         return ingredient;
     }
 
-    protected abstract boolean canPlace(Ingredient ingredient);
     public boolean canPlace(IngredientStack stack) {
-        if (status != CookingStatus.available) {
+
+        if (ingredient != null) {
             return false;
         }
 
-        if (stack.size() <= 0) {
+        if (stack.size() == 0) {
             return false;
         }
 
-        return canPlace(stack.peek());
+        if (stack.peek() instanceof Dish) {
+            return false;
+        }
+
+        return true;
     }
 
     public void place(IngredientStack stack) {
@@ -32,16 +30,10 @@ public abstract class CookingStation {
         }
 
         ingredient = stack.place();
-
-        status = CookingStatus.cooking;
     }
 
     public boolean canGrab() {
-        if (status != CookingStatus.complete) {
-            return false;
-        }
-
-        return true;
+        return ingredient != null;
     }
 
     public void grab(IngredientStack stack) {
@@ -52,7 +44,5 @@ public abstract class CookingStation {
         stack.grab(ingredient);
 
         ingredient = null;
-
-        status = CookingStatus.available;
     }
 }
