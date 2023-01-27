@@ -18,7 +18,7 @@ public class FryingStation extends CookingStation {
         }
         if (status == CookingStatus.cooking) {
             return false;}
-        if ((((Fryable)getIngredient()).state()) == 0){
+        if ((((Fryable)getIngredient()).state()) != 0){
             return false;}
         return ingredient instanceof Fryable;
     }
