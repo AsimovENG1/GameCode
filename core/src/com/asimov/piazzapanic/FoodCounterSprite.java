@@ -46,11 +46,18 @@ public class FoodCounterSprite extends Sprite {
         }
 
         if (ingredient instanceof Patty) {
-            setTexture(((Patty) ingredient).isFried() ? friedPattyTexture : formedPattyTexture);
-        }
 
-        if (ingredient instanceof Meat) {
-            setTexture(pattyTexture);
+            Patty patty = (Patty) ingredient;
+
+            if (patty.isFried()) {
+                setTexture(friedPattyTexture);
+            }
+            else if (patty.isFormed()) {
+                setTexture(formedPattyTexture);
+            }
+            else {
+                setTexture(pattyTexture);
+            }
         }
 
         if (ingredient instanceof Bun) {

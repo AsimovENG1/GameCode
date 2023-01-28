@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -36,14 +37,13 @@ public class ScenarioMode extends ScreenAdapter {
     private ServingCounterSprite counter = new ServingCounterSprite(80 * 3);
 
     private Array<Sprite> walls = new Array<>();
-
     private Array<CookingStationSprite> cookingStations = new Array<>();
-
     private Array<FoodCounterSprite> foodCounters = new Array<>();
-    
     private  Array<IngredientStationSprite> ingredientStations = new Array<>();
-
     private Array<Chef> chefs = new Array<>();
+
+    private Vector2 chefLocation = new Vector2();
+    private Vector2 stationVector = new Vector2();
 
     private List<String> choices = new ArrayList<>();
     private List<Integer> customerNumbers = new ArrayList<>();
@@ -70,25 +70,6 @@ public class ScenarioMode extends ScreenAdapter {
     
     Customer customer;
 
-    Integer chef1slot1x = 1625;
-    Integer chef1slot1y = 0;
-    Integer chef1slot2x = 1625;
-    Integer chef1slot2y = 100;
-    Integer chef1slot3x = 1625;
-    Integer chef1slot3y = 200;
-    Integer chef2slot1x = 1825;
-    Integer chef2slot1y = 0;
-    Integer chef2slot2x = 1825;
-    Integer chef2slot2y = 100;
-    Integer chef2slot3x = 1825;
-    Integer chef2slot3y = 200;
-
-
-    private Boolean chef1hasBurger;
-    private Boolean chef2hasBurger;
-    private Boolean chef1hasSalad;
-    private Boolean chef2hasSalad;
-
     private String left;
 
     public static float time;
@@ -105,46 +86,33 @@ public class ScenarioMode extends ScreenAdapter {
         return chefs.select(x -> x.getActive()).iterator().next();
     }
 
-    // gets the nearest overlapped cooking station to the active chef
-    private CookingStationSprite getActiveCookingStation() {
-        Chef chef = getActiveChef();
-        CookingStationSprite result = null;
-        float distance = 1280;
+    private Array<Sprite> getAllStations() {
+        Array<Sprite> result = new Array<>();
 
-        for (CookingStationSprite cookingStation : cookingStations.select(x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle()))) {
-            if (Math.sqrt(Math.pow(chef.getX() - cookingStation.getX(), 2) + Math.pow(chef.getY() - cookingStation.getY(), 2)) < distance) {
-                result = cookingStation;
-            }
-        }
+        result.addAll(cookingStations);
+        result.addAll(foodCounters);
+        result.addAll(ingredientStations);
 
         return result;
     }
 
-    private FoodCounterSprite getActiveFoodCounter() {
+    private Sprite getNearestStation() {
         Chef chef = getActiveChef();
-        FoodCounterSprite result = null;
+        chefLocation = chef.getBoundingRectangle().getCenter(chefLocation);
+        Sprite result = null;
         float distance = 1280;
 
-        for (FoodCounterSprite foodCounter : foodCounters.select(x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle()))) {
-            if (Math.sqrt(Math.pow(chef.getX() - foodCounter.getX(), 2) + Math.pow(chef.getY() - foodCounter.getY(), 2)) < distance) {
-                result = foodCounter;
-            }
-        }
-        
-        return result;
-    }
-    
-    private IngredientStationSprite getActiveIngredientStation(){
-        Chef chef = getActiveChef();
-        IngredientStationSprite result = null;
-        float distance = 1280;
+        for (Sprite station : getAllStations().select(x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle()))) {
+            stationVector = station.getBoundingRectangle().getCenter(stationVector);
 
-        for (IngredientStationSprite ingredientStation: ingredientStations.select((x -> chef.getBoundingRectangle().overlaps(x.getBoundingRectangle())))){
-            if (Math.sqrt(Math.pow(chef.getX() - ingredientStation.getX(), 2) + Math.pow(chef.getY() - ingredientStation.getY(),2)) < distance){
-                result = ingredientStation;
+            float vectorDistance = chefLocation.dst(stationVector);
+
+            if (vectorDistance < distance) {
+                result = station;
+                distance = vectorDistance;
             }
         }
-        
+
         return result;
     }
 
@@ -186,35 +154,43 @@ public class ScenarioMode extends ScreenAdapter {
         cookingStations.add(grillStation);
 
         BinStationSprite binStation = new BinStationSprite(timer);
-        binStation.setPosition(400, 0);
+        binStation.setPosition(550, 340);
         cookingStations.add(binStation);
 
         // Counters
 
-        FoodCounterSprite demoCounter = new FoodCounterSprite();
-        demoCounter.setPosition(640, 300);
-        foodCounters.add(demoCounter);
+        FoodCounterSprite counter1 = new FoodCounterSprite();
+        counter1.setPosition(512, 10);
+        foodCounters.add(counter1);
+
+        FoodCounterSprite counter2 = new FoodCounterSprite();
+        counter2.setPosition(512, 100);
+        foodCounters.add(counter2);
+
+        FoodCounterSprite counter3 = new FoodCounterSprite();
+        counter3.setPosition(512, 190);
+        foodCounters.add(counter3);
         
         // Ingredient Stations
 
         TomatoStationSprite tStation = new TomatoStationSprite(timer);
-        tStation.setPosition(900,300);
+        tStation.setPosition(680,300);
         ingredientStations.add(tStation);
 
         LettuceStationSprite lStation = new LettuceStationSprite(timer);
-        lStation.setPosition(800,300);
+        lStation.setPosition(780,300);
         ingredientStations.add(lStation);
 
         OnionStationSprite oStation = new OnionStationSprite(timer);
-        oStation.setPosition(700,300);
+        oStation.setPosition(880,300);
         ingredientStations.add(oStation);
 
         BunStationSprite bStation = new BunStationSprite(timer);
-        bStation.setPosition(500,300);
+        bStation.setPosition(980,300);
         ingredientStations.add(bStation);
 
         MeatStationSprite mStation = new MeatStationSprite(timer);
-        mStation.setPosition(400,300);
+        mStation.setPosition(640,200);
         ingredientStations.add(mStation);
 
         grab = Gdx.audio.newSound((Gdx.files.internal(("audio/mixkit-hard-pop-click-2364.wav"))));
@@ -239,13 +215,6 @@ public class ScenarioMode extends ScreenAdapter {
         customerNumbers.add(1);
         customerNumbers.add(2);
 
-        chef1.stack.grab(new Patty());
-        chef1.stack.grab(new Burger());
-        chef1.stack.grab(new Patty());
-        chef2.stack.grab(new Tomato());
-        chef2.stack.grab(new Lettuce());
-        chef2.stack.grab(new Onion());
-
         customer = new Customer(game);
 
         // Scene2d for ui
@@ -260,7 +229,7 @@ public class ScenarioMode extends ScreenAdapter {
         table.setDebug(game.debug);
 
         Sound sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
-        TextButton quitButton = new TextButton("Quit", game.skin, "small");
+        TextButton quitButton = new TextButton("Quit", game.skin);
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -296,7 +265,7 @@ public class ScenarioMode extends ScreenAdapter {
         // timer.start(1, () -> System.out.println("Timer!"), true);
     }
 
-    public String giveFood() {
+    public void giveFood() {
         Chef chef = getActiveChef();
 
         System.out.println(chef.stack);
@@ -306,22 +275,11 @@ public class ScenarioMode extends ScreenAdapter {
         if (isChefAtCounter() && customer.checkOrder(ingredient)) {
             chef.stack.place();
 
-            System.out.println(chef.stack);
-
             left = "leaving";
         }
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return left;
     }
 
-    private void interactWithCookingStations() {
-        CookingStationSprite cookingStation = getActiveCookingStation();
+    private void interactWithCookingStation(CookingStationSprite cookingStation) {
         Chef chef = getActiveChef();
 
         if (cookingStation == null) {
@@ -350,8 +308,7 @@ public class ScenarioMode extends ScreenAdapter {
         }
     }
 
-    private void interactWithFoodCounters() {
-        FoodCounterSprite counter = getActiveFoodCounter();
+    private void interactWithFoodCounter(FoodCounterSprite counter) {
         Chef chef = getActiveChef();
 
         if (counter == null) {
@@ -367,17 +324,16 @@ public class ScenarioMode extends ScreenAdapter {
         }
     }
         
-    private void interactWithIngredientStations() {
-        IngredientStationSprite iStation = getActiveIngredientStation();
+    private void interactWithIngredientStation(IngredientStationSprite ingredientStation) {
         Chef chef = getActiveChef();
 
-        if (iStation == null) {
+        if (ingredientStation == null) {
             return;
         }
 
-        if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && iStation.canGrab()){
-            iStation.grab(chef.stack);
-            grab.play();
+        if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && ingredientStation.canGrab()){
+            ingredientStation.grab(chef.stack);
+              grab.play();
         }
     }
 
@@ -445,11 +401,19 @@ public class ScenarioMode extends ScreenAdapter {
             chef.draw(batch);
         }
 
-        interactWithCookingStations();
-        
-        interactWithFoodCounters();
-        
-        interactWithIngredientStations();
+        Sprite station = getNearestStation();
+
+        if (station instanceof CookingStationSprite) {
+            interactWithCookingStation((CookingStationSprite) station);
+        }
+
+        if (station instanceof FoodCounterSprite) {
+            interactWithFoodCounter((FoodCounterSprite) station);
+        }
+
+        if (station instanceof IngredientStationSprite) {
+            interactWithIngredientStation((IngredientStationSprite) station);
+        }
 
         if (begin) {
             SoundEffectControl.playBell();
@@ -461,7 +425,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         left = customer.controlCustomer(atCounter, givenOrder, entering, customerNo, game.batch);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER) && left == "at counter") {
             giveFood();
         }
 

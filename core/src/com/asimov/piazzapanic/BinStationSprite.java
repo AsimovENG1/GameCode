@@ -16,6 +16,6 @@ public class BinStationSprite extends BaseCookingStationSprite<BinStation> {
 
     @Override
     protected void placed() {
-        timer.start(1, () -> model.open());
+        timer.start(0.5f, () -> model.open());
     }
 }
