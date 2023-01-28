@@ -19,6 +19,7 @@ public class EndlessMode extends ScreenAdapter{
     final PiazzaPanic game;
 
     private Stage stage;
+    public static Sound endlessback;
 
     OrthographicCamera camera;
 
@@ -26,7 +27,7 @@ public class EndlessMode extends ScreenAdapter{
         this.game = game;
 
         stage = new Stage(new ScreenViewport(), game.batch);
-        final Sound sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+        endlessback = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
@@ -41,7 +42,7 @@ public class EndlessMode extends ScreenAdapter{
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound2.play(1.0f);
+                SoundEffectControl.endlessbbutton();
                 game.setScreen(new GameScreen(game));
             }
         });

@@ -20,7 +20,11 @@ public class GameScreen extends ScreenAdapter {
     final PiazzaPanic game;
 
     private Stage stage;
+    
     private Table table;
+    
+    public static Sound gamebackb;
+    public static Sound gamestart;
 
     public GameScreen(final PiazzaPanic game) {
         this.game = game;
@@ -33,6 +37,10 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(table);
 
         table.setDebug(game.debug);
+        
+        gamestart = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
+        gamebackb = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
+        //final Sound bell = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-phone-ring-bell-593.wav"));
 
         Table modeTable = new Table();
         table.add(modeTable).expandY();
@@ -41,7 +49,7 @@ public class GameScreen extends ScreenAdapter {
         scenarioMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.clickSound.play(1.0f);
+                SoundEffectControl.scenariobutton();
                 game.setScreen(new ScenarioMode(game));
             }
         });
@@ -51,7 +59,7 @@ public class GameScreen extends ScreenAdapter {
         endlessMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.clickSound.play(1.0f);
+                SoundEffectControl.scenariobutton();
                 game.setScreen(new EndlessMode(game));
             }
         });
@@ -63,7 +71,7 @@ public class GameScreen extends ScreenAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.backSound.play(1.0f);
+                SoundEffectControl.scenarioback();
                 game.setScreen(new MainMenuScreen(game));
             }
         });

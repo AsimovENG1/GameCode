@@ -1,21 +1,11 @@
 package com.asimov.piazzapanic.models;
-import com.asimov.piazzapanic.deltatimer.DeltaTimer;
 
 public class FryingStation extends CookingStation {
-
-    private DeltaTimer timer = new DeltaTimer();
-
-    public void place() {
-        timer.start(5, () -> readyToFlip(), false);
-        }
     public void readyToFlip() {
         ((Fryable)getIngredient()).stageIncrease();
     }
     public void flip() {
-        if (canFlip() == true){
-            timer.start(5, () -> readyToPickUp(),false);
-            }
-        }
+    }
         
     public void readyToPickUp() {
         ((Fryable)getIngredient()).makeFried();

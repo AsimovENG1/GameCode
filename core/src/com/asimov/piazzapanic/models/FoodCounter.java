@@ -8,7 +8,20 @@ public class FoodCounter {
     }
 
     public boolean canPlace(IngredientStack stack) {
-        return ingredient == null && !(stack.peek() instanceof Dish);
+
+        if (ingredient != null) {
+            return false;
+        }
+
+        if (stack.size() == 0) {
+            return false;
+        }
+
+        if (stack.peek() instanceof Dish) {
+            return false;
+        }
+
+        return true;
     }
 
     public void place(IngredientStack stack) {
