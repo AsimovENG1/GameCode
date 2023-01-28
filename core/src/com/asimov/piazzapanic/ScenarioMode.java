@@ -32,7 +32,8 @@ public class ScenarioMode extends ScreenAdapter {
     private Stage stage;
     private Table table;
 
-    private Texture background = new Texture("layout/background.png");
+    private Texture background = new Texture("layout/Flooring.jpg");
+    
     private ServingCounterSprite counter = new ServingCounterSprite(80 * 3);
 
     private Array<Sprite> walls = new Array<>();
@@ -58,8 +59,15 @@ public class ScenarioMode extends ScreenAdapter {
     Integer customerNo;
     boolean begin = true;
 
-    private Sound bell;
-    private Sound win;
+    private Sound grab;
+    
+    public static Sound bell;
+    public static Sound guitar;
+    SoundEffectControl soundEffectControl = new SoundEffectControl();
+    MusicControl musicControl = new MusicControl();
+    public static Sound win;
+    public static Sound losing;
+    
     Customer customer;
 
     private String left;
@@ -185,6 +193,8 @@ public class ScenarioMode extends ScreenAdapter {
         mStation.setPosition(640,200);
         ingredientStations.add(mStation);
 
+        grab = Gdx.audio.newSound((Gdx.files.internal(("audio/mixkit-hard-pop-click-2364.wav"))));
+
         // Chefs
 
         Chef chef1 = new Chef(new Texture("characters/chef1px3.png"), new Texture("characters/chef1px3 left.png"));
@@ -200,6 +210,8 @@ public class ScenarioMode extends ScreenAdapter {
         choices.add("Salad");
         bell = Gdx.audio.newSound(Gdx.files.internal("audio/bell-123742.mp3"));
         win = Gdx.audio.newSound(Gdx.files.internal("audio/level-win-6416.mp3"));
+        guitar = Gdx.audio.newSound(Gdx.files.internal("audio/rattatouie.MP3"));
+        losing = Gdx.audio.newSound(Gdx.files.internal("audio/mixkit-losing-marimba-2025.wav"));
         customerNumbers.add(1);
         customerNumbers.add(2);
 
@@ -221,8 +233,9 @@ public class ScenarioMode extends ScreenAdapter {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sound3.play(1.0f);
+                SoundEffectControl.lose();
                 game.setScreen(new Quitting(game));
+                musicControl.stopguitar();
             }
         });
         table.add(quitButton).left().top().pad(10, 10, 0, 0).maxSize(100, 50).expandX();
@@ -238,6 +251,10 @@ public class ScenarioMode extends ScreenAdapter {
 
         stackTable.add(chef1Stack).padRight(10);
         stackTable.add(chef2Stack);
+
+        MusicControl.setguitar();
+        MusicControl.playguitar();
+        MusicControl.loopguitar();
 
         // end of scene2d
     }
@@ -316,7 +333,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && ingredientStation.canGrab()){
             ingredientStation.grab(chef.stack);
-//            bell.play();
+              grab.play();
         }
     }
 
@@ -399,7 +416,8 @@ public class ScenarioMode extends ScreenAdapter {
         }
 
         if (begin) {
-            bell.play(1.0f);
+            SoundEffectControl.playBell();
+            System.out.print("NEW VOL " + soundEffectControl.volume);
             customer.show();
             customerNo = customer.randomCustomer();
             begin = false;
@@ -450,7 +468,8 @@ public class ScenarioMode extends ScreenAdapter {
             end = true;
         }
         if (end) {
-           win.play(1.0f);
+           SoundEffectControl.playWin();
+           //might have to add end music
            game.setScreen(new EndingScreen(game));
         }
     }
