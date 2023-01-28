@@ -8,9 +8,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -41,6 +42,11 @@ public class SettingsScreen extends ScreenAdapter{
 
     private static Integer effectscore;
     private static Label effectlabel;
+
+    private Texture setback = new Texture("layout/newppp.png");
+    Sprite sprite = new Sprite(setback);
+    SpriteBatch batch = new SpriteBatch();
+
     SoundEffectControl soundEffectControl = new SoundEffectControl();
     MusicControl musicControl = new MusicControl();
     OrthographicCamera camera;
@@ -86,7 +92,7 @@ public class SettingsScreen extends ScreenAdapter{
         // Style of the text of the heading
         Label.LabelStyle style = new Label.LabelStyle();
         style.font = game.font;
-        style.fontColor = Color.BLUE;
+        style.fontColor = Color.WHITE;
 
         // THE HEADING
         Label label1 = new Label("Settings", style);
@@ -111,7 +117,7 @@ public class SettingsScreen extends ScreenAdapter{
         Label Mlabel = new Label("Music", style1);
         Mlabel.setSize((float)Gdx.graphics.getWidth(), 200.0F);
         Mlabel.setFontScale(2.0F);
-        Mlabel.setPosition(0 ,500.0F);
+        Mlabel.setPosition(0 ,700.0F);
         Mlabel.setAlignment(Align.center);
         this.stage.addActor(Mlabel);
 
@@ -120,7 +126,7 @@ public class SettingsScreen extends ScreenAdapter{
         TextButton volumeup = new TextButton("UP",mySkin1);
         volumeup.setWidth(100);
         volumeup.setHeight(100);
-        volumeup.setPosition(850.0F, 450.0F);
+        volumeup.setPosition(820.0F, 595.0F);
         this.stage.addActor(volumeup);
 
         volumeup.addListener(new ClickListener(){
@@ -141,7 +147,7 @@ public class SettingsScreen extends ScreenAdapter{
         TextButton volumedown = new TextButton("Down", mySkin1);
         volumedown.setWidth(100);
         volumedown.setHeight(100);
-        volumedown.setPosition(1080.0F, 450.0F);
+        volumedown.setPosition(1000.0F, 595.0F);
         this.stage.addActor(volumedown);
 
         volumedown.addListener(new ClickListener(){
@@ -161,8 +167,8 @@ public class SettingsScreen extends ScreenAdapter{
         muscore = prefs.getInteger("muscore");
         mulabel =new Label(String.format("%01d", muscore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         mulabel.setFontScale(2.0F);
-        mulabel.setPosition(1000.0F, 500.0F);
         mulabel.setAlignment(Align.center);
+        mulabel.setPosition(950F, 650.0F);
         this.stage.addActor(mulabel);
 
 
@@ -173,7 +179,7 @@ public class SettingsScreen extends ScreenAdapter{
         Label SElabel = new Label("Sound Effects", style1);
         SElabel.setSize((float)Gdx.graphics.getWidth(), 200.0F);
         SElabel.setFontScale(2.0F);
-        SElabel.setPosition(0 ,300.0F);
+        SElabel.setPosition(0 ,400.0F);
         SElabel.setAlignment(Align.center);
         this.stage.addActor(SElabel);
 
@@ -182,7 +188,7 @@ public class SettingsScreen extends ScreenAdapter{
         TextButton effectup = new TextButton("UP",mySkin1);
         effectup.setWidth(100);
         effectup.setHeight(100);
-        effectup.setPosition(850.0F, 250.0F);
+        effectup.setPosition(820.0F, 250.0F);
         this.stage.addActor(effectup);
 
         effectup.addListener(new ClickListener(){
@@ -204,7 +210,7 @@ public class SettingsScreen extends ScreenAdapter{
         TextButton effectdown = new TextButton("Down", mySkin1);
         effectdown.setWidth(100);
         effectdown.setHeight(100);
-        effectdown.setPosition(1080.0F, 250.0F);
+        effectdown.setPosition(1000.0F, 250.0F);
         this.stage.addActor(effectdown);
 
         effectdown.addListener(new ClickListener(){
@@ -225,7 +231,7 @@ public class SettingsScreen extends ScreenAdapter{
         effectscore = prefs.getInteger("effectscore");
         effectlabel =new Label(String.format("%01d", effectscore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         effectlabel.setFontScale(2.0F);
-        effectlabel.setPosition(1000.0F, 300.0F);
+        effectlabel.setPosition(950.0F, 300.0F);
         effectlabel.setAlignment(Align.center);
         this.stage.addActor(effectlabel);
 
@@ -249,6 +255,12 @@ public class SettingsScreen extends ScreenAdapter{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        batch.begin();
+        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        sprite.setPosition(0,0);
+        sprite.setAlpha(0.1f);
+        sprite.draw(batch);
+        batch.end();
     }
 
     @Override
