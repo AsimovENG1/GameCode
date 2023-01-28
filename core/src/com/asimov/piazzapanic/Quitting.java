@@ -8,14 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Quitting extends ScreenAdapter {
     final PiazzaPanic game;
-
     private Stage stage;
+    private Table table;
 
     public static Sound buclick;
 
@@ -23,22 +24,17 @@ public class Quitting extends ScreenAdapter {
         this.game = game;
 
         stage = new Stage(new ScreenViewport(), game.batch);
+        Gdx.input.setInputProcessor(stage);
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.setDebug(game.debug);
 
         buclick = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
 
-        TextButton menuButton = new TextButton("Main Menu", mySkin);
-
-        Label label = new Label("You Quit! Return to main menu", mySkin);
-
-        label.setWidth(1000);
-        label.setHeight(200);
-        label.setFontScale(4f, 4f);
-
-        menuButton.setWidth(1000);
-        menuButton.setHeight(200);
-
+        TextButton menuButton = new TextButton("Main Menu", game.skin);
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -46,15 +42,13 @@ public class Quitting extends ScreenAdapter {
                 game.setScreen(new MainMenuScreen(game));
             }
         });
+        table.add(menuButton);
 
-        stage.addActor(menuButton);
-        stage.addActor(label);
+        table.row();
 
-        label.setPosition(500, 700);
-        menuButton.setPosition(500, 300);
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.input.setInputProcessor(stage);
+        Label label = new Label("You Quit! Return to main menu", game.skin);
+        label.setFontScale(4f, 4f);
+        table.add(label);
     }
 
     @Override
@@ -65,7 +59,7 @@ public class Quitting extends ScreenAdapter {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Gdx.graphics.getDeltaTime());
+        stage.act(delta);
         stage.draw();
     }
 
