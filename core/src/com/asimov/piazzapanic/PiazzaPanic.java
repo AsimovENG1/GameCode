@@ -3,6 +3,7 @@ package com.asimov.piazzapanic;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,6 +15,8 @@ public class PiazzaPanic extends Game {
 	public BitmapFont font;
 
 	public Skin skin;
+
+	public Color color = new Color(1, 0.85f, 0.52f, 1);
 
 	public Sound clickSound;
 	public Sound backSound;
