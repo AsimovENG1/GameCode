@@ -5,12 +5,10 @@ package com.asimov.piazzapanic;
         import com.badlogic.gdx.ScreenAdapter;
         import com.badlogic.gdx.audio.Sound;
         import com.badlogic.gdx.graphics.*;
+        import com.badlogic.gdx.graphics.g2d.Batch;
         import com.badlogic.gdx.scenes.scene2d.InputEvent;
         import com.badlogic.gdx.scenes.scene2d.Stage;
-        import com.badlogic.gdx.scenes.scene2d.ui.Image;
-        import com.badlogic.gdx.scenes.scene2d.ui.Label;
-        import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-        import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+        import com.badlogic.gdx.scenes.scene2d.ui.*;
         import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
         import com.badlogic.gdx.utils.Align;
         import com.badlogic.gdx.utils.ScreenUtils;
@@ -21,8 +19,9 @@ package com.asimov.piazzapanic;
 
 public class InstructionScreen extends ScreenAdapter {
     final PiazzaPanic game;
-
     private Stage stage;
+    private Table table;
+
     public static Sound instclick;
 
     float screenWidth = Gdx.graphics.getWidth();
@@ -32,26 +31,20 @@ public class InstructionScreen extends ScreenAdapter {
     Texture howto =new Texture(Gdx.files.internal("layout/dhdh.jpg"));
 
     Sprite sprite = new Sprite(howto);
-    SpriteBatch batch = new SpriteBatch();
-
-    OrthographicCamera camera;
 
     public InstructionScreen(final PiazzaPanic game) {
         this.game = game;
 
         stage = new Stage(new ScreenViewport(), game.batch);
+        Gdx.input.setInputProcessor(stage);
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
         instclick = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
 
-
-
-        backButton = new TextButton("Back", mySkin);
-
-        backButton.setWidth(200);
-        backButton.setHeight(100);
-
-
+        backButton = new TextButton("Back", game.skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -59,17 +52,9 @@ public class InstructionScreen extends ScreenAdapter {
                 game.setScreen(new MainMenuScreen(game));
             }
         });
+        table.add(backButton).expand().left().bottom();
 
-        stage.addActor(backButton);
-        backButton.setPosition(10, 100);
-
-
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.input.setInputProcessor(stage);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
+        table.pad(10);
 
 //        Label.LabelStyle style = new Label.LabelStyle();
 //        style.font = game.font;
@@ -94,15 +79,18 @@ public class InstructionScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(game.color);
+
         stage.act(Gdx.graphics.getDeltaTime());
-        backButton.setZIndex(1);
-        stage.draw();
+
+        Batch batch = stage.getBatch();
+
         batch.begin();
         //sprite.scale();
         sprite.setPosition(screenWidth / 2 - sprite.getWidth() / 2, screenHeight / 2 - sprite.getHeight() / 2);
-
         sprite.draw(batch);
         batch.end();
+
+        stage.draw();
     }
 
     @Override
