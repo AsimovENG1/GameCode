@@ -39,6 +39,8 @@ public class MainMenuScreen extends ScreenAdapter {
         buclick1 = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
         backquit = Gdx.audio.newSound(Gdx.files.internal("audio/Back-and-quit.wav"));
 
+        Table menuTable = new Table();
+
         TextButton gameButton = new TextButton("Start Game", game.skin);
         gameButton.addListener(new ClickListener() {
             @Override
@@ -47,9 +49,9 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new GameScreen(game));
             }
         });
-        table.add(gameButton).padBottom(25).width(500);
+        menuTable.add(gameButton).padBottom(25).width(500);
 
-        table.row();
+        menuTable.row();
 
         TextButton settingsButton = new TextButton("Settings", game.skin);
         settingsButton.addListener(new ClickListener() {
@@ -59,9 +61,9 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new SettingsScreen(game));
             }
         });
-        table.add(settingsButton).padBottom(25).width(500);
+        menuTable.add(settingsButton).padBottom(25).width(500);
 
-        table.row();
+        menuTable.row();
 
         TextButton instructionsButton = new TextButton("Instructions", game.skin);
         instructionsButton.addListener(new ClickListener() {
@@ -71,9 +73,9 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new InstructionScreen(game));
             }
         });
-        table.add(instructionsButton).padBottom(25).width(500);
+        menuTable.add(instructionsButton).padBottom(25).width(500);
 
-        table.row();
+        menuTable.row();
 
         TextButton quitButton =  new TextButton("Quit", game.skin);
         quitButton.addListener(new ClickListener() {
@@ -83,15 +85,21 @@ public class MainMenuScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         });
-        table.add(quitButton).padBottom(10).width(500);
+        menuTable.add(quitButton).padBottom(10).width(500);
+
+        table.add(menuTable).expand().center();
 
         table.row();
 
-        Label attributionLabel = new Label("Comic UI Scene2d skin by Raymond \"Raeleus\" Buckley \n CC by 4.0.", game.skin);
-        attributionLabel.setFontScale(1);
-        table.add(attributionLabel).bottom();
+        Label attributionLabel = new Label("Comic UI Scene2d skin by Raymond \"Raeleus\" Buckley", game.skin);
+        table.add(attributionLabel).padBottom(5);
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        table.row();
+
+        Label ccLabel = new Label("CC by 4.0", game.skin);
+        table.add(ccLabel);
+
+        table.pad(10);
     }
 
     @Override
