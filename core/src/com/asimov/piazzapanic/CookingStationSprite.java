@@ -1,6 +1,5 @@
 package com.asimov.piazzapanic;
 
-import com.asimov.piazzapanic.models.Chef;
 import com.asimov.piazzapanic.models.Ingredient;
 import com.asimov.piazzapanic.models.IngredientStack;
 import com.badlogic.gdx.graphics.Texture;

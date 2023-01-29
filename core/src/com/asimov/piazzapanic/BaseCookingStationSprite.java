@@ -1,10 +1,6 @@
 package com.asimov.piazzapanic;
 
 import com.asimov.piazzapanic.models.*;
-import com.asimov.piazzapanic.models.Chef;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class BaseCookingStationSprite<T extends CookingStation> extends CookingStationSprite {
     protected T model;
