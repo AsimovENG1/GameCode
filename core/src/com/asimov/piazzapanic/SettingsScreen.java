@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -77,7 +78,7 @@ public class SettingsScreen extends ScreenAdapter{
         // THE HEADING
         Label label1 = new Label("Settings", game.skin);
         label1.setFontScale(3.0F);
-        settingsTable.add(label1);
+        settingsTable.add(label1).padBottom(20);
 
         settingsTable.row();
 
@@ -86,10 +87,13 @@ public class SettingsScreen extends ScreenAdapter{
         effectscore = 0;
         Preferences prefs = Gdx.app.getPreferences("myprefs");
 
+        Table musicTable = new Table();
+
         // MUSIC
+
         Label Mlabel = new Label("Music", game.skin);
         Mlabel.setFontScale(2.0F);
-        settingsTable.add(Mlabel);
+        settingsTable.add(Mlabel).padBottom(10);
 
         settingsTable.row();
 
@@ -108,6 +112,13 @@ public class SettingsScreen extends ScreenAdapter{
                 prefs.putInteger("muscore", muscore);
             }
         });
+        musicTable.add(volumeup);
+
+        // MUSIC INTEGER
+        muscore = prefs.getInteger("muscore");
+        mulabel = new Label(String.format("%01d", muscore), game.skin);
+        mulabel.setFontScale(2.0F);
+        musicTable.add(mulabel);
 
         // VOLUME DOWN
         TextButton volumedown = new TextButton("Down", holoSkin);
@@ -123,21 +134,20 @@ public class SettingsScreen extends ScreenAdapter{
                 prefs.putInteger("muscore", muscore);
             }
         });
+        musicTable.add(volumedown);
 
-        // MUSIC INTEGER
-        muscore = prefs.getInteger("muscore");
-        mulabel =new Label(String.format("%01d", muscore), game.skin);
-        mulabel.setFontScale(2.0F);
-
-        settingsTable.add(volumedown, mulabel, volumeup);
+        settingsTable.add(musicTable).padBottom(20);
 
         settingsTable.row();
 
         // SOUND EFFECTS
         Label SElabel = new Label("Sound Effects", game.skin);
-        settingsTable.add(SElabel);
+        SElabel.setFontScale(2.0F);
+        settingsTable.add(SElabel).padBottom(10);
 
         settingsTable.row();
+
+        Table soundEffectTable = new Table();
 
         // SOUND EFFECT UP
         TextButton effectup = new TextButton("UP",holoSkin);
@@ -154,6 +164,13 @@ public class SettingsScreen extends ScreenAdapter{
                 prefs.putInteger("effectscore", effectscore);
             }
         });
+        soundEffectTable.add(effectup);
+
+        // SOUND EFFECT INTEGER
+        effectscore = prefs.getInteger("effectscore");
+        effectlabel = new Label(String.format("%01d", effectscore), game.skin);
+        effectlabel.setFontScale(2.0F);
+        soundEffectTable.add(effectlabel);
 
         // SOUND EFFECT DOWN
         TextButton effectdown = new TextButton("Down", holoSkin);
@@ -171,13 +188,9 @@ public class SettingsScreen extends ScreenAdapter{
                 prefs.putInteger("effectscore", effectscore);
             }
         });
+        soundEffectTable.add(effectdown);
 
-        // SOUND EFFECT INTEGER
-        effectscore = prefs.getInteger("effectscore");
-        effectlabel =new Label(String.format("%01d", effectscore), game.skin);
-        effectlabel.setFontScale(2.0F);
-
-        settingsTable.add(effectdown, effectlabel, effectup);
+        settingsTable.add(soundEffectTable);
 
         settingsTable.row();
 
@@ -206,7 +219,7 @@ public class SettingsScreen extends ScreenAdapter{
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(game.color);
         stage.act(delta);
         stage.draw();
     }
