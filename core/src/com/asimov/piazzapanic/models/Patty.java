@@ -8,6 +8,11 @@ public class Patty extends BaseFryable implements Choppable {
         isFormed = true;
     }
 
+    @Override
+    public boolean isChopped() {
+        return isFormed();
+    }
+
     public boolean isFormed() {
         return isFormed;
     }

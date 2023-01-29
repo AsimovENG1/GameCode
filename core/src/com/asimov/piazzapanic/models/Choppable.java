@@ -5,7 +5,13 @@ package com.asimov.piazzapanic.models;
  */
 public interface Choppable extends Ingredient {
     /**
-     * Chops the ingredient.
+     * Chops the ingredient. isChopped should become true.
      */
     void chop();
+
+    /**
+     * Whether ingredient has been chopped.
+     * @return Whether chop has been called on the ingredient.
+     */
+    boolean isChopped();
 }
