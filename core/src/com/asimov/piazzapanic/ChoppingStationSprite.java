@@ -3,6 +3,10 @@ package com.asimov.piazzapanic;
 import com.asimov.piazzapanic.models.ChoppingStation;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * Sprite representing a chopping station.
+ * @see ChoppingStation
+ */
 public class ChoppingStationSprite extends BaseCookingStationSprite<ChoppingStation> {
     private final Texture availableTexture = new Texture("EmptyCuttingBoard.png"); // station is empty
     private final Texture cookingTexture = new Texture("CuttingBoardInUse.png"); // ingredient placed on station
@@ -27,12 +31,14 @@ public class ChoppingStationSprite extends BaseCookingStationSprite<ChoppingStat
         return model.canChop();
     }
 
+    /**
+     * Chops the ingredient.
+     * @see ChoppingStation#chop()
+     */
     public void chop() {
         if (!canChop()) {
             return;
         }
-
-        // TODO: timer, stop chef from moving?
 
         model.chop();
 

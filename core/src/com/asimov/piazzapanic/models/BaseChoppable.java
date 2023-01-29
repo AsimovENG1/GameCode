@@ -8,6 +8,7 @@ public abstract class BaseChoppable implements Choppable {
         isChopped = true;
     }
 
+    @Override
     public boolean isChopped() {
         return isChopped;
     }
