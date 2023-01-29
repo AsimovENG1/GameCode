@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public abstract class IngredientStationSprite extends Sprite {
 
     public  IngredientStationSprite(){
-        super(new Texture("IngredientStations/Tomato_Station.png"));
+        super(new Texture("IngredientStations/Empty_Ingredient_Station.png"));
     }
 
     public abstract void grab(IngredientStack stack);
