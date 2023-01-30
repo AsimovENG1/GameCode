@@ -60,6 +60,14 @@ public class ScenarioMode extends ScreenAdapter {
     boolean begin = true;
 
     private Sound grab;
+
+    private Sound place;
+
+    private Sound Completed;
+
+//    private Sound flip;
+
+    private Sound chop;
     
     public static Sound bell;
     public static Sound guitar;
@@ -122,6 +130,17 @@ public class ScenarioMode extends ScreenAdapter {
 
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
+
+        //sfx
+        grab = Gdx.audio.newSound((Gdx.files.internal(("audio/mixkit-hard-pop-click-2364.wav"))));
+
+        place = Gdx.audio.newSound((Gdx.files.internal(("audio/mixkit-quest-game-heavy-stomp-v-3049.wav"))));
+
+        Completed = Gdx.audio.newSound((Gdx.files.internal(("audio/mixkit-coins-handling-1939.wav"))));
+
+//        flip = Gdx.audio.newSound((Gdx.files.internal(("audio/flip.wav"))));
+
+        chop = Gdx.audio.newSound((Gdx.files.internal(("audio/chopping-4.wav"))));
 
         // Walls
 
@@ -193,7 +212,6 @@ public class ScenarioMode extends ScreenAdapter {
         mStation.setPosition(640,200);
         ingredientStations.add(mStation);
 
-        grab = Gdx.audio.newSound((Gdx.files.internal(("audio/mixkit-hard-pop-click-2364.wav"))));
 
         // Chefs
 
@@ -274,6 +292,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (isChefAtCounter() && customer.checkOrder(ingredient)) {
             chef.stack.place();
+            Completed.play();
 
             left = "leaving";
         }
@@ -288,10 +307,12 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (cookingStation.canPlace(chef.stack) && Gdx.input.isKeyPressed(Input.Keys.E)) {
             cookingStation.place(chef.stack);
+            place.play();
         }
 
         if (cookingStation.canGrab() && chef.stack.size() < 3 && Gdx.input.isKeyPressed(Input.Keys.R)) {
             cookingStation.grab(chef.stack);
+            grab.play();
         }
 
         if (cookingStation instanceof ChoppingStationSprite &&
@@ -299,12 +320,14 @@ public class ScenarioMode extends ScreenAdapter {
                 Gdx.input.isKeyPressed(Input.Keys.C)) {
 
             ((ChoppingStationSprite) cookingStation).chop();
+            chop.play();
         }
         if (cookingStation instanceof GrillStationSprite &&
                 ((GrillStationSprite) cookingStation).canFlip() &&
                 Gdx.input.isKeyPressed(Input.Keys.F)) {
 
             ((GrillStationSprite) cookingStation).flip();
+//            flip.play();
         }
     }
 
@@ -317,10 +340,12 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (counter.canPlace(chef) && Gdx.input.isKeyPressed(Input.Keys.E)) {
             counter.place(chef);
+            place.play();
         }
 
         if (counter.canGrab() && Gdx.input.isKeyPressed(Input.Keys.R)) {
             counter.grab(chef);
+            grab.play();
         }
     }
         
