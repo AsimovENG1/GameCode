@@ -8,14 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class EndingScreen extends ScreenAdapter {
     final PiazzaPanic game;
-
     private Stage stage;
+    private Table table;
 
     private Sound sound;
 
@@ -28,28 +30,28 @@ public class EndingScreen extends ScreenAdapter {
         this.game = game;
 
         stage = new Stage(new ScreenViewport(), game.batch);
+        Gdx.input.setInputProcessor(stage);
+
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
         sound = Gdx.audio.newSound(Gdx.files.internal("audio/Button-click.wav"));
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-
-        TextButton menuButton = new TextButton("Main Menu", mySkin);
-
-        label = new Label("Well Done! You Won!", mySkin);
-        winningTime = String.format("Your time was %f seconds", ScenarioMode.time);
-        label2 = new Label(winningTime, mySkin);
-
-        label.setWidth(1000);
-        label.setHeight(200);
+        label = new Label("Well Done! You Won!", game.skin);
         label.setFontScale(4f, 4f);
+        table.add(label).padBottom(10);
 
-        label2.setWidth(1000);
-        label2.setHeight(200);
+        table.row();
+
+        winningTime = String.format("Your time was %f seconds", ScenarioMode.time);
+        label2 = new Label(winningTime, game.skin);
         label2.setFontScale(4f, 4f);
+        table.add(label2).padBottom(10);
 
-        menuButton.setWidth(1000);
-        menuButton.setHeight(200);
+        table.row();
 
+        TextButton menuButton = new TextButton("Main Menu", game.skin);
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -57,17 +59,9 @@ public class EndingScreen extends ScreenAdapter {
                 game.setScreen(new MainMenuScreen(game));
             }
         });
+        table.add(menuButton);
 
-        stage.addActor(menuButton);
-        stage.addActor(label);
-        stage.addActor(label2);
-
-        label.setPosition(650, 800);
-        label2.setPosition(500, 600);
-        menuButton.setPosition(500, 200);
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.input.setInputProcessor(stage);
+        table.pad(10);
     }
 
     @Override
@@ -77,7 +71,7 @@ public class EndingScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(game.color);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
