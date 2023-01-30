@@ -59,15 +59,15 @@ public class ScenarioMode extends ScreenAdapter {
     Integer customerNo;
     boolean begin = true;
 
-    private Sound grab;
+    public static Sound grab;
 
-    private Sound place;
+    public static Sound place;
 
-    private Sound Completed;
+    public static Sound Completed;
 
 //    private Sound flip;
 
-    private Sound chop;
+    public static Sound chop;
     
     public static Sound bell;
     public static Sound guitar;
@@ -294,7 +294,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (isChefAtCounter() && customer.checkOrder(ingredient)) {
             chef.stack.place();
-            Completed.play();
+            SoundEffectControl.playCompleted();
 
             left = "leaving";
         }
@@ -309,12 +309,12 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (cookingStation.canPlace(chef.stack) && Gdx.input.isKeyPressed(Input.Keys.E)) {
             cookingStation.place(chef.stack);
-            place.play();
+            SoundEffectControl.playplace();
         }
 
         if (cookingStation.canGrab() && chef.stack.size() < 3 && Gdx.input.isKeyPressed(Input.Keys.R)) {
             cookingStation.grab(chef.stack);
-            grab.play();
+            SoundEffectControl.playGrab();
         }
 
         if (cookingStation instanceof ChoppingStationSprite &&
@@ -322,7 +322,7 @@ public class ScenarioMode extends ScreenAdapter {
                 Gdx.input.isKeyPressed(Input.Keys.C)) {
 
             ((ChoppingStationSprite) cookingStation).chop();
-            chop.play();
+            SoundEffectControl.playChop();
         }
         if (cookingStation instanceof GrillStationSprite &&
                 ((GrillStationSprite) cookingStation).canFlip() &&
@@ -342,12 +342,12 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (counter.canPlace(chef) && Gdx.input.isKeyPressed(Input.Keys.E)) {
             counter.place(chef);
-            place.play();
+            SoundEffectControl.playplace();
         }
 
         if (counter.canGrab() && Gdx.input.isKeyPressed(Input.Keys.R)) {
             counter.grab(chef);
-            grab.play();
+            SoundEffectControl.playGrab();
         }
     }
         
@@ -360,7 +360,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && ingredientStation.canGrab()){
             ingredientStation.grab(chef.stack);
-              grab.play();
+              SoundEffectControl.playGrab();
         }
     }
 

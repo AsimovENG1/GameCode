@@ -6,6 +6,7 @@ public class MusicControl {
     public static long umm;
     public static long hmm;
 
+
     public void increaseMusic() {
         if (musicvolume < 1) {
             musicvolume += 0.2f;
@@ -32,6 +33,8 @@ public class MusicControl {
     public static void setguitar(){
         ScenarioMode.guitar.setVolume(umm,musicvolume);
     }
+
+
 
 
 
