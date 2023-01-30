@@ -38,12 +38,12 @@ public class SettingsScreen extends ScreenAdapter{
 
     private  static Integer senscore;
     private static Label senlabel;
-    private static Integer muscore;
+    private static Integer muscore = 3;
     private static Label mulabel;
 
     public static Sound buclick2;
 
-    private static Integer effectscore;
+    private static Integer effectscore ;
     private static Label effectlabel;
 
     private Texture setback = new Texture("layout/newppp.png");
@@ -83,8 +83,8 @@ public class SettingsScreen extends ScreenAdapter{
         settingsTable.row();
 
         // FOR PERMANENT STUFF
-        muscore = 0;
-        effectscore = 0;
+        //muscore = 0;
+        //effectscore = 0;
         Preferences prefs = Gdx.app.getPreferences("myprefs");
 
         Table musicTable = new Table();
@@ -115,7 +115,9 @@ public class SettingsScreen extends ScreenAdapter{
         musicTable.add(volumeup);
 
         // MUSIC INTEGER
+        prefs.putInteger("muscore", 3);
         muscore = prefs.getInteger("muscore");
+        System.out.print("This is muscore : "+muscore);
         mulabel = new Label(String.format("%01d", muscore), game.skin);
         mulabel.setFontScale(2.0F);
         musicTable.add(mulabel);
@@ -167,6 +169,7 @@ public class SettingsScreen extends ScreenAdapter{
         soundEffectTable.add(effectup);
 
         // SOUND EFFECT INTEGER
+        prefs.putInteger("effectscore", 3);
         effectscore = prefs.getInteger("effectscore");
         effectlabel = new Label(String.format("%01d", effectscore), game.skin);
         effectlabel.setFontScale(2.0F);
