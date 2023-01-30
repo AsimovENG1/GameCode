@@ -59,7 +59,7 @@ public class ScenarioMode extends ScreenAdapter {
     Integer customerNo;
     boolean begin = true;
 
-    private Sound grab;
+    public static Sound grab;
     
     public static Sound bell;
     public static Sound guitar;
@@ -333,7 +333,7 @@ public class ScenarioMode extends ScreenAdapter {
 
         if (chef.stack.size()<3 && Gdx.input.isKeyPressed((Input.Keys.R)) && ingredientStation.canGrab()){
             ingredientStation.grab(chef.stack);
-              grab.play();
+              SoundEffectControl.playGrab();
         }
     }
 

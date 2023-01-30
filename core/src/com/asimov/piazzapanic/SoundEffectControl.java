@@ -65,7 +65,9 @@ public class SoundEffectControl {
         EndlessMode.endlessback.play(volume);
     }
 
-
+    public static void playGrab() {
+        ScenarioMode.grab.play(volume);
+    }
 
 
 
