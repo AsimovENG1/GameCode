@@ -2,7 +2,7 @@ package com.asimov.piazzapanic;
 
 public class MusicControl {
 
-    public static float musicvolume = 0.0f;
+    public static float musicvolume = 0.6f;
     public static long umm;
     public static long hmm;
 

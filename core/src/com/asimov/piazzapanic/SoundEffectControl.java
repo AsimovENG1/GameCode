@@ -3,7 +3,7 @@ package com.asimov.piazzapanic;
 import com.badlogic.gdx.Game;
 
 public class SoundEffectControl {
-    public static float volume = 0.0f;
+    public static float volume = 0.6f;
     public static long anything;
 
     public static long meow;
