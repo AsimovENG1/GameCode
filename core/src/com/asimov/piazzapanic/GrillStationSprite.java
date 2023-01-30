@@ -15,7 +15,7 @@ public class GrillStationSprite extends BaseCookingStationSprite<FryingStation> 
     private final Texture GrillFlipedTexture = new Texture("burgerGrillFliped.png"); // burger is fliped
     private final Texture GrillDoneTexture = new Texture("burgerGrillDone.png"); // burger is ready to be taken off
 
-    private Music frying = Gdx.audio.newMusic((Gdx.files.internal(("audio/frying-3.wav"))));
+    public static Music frying = Gdx.audio.newMusic((Gdx.files.internal(("audio/frying-3.wav"))));
 
     private DeltaTimer timer;
 
@@ -28,8 +28,9 @@ public class GrillStationSprite extends BaseCookingStationSprite<FryingStation> 
     public void placed() {
         setTexture(GrillTexture);
         timer.start(5, () -> readyToFlip());
-        frying.setLooping(true);
-        frying.play();
+        SoundEffectControl.setFrying();
+        SoundEffectControl.loopFrying();
+        SoundEffectControl.playFrying();
     }
     public void readyToFlip() {
         setTexture(GrillReadyTexture);
@@ -43,7 +44,7 @@ public class GrillStationSprite extends BaseCookingStationSprite<FryingStation> 
         model.flip();
         setTexture(GrillFlipedTexture);
         timer.start(5, () -> readyToPickUp());
-        timer.start(5, () -> frying.setLooping(false));
+        timer.start(5, () -> SoundEffectControl.stopFrying());
     }
     public void readyToPickUp() {
         setTexture(GrillDoneTexture);

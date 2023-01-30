@@ -2,9 +2,10 @@ package com.asimov.piazzapanic;
 
 public class MusicControl {
 
-    public static float musicvolume = 0.0f;
+    public static float musicvolume = 0.6f;
     public static long umm;
     public static long hmm;
+
 
     public void increaseMusic() {
         if (musicvolume < 1) {
@@ -32,6 +33,8 @@ public class MusicControl {
     public static void setguitar(){
         ScenarioMode.guitar.setVolume(umm,musicvolume);
     }
+
+
 
 
 
