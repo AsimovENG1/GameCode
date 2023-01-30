@@ -40,7 +40,7 @@ public class DeltaTimer {
 
     /**
      * Advances the timer by the specified delta (time since the last render). Ensure this method is called every render.
-     * @param delta
+     * @param delta Time elapsed since last render.
      */
     public void tick(float delta) {
         elapsed += delta;
