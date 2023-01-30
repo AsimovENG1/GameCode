@@ -9,7 +9,7 @@ public class IngredientStation<T extends Ingredient> {
 
     /**
      * Constructor, requires method to create new ingredient.
-     * @param ingredient Ingredient constructor method, for example () -> new Lettuce().
+     * @param ingredient Ingredient constructor method, for example () -&gt; new Lettuce().
      */
     public IngredientStation(IngredientSource<T> ingredient) {
         this.ingredient = ingredient;
