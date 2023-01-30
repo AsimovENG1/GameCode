@@ -286,7 +286,9 @@ public class ScenarioMode extends ScreenAdapter {
     public void giveFood() {
         Chef chef = getActiveChef();
 
-        System.out.println(chef.stack);
+        if (chef.stack.items.isEmpty()) {
+            return;
+        }
 
         Ingredient ingredient = chef.stack.peek();
 
