@@ -130,6 +130,7 @@ public class ScenarioMode extends ScreenAdapter {
 
     public ScenarioMode(final PiazzaPanic game) {
         this.game = game;
+        time = 0;
 
         // Walls
 
